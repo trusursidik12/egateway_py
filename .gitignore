@@ -1,0 +1,99 @@
+# Windows image file caches
+gui/Thumbs.db
+gui/ehthumbs.db
+gui/Desktop.ini
+
+# Recycle Bin used on file shares
+gui/$RECYCLE.BIN/
+
+# Windows Installer files
+gui/*.cab
+gui/*.msi
+gui/*.msm
+gui/*.msp
+
+# Windows shortcuts
+gui/*.lnk
+
+# Linux
+gui/*~
+
+# KDE directory preferences
+gui/.directory
+
+# Linux trash folder which might appear on any partition or disk
+gui/.Trash-*
+
+#-------------------------
+# Environment Files
+#-------------------------
+# These should never be under version control,
+# as it poses a security risk.
+gui/.env
+gui/.vagrant
+gui/Vagrantfile
+
+#-------------------------
+# Temporary Files
+#-------------------------
+gui/writable/cache/*
+!gui/writable/cache/index.html
+
+gui/writable/logs/*
+!gui/writable/logs/index.html
+
+gui/writable/session/*
+!gui/writable/session/index.html
+
+gui/writable/uploads/*
+!gui/writable/uploads/index.html
+
+gui/writable/debugbar/*
+
+gui/php_errors.log
+
+#-------------------------
+# User Guide Temp Files
+#-------------------------
+gui/user_guide_src/build/*
+gui/user_guide_src/cilexer/build/*
+gui/user_guide_src/cilexer/dist/*
+gui/user_guide_src/cilexer/pycilexer.egg-info/*
+
+#-------------------------
+# Test Files
+#-------------------------
+gui/tests/coverage*
+
+# Don't save phpunit under version control.
+gui/phpunit
+
+#-------------------------
+# Composer
+#-------------------------
+gui/vendor/
+gui/composer.lock
+
+#-------------------------
+# IDE / Development Files
+#-------------------------
+
+# Modules Testing
+gui/_modules/*
+
+# phpenv local config
+gui/.php-version
+
+# Jetbrains editors (PHPStorm, etc)
+gui/.idea/
+gui/*.iml
+
+
+# Visual Studio Code
+gui/.vscode/
+
+/results/
+/phpunit*.xml
+/.phpunit.*.cache
+
+composer.json
