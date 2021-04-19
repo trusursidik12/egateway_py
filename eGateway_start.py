@@ -1,7 +1,27 @@
-import subprocess
+from mysql.connector.constants import ClientFlag
 from PyQt5 import QtWebEngineWidgets, QtWidgets, QtCore
+import subprocess
+import sys
+import mysql.connector
+import time
+
+try:
+    mydb = mysql.connector.connect(host="localhost",user="root",passwd="root",database="egateway")
+    mycursor = mydb.cursor()
+    print("[V] DB CONNECTED")
+except Exception as e:
+    print("[X]  DB Not Connected " + e)
+    sys.exit()
 
 subprocess.Popen("php gui\spark serve", shell=True)
+time.sleep(1)
+
+mycursor.execute("SELECT id FROM labjacks ORDER BY id")
+rec = mycursor.fetchall()
+for row in rec: 
+    subprocess.Popen("python labjack_reader.py " + str(row[0]), shell=True)
+
+time.sleep(5)
 
 class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
     def __init__(self, *args, **kwargs):

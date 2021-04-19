@@ -5,14 +5,22 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
-        <?php if ($__session->get("loggedin")) : ?>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="/" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#  " class="nav-link">Contact</a>
-            </li>
-        <?php endif ?>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-user-circle"></i>
+                <span class="badge badge-warning navbar-badge d-none" style="font-size:.8rem" id="notifications_count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notification_details">
+                <div class="dropdown-divider"></div>
+                <?php if ($__session->get("loggedin")) : ?>
+                    <a href="<?= base_url(); ?>/logout" class="dropdown-item"><i class="fas fa-key mr-2"></i> Logout</a>
+                <?php else : ?>
+                    <a href="<?= base_url(); ?>/login" class="dropdown-item"><i class="fas fa-key mr-2"></i> Login</a>
+                <?php endif ?>
+            </div>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->
