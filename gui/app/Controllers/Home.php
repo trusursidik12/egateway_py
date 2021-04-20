@@ -2,16 +2,81 @@
 
 namespace App\Controllers;
 
+use App\Models\m_instrument;
+use App\Models\m_measurement_log;
+use App\Models\m_parameter;
+use App\Models\m_unit;
+
 class Home extends BaseController
 {
+	protected $menu_ids;
+	protected $route_name;
+	protected $parameters;
+	protected $measurement_logs;
+	protected $instruments;
+	protected $units;
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->parameters =  new m_parameter();
+		$this->measurement_logs =  new m_measurement_log();
+		$this->instruments =  new m_instrument();
+		$this->units =  new m_unit();
+	}
+
 	public function index()
 	{
 		$data["__modulename"] = "";
 		$data = $data + $this->common();
+
+		$data["instruments"] = $this->instruments->findAll();
+		foreach ($data["instruments"] as $instrument) {
+			$data["parameters"][$instrument->id] = $this->parameters->where("instrument_id", $instrument->id)->findAll();
+			foreach ($data["parameters"][$instrument->id] as $key => $parameter) {
+				$data["parameters"][$instrument->id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
+			}
+		}
+
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('v_home');
 		echo view('v_footer');
+		echo view('v_home_js');
+	}
+
+	public function graph($parameter_id)
+	{
+		$graph_interval = 1;
+		$data["graph_fields"] = "'" . $parameter_id . "'";
+
+		$times = "";
+		$ii = 0;
+		$start = false;
+		$menit = date("i");
+		while ($ii < 600) {
+			if ($menit % $graph_interval == 0) $start = true;
+			if ($start) {
+				$times .= "'" . date("Y-m-d H:i", mktime(date("H"), ($menit - ($ii * $graph_interval)))) . ":00',";
+				$ii++;
+			} else {
+				$menit--;
+			}
+		}
+		$times = substr($times, 0, -1);
+		$measurement_logs = $this->measurement_logs->where("parameter_id='" . $parameter_id . "' AND xtimestamp IN ($times)")->orderBy("id DESC")->findAll(30);
+		$graph_data = "";
+		foreach ($measurement_logs as $measurement_log) {
+			$graph_data .= "{time: '" . $measurement_log->xtimestamp . "', ";
+			$graph_data .= " " . $parameter_id . ": " . $measurement_log->value . " ,";
+		}
+		$graph_data = substr($graph_data, 0, -1) . "},";
+		$data["graph_data"] = $graph_data;
+		echo "<pre>";
+		print_r($data["graph_data"]);
+		echo "</pre>";
+		// {time: '2021-04-20 14:00:40',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 14:00:38',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 13:33:53',  pm10: 0 , so2: 0 , tsp: 0 },
+		// $this->load->view('master/home/graph', $data);
 	}
 
 	public function changepassword()

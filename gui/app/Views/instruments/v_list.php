@@ -21,6 +21,7 @@
                             <table class="table table-stripped">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Type</th>
@@ -30,16 +31,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                    <?php foreach ($instruments as $instrument) : ?>
                                         <tr>
-                                            <td><?= $i ?></td>
-                                            <td>Name <?= $i ?></td>
-                                            <td>Type <?= $i ?></td>
-                                            <td>Parameter <?= $i ?></td>
-                                            <td>Status <?= $i ?></td>
-                                            <td>Created By <?= $i ?></td>
+                                            <td>
+                                                <a href="/instrument/edit/<?= $instrument->id ?>" title="Edit" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-xs fa-pen"></i>
+                                                </a>
+                                                <form class="d-inline" action="/instrument/delete/<?= $instrument->id ?>" method="post">
+                                                    <button onclick="return confirm('Are you sure?')" type="submit" name="Delete" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="fa fa-xs fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td><?= $instrument->id ?></td>
+                                            <td><?= $instrument->name ?></td>
+                                            <td><?= $instrument->i_type ?></td>
+                                            <td><?= 1 ?></td>
+                                            <td><?= $instrument->status ?></td>
+                                            <td><?= $instrument->created_by ?></td>
                                         </tr>
-                                    <?php endfor; ?>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
