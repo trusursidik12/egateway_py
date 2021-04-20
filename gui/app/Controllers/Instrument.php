@@ -29,6 +29,9 @@ class Instrument extends BaseController
 		echo view('instruments/v_list');
 		echo view('v_footer');
 	}
+	public function get_reference()
+	{
+	}
 	public function saving_add()
 	{
 	}
