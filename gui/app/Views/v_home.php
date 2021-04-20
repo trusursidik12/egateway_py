@@ -1,4 +1,5 @@
 <!-- Main content -->
+<meta http-equiv="refresh" content="300">
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -33,17 +34,7 @@
                                             <?php endforeach ?>
                                         </div>
                                         <div class="col-md-8 border-left">
-                                            <div class="position-relative mb-4">
-                                                <div class="chartjs-size-monitor">
-                                                    <div class="chartjs-size-monitor-expand">
-                                                        <div class=""></div>
-                                                    </div>
-                                                    <div class="chartjs-size-monitor-shrink">
-                                                        <div class=""></div>
-                                                    </div>
-                                                </div>
-                                                <canvas id="visitors-chart" width="764" class="chartjs-render-monitor" style="display: block; width: 764px; min-height: 380px;"></canvas>
-                                            </div>
+                                            <div id="graph" style="min-width: 764px; min-height: 380px;background-color:white;"></div>
                                         </div>
                                     </div>
                                 </div>

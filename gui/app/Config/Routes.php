@@ -55,6 +55,11 @@ $routes->add('/menu/delete/(:num)', 'A_menu::delete/$1');
 
 $routes->get('/instruments', 'Instrument::index');
 
+// LABJACKS
+$routes->get('/labjacks', 'Labjack::index');
+$routes->get('/labjack/add', 'Labjack::add');
+$routes->add('/labjack/edit/(:num)', 'Labjack::edit/$1');
+$routes->add('/process/labjack/delete', 'Labjack::delete');
 
 /**
  * --------------------------------------------------------------------

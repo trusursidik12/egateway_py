@@ -1,4 +1,15 @@
 <script>
+    function reload_graph() {
+        $.ajax({
+            url: "<?= site_url('home/graph'); ?>",
+            success: function(graphview) {
+                try {
+                    $("#graph").html(graphview);
+                } catch (ex) {}
+            }
+        });
+    }
+
     function reload_measurement_log() {
         $.ajax({
             url: "http://localhost:8080/measurement_log/get",
