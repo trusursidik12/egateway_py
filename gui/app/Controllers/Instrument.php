@@ -29,4 +29,22 @@ class Instrument extends BaseController
 		echo view('instruments/v_list');
 		echo view('v_footer');
 	}
+	public function saving_add()
+	{
+	}
+	public function add()
+	{
+		if (isset($_POST['Save'])) {
+			print_r($_POST);
+			return;
+		}
+		$this->privilege_check($this->menu_ids);
+		$data["__modulename"] = "Instrument Add";
+		$data = $data + $this->common();
+		echo view('v_header', $data);
+		echo view('v_menu');
+		echo view('instruments/v_edit');
+		echo view('v_footer');
+		echo view('instruments/v_js');
+	}
 }
