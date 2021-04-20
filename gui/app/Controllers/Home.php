@@ -2,16 +2,47 @@
 
 namespace App\Controllers;
 
+use App\Models\m_instrument;
+use App\Models\m_measurement_log;
+use App\Models\m_parameter;
+use App\Models\m_unit;
+
 class Home extends BaseController
 {
+	protected $menu_ids;
+	protected $route_name;
+	protected $parameters;
+	protected $measurement_logs;
+	protected $instruments;
+	protected $units;
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->parameters =  new m_parameter();
+		$this->measurement_logs =  new m_measurement_log();
+		$this->instruments =  new m_instrument();
+		$this->units =  new m_unit();
+	}
+
 	public function index()
 	{
 		$data["__modulename"] = "";
 		$data = $data + $this->common();
+
+		$data["instruments"] = $this->instruments->findAll();
+		foreach ($data["instruments"] as $instrument) {
+			$data["parameters"][$instrument->id] = $this->parameters->where("instrument_id", $instrument->id)->findAll();
+			foreach ($data["parameters"][$instrument->id] as $key => $parameter) {
+				$data["parameters"][$instrument->id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
+			}
+		}
+
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('v_home');
 		echo view('v_footer');
+		echo view('v_home_js');
 	}
 
 	public function changepassword()
