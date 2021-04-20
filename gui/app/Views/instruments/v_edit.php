@@ -46,7 +46,7 @@
                                 <select name="parameter_id[]" class="form-control" multiple>
                                     <option value="" disabled>Select Parameter</option>
                                     <?php foreach ($parameters as $parameter) : ?>
-                                        <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, old("parameter_id", @$parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
+                                        <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, old('parameter_id', @$parameter_ids) !== null ? $parameter_ids : []) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -54,9 +54,9 @@
                                 <label>Type Instrument</label>
                                 <select name="i_type" class="form-control">
                                     <option value="">Select Type Instrument</option>
-                                    <option value="CEMS" <?= $instrument->i_type == "CEMS" ? 'selected' : null ?>>CEMS</option>
-                                    <option value="AQMS" <?= $instrument->i_type == "AQMS" ? 'selected' : null ?>>AQMS</option>
-                                    <option value="ISPUTEN" <?= $instrument->i_type == "ISPUTEN" ? 'selected' : null ?>>ISPUTEN</option>
+                                    <option value="CEMS" <?= @$instrument->i_type == "CEMS" ? 'selected' : null ?>>CEMS</option>
+                                    <option value="AQMS" <?= @$instrument->i_type == "AQMS" ? 'selected' : null ?>>AQMS</option>
+                                    <option value="ISPUTEN" <?= @$instrument->i_type == "ISPUTEN" ? 'selected' : null ?>>ISPUTEN</option>
                                 </select>
                             </div>
                             <div class="form-group">

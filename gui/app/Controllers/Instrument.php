@@ -39,7 +39,7 @@ class Instrument extends BaseController
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Instruments";
 		$data['instruments'] = $this->instruments->select('statuses.name as status,instruments.*')
-			->join('statuses', 'instruments.status_id = statuses.id')->orderBy('instruments.id DESC')->findAll();
+			->join('statuses', 'instruments.status_id = statuses.id')->where(['instruments.is_deleted' => 0])->orderBy('instruments.id DESC')->findAll();
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
@@ -126,5 +126,20 @@ class Instrument extends BaseController
 		echo view('instruments/v_edit');
 		echo view('v_footer');
 		echo view('instruments/v_js');
+	}
+	public function delete($id)
+	{
+		if (isset($_POST['Delete'])) {
+			try {
+				$this->instruments->update($id, ['is_deleted' => 1] + $this->deleted_values());
+			} catch (Exception $e) {
+				session()->setFlashdata('flash_message', ['error', 'Error: ' . $e->getMessage()]);
+				return redirect()->to('/instruments');
+			}
+			session()->setFlashdata('flash_message', ['success', 'Instrument added succcesfully!']);
+			return redirect()->to('/instruments');
+		}
+		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
+		return redirect()->to('/instruments');
 	}
 }
