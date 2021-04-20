@@ -180,7 +180,7 @@
             load_notifications();
         }, 60000);
     }
-    load_notifications();
+    // load_notifications();
 
     function blink_notifications() {
         $('#notifications_count').fadeOut(200).fadeIn(200, blink_notifications);

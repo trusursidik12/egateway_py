@@ -7,30 +7,30 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <?php for ($i = 1; $i <= 3; $i++) : ?>
-                                <li class="nav-item"><a class="nav-link <?= $i == 1 ? 'active' : '' ?>" href="#cems-<?= $i ?>" data-toggle="tab">CEMS-<?= $i ?></a></li>
-                            <?php endfor; ?>
+                            <?php foreach ($instruments as $instrument) : ?>
+                                <li class="nav-item"><a class="nav-link <?= $instrument->id == 1 ? 'active' : '' ?>" href="#instrument-<?= $instrument->id ?>" data-toggle="tab"><?= $instrument->name; ?></a></li>
+                            <?php endforeach ?>
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
-                            <?php for ($j = 1; $j <= 3; $j++) : ?>
-                                <div class="tab-pane <?= $j == 1 ? 'active' : '' ?>" id="cems-<?= $i ?>">
+                            <?php foreach ($instruments as $instrument) : ?>
+                                <div class="tab-pane <?= $instrument->id == 1 ? 'active' : '' ?>" id="instrument-<?= $instrument->id ?>">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <?php for ($i = 0; $i <= 5; $i++) : ?>
+                                            <?php foreach ($parameters[$instrument->id] as $parameter) : ?>
                                                 <ul class="list-group list-group-unbordered">
                                                     <li class="list-group-item">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <p class="h3">SO <?= $j ?></p>
+                                                            <p class="h3"><?= $parameter->caption ?></p>
                                                             <span>
-                                                                <p class="h1 d-inline"><?= rand(0, 99) ?></p>
-                                                                <p class="small d-inline">mg/m3</p>
+                                                                <p class="h1 d-inline" id="parameter_value_<?= $parameter->id; ?>"></p>
+                                                                <p class="small d-inline"><?= $parameter->unit->name ?></p>
                                                             </span>
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            <?php endfor; ?>
+                                            <?php endforeach ?>
                                         </div>
                                         <div class="col-md-8 border-left">
                                             <div class="position-relative mb-4">
@@ -47,7 +47,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            <?php endfor; ?>
+                            <?php endforeach ?>
                             <!-- /.tab-pane -->
                         </div>
                         <!-- /.tab-content -->
