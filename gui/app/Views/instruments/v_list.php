@@ -43,10 +43,12 @@
                                                     </button>
                                                 </form>
                                             </td>
-                                            <td><?= $instrument->id ?></td>
+                                            <td class="instrument_id"><?= $instrument->id ?></td>
                                             <td><?= $instrument->name ?></td>
                                             <td><?= $instrument->i_type ?></td>
-                                            <td><?= 1 ?></td>
+                                            <td class="parameters">
+                                                <i class="fas fa-spin fa-spinner"></i>
+                                            </td>
                                             <td><?= $instrument->status ?></td>
                                             <td><?= $instrument->created_by ?></td>
                                         </tr>

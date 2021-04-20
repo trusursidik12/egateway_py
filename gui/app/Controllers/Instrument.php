@@ -147,4 +147,19 @@ class Instrument extends BaseController
 		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
 		return redirect()->to('/instruments');
 	}
+
+	public function get_parameter($instrument_id)
+	{
+		$data = [];
+		try {
+			$data = [];
+			$instrument = $this->instruments->find($instrument_id);
+			$parameter_id = explode(',', $instrument->parameter_ids);
+			foreach ($parameter_id as $key => $id) {
+				$data[$key] = $this->parameters->select('name')->find($id);
+			}
+		} catch (Exception $e) {
+		}
+		return json_encode($data, JSON_PRETTY_PRINT);
+	}
 }
