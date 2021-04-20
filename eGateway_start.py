@@ -21,7 +21,9 @@ rec = mycursor.fetchall()
 for row in rec: 
     subprocess.Popen("python labjack_reader.py " + str(row[0]), shell=True)
 
-time.sleep(5)
+time.sleep(3)
+subprocess.Popen("python formula_measurement_logs.py", shell=True)
+time.sleep(2)
 
 class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
     def __init__(self, *args, **kwargs):
