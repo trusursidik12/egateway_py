@@ -72,7 +72,7 @@ gui/phpunit
 # Composer
 #-------------------------
 gui/vendor/
-gui/composer.lock
+# gui/composer.lock
 
 #-------------------------
 # IDE / Development Files
@@ -96,4 +96,4 @@ gui/.vscode/
 /phpunit*.xml
 /.phpunit.*.cache
 
-composer.json
+# composer.json

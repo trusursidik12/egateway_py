@@ -12,7 +12,6 @@ class A_user extends BaseController
     protected $route_name;
     protected $users;
     protected $groups;
-    protected $divisions;
 
     public function __construct()
     {
@@ -21,7 +20,6 @@ class A_user extends BaseController
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->users =  new m_a_user();
         $this->groups =  new m_a_group();
-        $this->divisions =  new m_division();
     }
 
     public function index()
