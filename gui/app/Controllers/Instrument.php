@@ -35,13 +35,17 @@ class Instrument extends BaseController
 	}
 	public function index()
 	{
+		$pager = \Config\Services::pager();
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Instruments";
+		$data['instruments'] = $this->instruments->select('statuses.name as status,instruments.*')
+			->join('statuses', 'instruments.status_id = statuses.id')->where(['instruments.is_deleted' => 0])->orderBy('instruments.id DESC')->findAll();
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('instruments/v_list');
 		echo view('v_footer');
+		echo view('instruments/v_js');
 	}
 	public function get_reference()
 	{
@@ -54,7 +58,7 @@ class Instrument extends BaseController
 		}
 		return $data;
 	}
-	public function saving_add()
+	public function saving_add($id = null)
 	{
 		/* Get value from request post */
 		$data['name'] = $this->request->getPost('name');
@@ -72,10 +76,21 @@ class Instrument extends BaseController
 		$data['parameter_ids'] = rtrim($data['parameter_ids'], ",");
 		unset($data['parameter_id']);
 		try {
-			$this->instruments->insert($data + $this->created_values());
+			if ($id != null) {
+				$this->instruments->update($id, $data + $this->updated_values());
+			} else {
+				$this->instruments->insert($data + $this->created_values());
+			}
 		} catch (Exception $e) {
 			session()->setFlashdata('flash_message', ['error', 'Error : ' . $e->getMessage()]);
+			if ($id != null) {
+				return redirect()->to('/instrument/edit/' . $id);
+			}
 			return redirect()->to('/instrument/add');
+		}
+		if ($id != null) {
+			session()->setFlashdata('flash_message', ['success', 'Instrument update succcesfully!']);
+			return redirect()->to('/instrument/edit/' . $id);
 		}
 		session()->setFlashdata('flash_message', ['success', 'Instrument added succcesfully!']);
 		return redirect()->to('/instruments');
@@ -94,5 +109,37 @@ class Instrument extends BaseController
 		echo view('instruments/v_edit');
 		echo view('v_footer');
 		echo view('instruments/v_js');
+	}
+	public function edit($id = null)
+	{
+		if (isset($_POST['Save'])) {
+			return $this->saving_add($id);
+		}
+		$this->privilege_check($this->menu_ids);
+		$data['__modulename'] = "Instrument Edit";
+		$data['errors'] =  $this->validation->getErrors();
+		$data['instrument'] = $this->instruments->find($id);
+		$data['parameter_ids'] = explode(',', $data['instrument']->parameter_ids);
+		$data = $data + $this->get_reference() + $this->common();
+		echo view('v_header', $data);
+		echo view('v_menu');
+		echo view('instruments/v_edit');
+		echo view('v_footer');
+		echo view('instruments/v_js');
+	}
+	public function delete($id)
+	{
+		if (isset($_POST['Delete'])) {
+			try {
+				$this->instruments->update($id, ['is_deleted' => 1] + $this->deleted_values());
+			} catch (Exception $e) {
+				session()->setFlashdata('flash_message', ['error', 'Error: ' . $e->getMessage()]);
+				return redirect()->to('/instruments');
+			}
+			session()->setFlashdata('flash_message', ['success', 'Instrument added succcesfully!']);
+			return redirect()->to('/instruments');
+		}
+		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
+		return redirect()->to('/instruments');
 	}
 }
