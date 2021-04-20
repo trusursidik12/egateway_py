@@ -46,7 +46,7 @@
                                 <select name="parameter_id[]" class="form-control" multiple>
                                     <option value="" disabled>Select Parameter</option>
                                     <?php foreach ($parameters as $parameter) : ?>
-                                        <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, old('parameter_id', @$parameter_ids) !== null ? $parameter_ids : []) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
+                                        <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, (old('parameter_id', @$parameter_ids) === null ? [] : $parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

@@ -112,20 +112,25 @@ class Instrument extends BaseController
 	}
 	public function edit($id = null)
 	{
+		$this->privilege_check($this->menu_ids);
 		if (isset($_POST['Save'])) {
 			return $this->saving_add($id);
 		}
-		$this->privilege_check($this->menu_ids);
-		$data['__modulename'] = "Instrument Edit";
-		$data['errors'] =  $this->validation->getErrors();
-		$data['instrument'] = $this->instruments->find($id);
-		$data['parameter_ids'] = explode(',', $data['instrument']->parameter_ids);
-		$data = $data + $this->get_reference() + $this->common();
-		echo view('v_header', $data);
-		echo view('v_menu');
-		echo view('instruments/v_edit');
-		echo view('v_footer');
-		echo view('instruments/v_js');
+		try {
+			$data['__modulename'] = "Instrument Edit";
+			$data['errors'] =  $this->validation->getErrors();
+			$data['instrument'] = $this->instruments->find($id);
+			$data['parameter_ids'] = explode(',', $data['instrument']->parameter_ids);
+			$data = $data + $this->get_reference() + $this->common();
+			echo view('v_header', $data);
+			echo view('v_menu');
+			echo view('instruments/v_edit');
+			echo view('v_footer');
+			echo view('instruments/v_js');
+		} catch (Exception $e) {
+			session()->setFlashdata('flash_message', ['error', 'Error : ' . $e->getMessage()]);
+			return redirect()->to('/instruments');
+		}
 	}
 	public function delete($id)
 	{
