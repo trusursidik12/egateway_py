@@ -53,6 +53,8 @@ $routes->add('/menu/add/', 'A_menu::add/$1');
 $routes->add('/menu/edit/(:num)', 'A_menu::edit/$1');
 $routes->add('/menu/delete/(:num)', 'A_menu::delete/$1');
 
+$routes->get('/instruments', 'Instrument::index');
+
 
 /**
  * --------------------------------------------------------------------
