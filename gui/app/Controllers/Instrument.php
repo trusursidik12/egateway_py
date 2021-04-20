@@ -35,13 +35,17 @@ class Instrument extends BaseController
 	}
 	public function index()
 	{
+		$pager = \Config\Services::pager();
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Instruments";
+		$data['instruments'] = $this->instruments->select('statuses.name as status,instruments.*')
+			->join('statuses', 'instruments.status_id = statuses.id')->orderBy('instruments.id DESC')->findAll();
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('instruments/v_list');
 		echo view('v_footer');
+		echo view('instruments/v_js');
 	}
 	public function get_reference()
 	{
@@ -81,6 +85,21 @@ class Instrument extends BaseController
 		return redirect()->to('/instruments');
 	}
 	public function add()
+	{
+		if (isset($_POST['Save'])) {
+			return $this->saving_add();
+		}
+		$this->privilege_check($this->menu_ids);
+		$data['__modulename'] = "Instrument Add";
+		$data['errors'] =  $this->validation->getErrors();
+		$data = $data + $this->get_reference() + $this->common();
+		echo view('v_header', $data);
+		echo view('v_menu');
+		echo view('instruments/v_edit');
+		echo view('v_footer');
+		echo view('instruments/v_js');
+	}
+	public function edit()
 	{
 		if (isset($_POST['Save'])) {
 			return $this->saving_add();
