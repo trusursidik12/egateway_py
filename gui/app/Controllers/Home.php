@@ -45,6 +45,40 @@ class Home extends BaseController
 		echo view('v_home_js');
 	}
 
+	public function graph($parameter_id)
+	{
+		$graph_interval = 1;
+		$data["graph_fields"] = "'" . $parameter_id . "'";
+
+		$times = "";
+		$ii = 0;
+		$start = false;
+		$menit = date("i");
+		while ($ii < 600) {
+			if ($menit % $graph_interval == 0) $start = true;
+			if ($start) {
+				$times .= "'" . date("Y-m-d H:i", mktime(date("H"), ($menit - ($ii * $graph_interval)))) . ":00',";
+				$ii++;
+			} else {
+				$menit--;
+			}
+		}
+		$times = substr($times, 0, -1);
+		$measurement_logs = $this->measurement_logs->where("parameter_id='" . $parameter_id . "' AND xtimestamp IN ($times)")->orderBy("id DESC")->findAll(30);
+		$graph_data = "";
+		foreach ($measurement_logs as $measurement_log) {
+			$graph_data .= "{time: '" . $measurement_log->xtimestamp . "', ";
+			$graph_data .= " " . $parameter_id . ": " . $measurement_log->value . " ,";
+		}
+		$graph_data = substr($graph_data, 0, -1) . "},";
+		$data["graph_data"] = $graph_data;
+		echo "<pre>";
+		print_r($data["graph_data"]);
+		echo "</pre>";
+		// {time: '2021-04-20 14:00:40',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 14:00:38',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 13:33:53',  pm10: 0 , so2: 0 , tsp: 0 },
+		// $this->load->view('master/home/graph', $data);
+	}
+
 	public function changepassword()
 	{
 		if (isset($_POST["changepassword"])) {
