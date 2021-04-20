@@ -46,4 +46,22 @@ class Validation
 			'uploaded'  => 'File Excel wajib diisi'
 		]
 	];
+
+	public $instrument = [
+		'name' => 'required',
+		'stack_id' => 'required',
+		'parameter_id' => 'required',
+		'parameter_id.*' => 'required',
+		'i_type' => 'required',
+		'status_id' => 'required',
+	];
+
+	public $instrument_errors = [
+		'name' => ['required' => 'Instrument name cant be empty!'],
+		'stack_id' => ['required' => 'You must choose stack'],
+		'parameter_id' => ['required' => 'Parameter cant be empty!'],
+		'parameter_id.*' => ['required' => 'Parameter cant be empty!'],
+		'i_type' => ['required' => 'You must choose type!'],
+		'status_id' => ['required' => 'You must choose status instrument!'],
+	];
 }

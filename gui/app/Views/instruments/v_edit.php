@@ -17,24 +17,37 @@
 
                     </div><!-- /.card-header -->
                     <div class="card-body">
+                        <?php if (isset($errors)) : ?>
+                            <?php foreach ($errors as $error) : ?>
+                                <p class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= esc($error) ?>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </p>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         <form action="" method="post">
                             <div class="form-group">
                                 <label>Instrument Name</label>
-                                <input type="text" name="name" placeholder="Instrument Name" class="form-control">
+                                <input type="text" name="name" value="<?= old('name') ?>" placeholder="Instrument Name" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Stack</label>
                                 <select name="stack_id" class="form-control">
                                     <option value="">Select Stack</option>
+                                    <?php foreach ($stacks as $stack) : ?>
+                                        <option value="<?= $stack->id ?>"><?= $stack->code ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Parameter</label>
                                 <select name="parameter_id[]" class="form-control" multiple>
                                     <option value="" disabled>Select Parameter</option>
-                                    <option value="1">SO2</option>
-                                    <option value="2">NO</option>
-                                    <option value="3">O2</option>
+                                    <?php foreach ($parameters as $parameter) : ?>
+                                        <option value="<?= $parameter->id ?>"><?= $parameter->name ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -50,7 +63,9 @@
                                 <label>Status</label>
                                 <select name="status_id" class="form-control">
                                     <option value="">Select Status</option>
-                                    <option value="1">Normal</option>
+                                    <?php foreach ($statuses as $status) : ?>
+                                        <option value="<?= $status->id ?>"><?= $status->name ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="d-flex justify-content-end">
