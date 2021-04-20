@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class m_labjack_value extends Model
+class m_parameter extends Model
 {
     protected $DBGroup = 'default';
-    protected $table = 'labjack_values';
+    protected $table = 'parameters';
     protected $primaryKey = 'id';
     protected $returnType = 'object';
     protected $useTimestamps = false;
