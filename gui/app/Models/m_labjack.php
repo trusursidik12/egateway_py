@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class m_a_group extends Model
+class m_labjack extends Model
 {
     protected $DBGroup = 'default';
-    protected $table = 'a_groups';
+    protected $table = 'labjacks';
     protected $primaryKey = 'id';
     protected $returnType = 'object';
     protected $useTimestamps = false;
