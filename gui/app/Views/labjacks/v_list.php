@@ -32,8 +32,8 @@
                                             </button>
                                         </td>
                                         <td><?= $no++ ?></td>
-                                        <td><?= $labjack->labjack_code; ?></td>
-                                        <td><?= $labjack->instrument_id ?></td>
+                                        <td><?= @$labjack->labjack_code; ?></td>
+                                        <td><?= @$labjack->name ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
@@ -44,27 +44,3 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="modal fade" id="modal-delete">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/process/labjack/delete" method="post">
-                <?= csrf_field() ?>
-                <div class="modal-header">
-                    <h4 class="modal-title">Confirmation</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="iddelete" id="iddelete">
-                    <p>Are you sure want to delete this data ?&hellip;</p>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-outline-danger">Delete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->

@@ -24,7 +24,7 @@ class Labjack extends BaseController
     public function index()
     {
         $this->privilege_check($this->menu_ids);
-        $data = $this->labjacks->select()
+        $data = $this->labjacks->select('labjacks.id,labjacks.labjack_code,instruments.name')
             ->join('instruments', 'labjacks.instrument_id=instruments.id')->findAll();
         $data["labjacks"] = $data;
         $data["__modulename"] = "Labjaks";
