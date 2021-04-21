@@ -2,7 +2,7 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-12 mx-auto">
 
                 <div class="card rounded-0">
                     <div class="card-header p-2">
@@ -17,86 +17,123 @@
 
                     </div><!-- /.card-header -->
                     <div class="card-body">
-                        <?php if (isset($errors)) : ?>
-                            <?php foreach ($errors as $error) : ?>
-                                <p class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <?= esc($error) ?>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </p>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
                         <form action="" method="post">
-                            <div class="form-group">
-                                <label>Stack Code</label>
-                                <input type="text" name="code" value="<?= old('code', @$stack->code) ?>" placeholder="Stack Code" class="form-control <?= $validation->hasError('code') ? 'is-invalid' : '' ?>">
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('code') ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Parameter</label>
-                                <select name="parameter_id[]" class="form-control <?= $validation->hasError('parameter_id') ? 'is-invalid' : '' ?>" multiple>
-                                    <option value="" disabled>Select Parameter</option>
-                                    <?php if (isset($parameters)) : ?>
-                                        <?php foreach ($parameters as $parameter) : ?>
-                                            <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, (old('parameter_id[]', @$parameter_ids) === null ? [] : @$parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('parameter_id') ?>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Height</label>
-                                        <input type="text" name="height" value="<?= old('height', @$stack->height) ?>" placeholder="Stack height" class="form-control <?= $validation->hasError('height') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('height') ?>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Diameter</label>
-                                        <input type="text" name="diameter" value="<?= old('diameter', @$stack->diameter) ?>" placeholder="Stack diameter" class="form-control <?= $validation->hasError('diameter') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('diameter') ?>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Flow</label>
-                                        <input type="text" name="flow" value="<?= old('flow', @$stack->flow) ?>" placeholder="Stack flow" class="form-control <?= $validation->hasError('flow') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('flow') ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Longitude</label>
-                                        <input type="text" name="lon" value="<?= old('lon', @$stack->lon) ?>" placeholder="Longitude" class="form-control <?= $validation->hasError('lon') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('lon') ?>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" placeholder="Name" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Caption</label>
+                                                <input type="text" placeholder="Caption" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label>Instrument</label>
+                                        <select name="instrument_id" class="form-control">
+                                            <?php foreach ($instruments as $instrument) : ?>
+                                                <option value="<?= $instrument->id ?>"><?= $instrument->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Unit</label>
+                                        <select name="unit_id" class="form-control">
+                                            <?php foreach ($units as $unit) : ?>
+                                                <option value="<?= $unit->id ?>"><?= $unit->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Labjack Value</label>
+                                        <select name="labjack_value_id" class="form-control">
+                                            <?php foreach ($labjack_values as $labval) : ?>
+                                                <option value="<?= $labval->id ?>">[<?= $labval->code ?>] - AIN<?= $labval->ain_id ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Latitude</label>
-                                        <input type="text" name="lat" value="<?= old('lat', @$stack->lat) ?>" placeholder="Latitude" class="form-control <?= $validation->hasError('lat') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('lat') ?>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Mocular Mass</label>
+                                                <input type="text" placeholder="Mocular Mass" class="form-control">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Formula</label>
+                                                <input type="text" placeholder="Formula" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Voltage 1</label>
+                                                <input type="text" placeholder="Voltage 1" class="form-control">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Voltage 2</label>
+                                                <input type="text" placeholder="Voltage 2" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concentration 1</label>
+                                                <input type="text" placeholder="Concentration 1" class="form-control">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concentration 2</label>
+                                                <input type="text" placeholder="Concentration 2" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="d-block">View</label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" name="is_view" type="radio" id="showed" value="1">
+                                                    <label class="form-check-label text-success" for="showed">Showed</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" name="is_view" type="radio" id="hidden" value="0">
+                                                    <label class="form-check-label text-danger" for="hidden">Hidden</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="d-block">Graph</label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" name="is_graph" type="radio" id="showed" value="1">
+                                                    <label class="form-check-label text-success" for="showed">Showed</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" name="is_graph" type="radio" id="hidden" value="0">
+                                                    <label class="form-check-label text-danger" for="hidden">Hidden</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -3,13 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\m_instrument;
+use App\Models\m_labjack_value;
 use App\Models\m_parameter;
-use App\Models\m_stack;
+use App\Models\m_unit;
 
 class Parameter extends BaseController
 {
 	protected $parameters;
-	protected $stacks;
+	protected $instruments;
+	protected $units;
+	protected $labjack_values;
 	public function __construct()
 	{
 		parent::__construct();
@@ -17,7 +21,9 @@ class Parameter extends BaseController
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		// $this->validation = \Config\Services::validation();
 		$this->parameters = new m_parameter();
-		$this->stacks = new m_stack();
+		$this->instruments = new m_instrument();
+		$this->units = new m_unit();
+		$this->labjack_values = new m_labjack_value();
 	}
 	public function index()
 	{
@@ -94,14 +100,17 @@ class Parameter extends BaseController
 		}
 		$this->privilege_check($this->menu_ids);
 		$data['validation']    = \Config\Services::validation();
-		$data['__modulename'] = "Add Stack";
-		$data['parameters'] = $this->parameters->select('id,name')->findAll();
+		$data['__modulename'] = "Add Parameter";
+		$data['instruments'] = $this->instruments->select('id,name')->where(['is_deleted' => 0])->findAll();
+		$data['units'] = $this->units->select('id,name')->where(['is_deleted' => 0])->findAll();
+		$data['labjack_values'] = $this->labjack_values->select('labjacks.labjack_code as code,labjack_values.*')
+			->join('labjacks', 'labjacks.id=labjack_values.labjack_id')->findAll();
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
-		echo view('stacks/v_edit');
+		echo view('parameters/v_edit');
 		echo view('v_footer');
-		echo view('stacks/v_js');
+		echo view('parameters/v_js');
 	}
 	public function edit($id)
 	{
