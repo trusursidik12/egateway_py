@@ -7,10 +7,10 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <div class="d-flex justify-content-between">
-                            <div class="card-title">Instrument List</div>
+                            <div class="card-title">Stakcs List</div>
                             <div>
-                                <a href="/instrument/add" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-plus fa-xs"></i> Add Instrument
+                                <a href="/stack/add" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-plus fa-xs"></i> Add Stack
                                 </a>
                             </div>
                         </div>
@@ -23,34 +23,40 @@
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Type</th>
+                                        <th>Code</th>
                                         <th>Parameter</th>
-                                        <th>Status</th>
+                                        <th>Height</th>
+                                        <th>Diameter</th>
+                                        <th>Flow</th>
+                                        <th>Longitude</th>
+                                        <th>Latitue</th>
                                         <th>Created By</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($instruments as $instrument) : ?>
-                                        <tr>
-                                            <td>
-                                                <a href="/instrument/edit/<?= $instrument->id ?>" title="Edit" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-xs fa-pen"></i>
-                                                </a>
-                                                <button data-id='<?= $instrument->id ?>' type="button" class="btn-delete btn btn-sm btn-danger" title="Delete">
-                                                    <i class="fa fa-xs fa-trash"></i>
-                                                </button>
-                                            </td>
-                                            <td class="instrument_id"><?= $instrument->id ?></td>
-                                            <td><?= $instrument->name ?></td>
-                                            <td><?= $instrument->i_type ?></td>
-                                            <td class="parameters">
-                                                <i class="fas fa-spin fa-spinner"></i>
-                                            </td>
-                                            <td><?= $instrument->status ?></td>
-                                            <td><?= $instrument->created_by ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                    <?php foreach($stacks as $stack):?>
+                                    <tr>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-primary" title='Edit'>
+                                                <i class="fa fa-xs fa-pen"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger btn-delete" data-id=''
+                                            title='Delete'>
+                                                <i class="fa fa-xs fa-trash"></i>
+                                            </button>
+                                        </td>
+                                        <td class="stack_id"><?=@$stack->id?></td>
+                                        <td><?=@$stack->code?></td>
+                                        <td class="params"></td>
+                                        <td><?=@$stack->height?></td>
+                                        <td><?=@$stack->diameter?></td>
+                                        <td><?=@$stack->flow?></td>
+                                        <td><?=@$stack->lon?></td>
+                                        <td><?=@$stack->lat?></td>
+                                        <td><?=@$stack->created_by?></td>
+                                    </tr>
+                                    <?php endforeach;?>
+
                                 </tbody>
                             </table>
                         </div>

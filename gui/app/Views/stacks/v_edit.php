@@ -29,44 +29,77 @@
                         <?php endif; ?>
                         <form action="" method="post">
                             <div class="form-group">
-                                <label>Instrument Name</label>
-                                <input type="text" name="name" value="<?= old('name', @$instrument->name) ?>" placeholder="Instrument Name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Stack</label>
-                                <select name="stack_id" class="form-control">
-                                    <option value="">Select Stack</option>
-                                    <?php foreach ($stacks as $stack) : ?>
-                                        <option value="<?= $stack->id ?>" <?= old('stack_id', @$instrument->stack_id) == $stack->id ? 'selected' : null ?>><?= $stack->code ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <label>Stack Code</label>
+                                <input type="text" name="code" value="<?= old('code', @$stack->code) ?>" placeholder="Stack Code" class="form-control <?= $validation->hasError('code') ? 'is-invalid' : '' ?>">
+                                <div class="invalid-feedback">
+                                    <?= $validation->getError('code') ?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Parameter</label>
-                                <select name="parameter_id[]" class="form-control" multiple>
+                                <select name="parameter_id[]" class="form-control <?= $validation->hasError('parameter_id') ? 'is-invalid' : '' ?>" multiple>
                                     <option value="" disabled>Select Parameter</option>
-                                    <?php foreach ($parameters as $parameter) : ?>
-                                        <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, (old('parameter_id', @$parameter_ids) === null ? [] : $parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
-                                    <?php endforeach; ?>
+                                    <?php if (isset($parameters)) : ?>
+                                        <?php foreach ($parameters as $parameter) : ?>
+                                            <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, (old('parameter_id[]', @$parameter_ids) === null ? [] : @$parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
+                                <div class="invalid-feedback">
+                                    <?= $validation->getError('parameter_id') ?>
+                                </div>
+
                             </div>
-                            <div class=" form-group">
-                                <label>Type Instrument</label>
-                                <select name="i_type" class="form-control">
-                                    <option value="">Select Type Instrument</option>
-                                    <option value="CEMS" <?= @$instrument->i_type == "CEMS" ? 'selected' : null ?>>CEMS</option>
-                                    <option value="AQMS" <?= @$instrument->i_type == "AQMS" ? 'selected' : null ?>>AQMS</option>
-                                    <option value="ISPUTEN" <?= @$instrument->i_type == "ISPUTEN" ? 'selected' : null ?>>ISPUTEN</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Height</label>
+                                        <input type="text" name="height" value="<?= old('height', @$stack->height) ?>" placeholder="Stack height" class="form-control <?= $validation->hasError('height') ? 'is-invalid' : '' ?>">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('height') ?>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Diameter</label>
+                                        <input type="text" name="diameter" value="<?= old('diameter', @$stack->diameter) ?>" placeholder="Stack diameter" class="form-control <?= $validation->hasError('diameter') ? 'is-invalid' : '' ?>">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('diameter') ?>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Flow</label>
+                                        <input type="text" name="flow" value="<?= old('flow', @$stack->flow) ?>" placeholder="Stack flow" class="form-control <?= $validation->hasError('flow') ? 'is-invalid' : '' ?>">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('flow') ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select name="status_id" class="form-control">
-                                    <option value="">Select Status</option>
-                                    <?php foreach ($statuses as $status) : ?>
-                                        <option value="<?= $status->id ?>" <?= $status->id == old('status_id', @$instrument->status_id) ? 'selected' : null ?>><?= $status->name ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Longitude</label>
+                                        <input type="text" name="lon" value="<?= old('lon', @$stack->lon) ?>" placeholder="Longitude" class="form-control <?= $validation->hasError('lon') ? 'is-invalid' : '' ?>">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('lon') ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Latitude</label>
+                                        <input type="text" name="lat" value="<?= old('lat', @$stack->lat) ?>" placeholder="Latitude" class="form-control <?= $validation->hasError('lat') ? 'is-invalid' : '' ?>">
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('lat') ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button name="Save" type="submit" class="btn btn-primary">

@@ -9,11 +9,11 @@
 <script>
     let get_param = () => {
         try {
-            $('.instrument_id').map((idx, el) => {
+            $('.stack_id').map((idx, el) => {
                 let id = parseInt(el.innerHTML); /* Get ID */
-                let parameters = el.parentNode.querySelector('.parameters');
+                let parameters = el.parentNode.querySelector('.params');
                 $.ajax({
-                    url: '/instrument/get_parameter/' + id,
+                    url: '/stack/get_parameter/' + id,
                     dataType: 'json',
                     success: function(data) {
                         if (data !== null) {

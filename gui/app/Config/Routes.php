@@ -52,8 +52,10 @@ $routes->get('/menu', 'A_menu::index');
 $routes->add('/menu/add/', 'A_menu::add/$1');
 $routes->add('/menu/edit/(:num)', 'A_menu::edit/$1');
 $routes->add('/menu/delete/(:num)', 'A_menu::delete/$1');
-
+// Instruments
 $routes->get('/instruments', 'Instrument::index');
+// Stakcs
+$routes->get('/stacks', 'Stack::index');
 
 // LABJACKS
 $routes->get('/labjacks', 'Labjack::index');
