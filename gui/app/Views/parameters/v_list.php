@@ -7,10 +7,10 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <div class="d-flex justify-content-between">
-                            <div class="card-title">Stakcs List</div>
+                            <div class="card-title">Parameter Lists</div>
                             <div>
-                                <a href="/stack/add" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-plus fa-xs"></i> Add Stack
+                                <a href="/parameter/add" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-plus fa-xs"></i> Add Parameter
                                 </a>
                             </div>
                         </div>
@@ -23,36 +23,60 @@
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>Code</th>
-                                        <th>Parameter</th>
-                                        <th>Height</th>
-                                        <th>Diameter</th>
-                                        <th>Flow</th>
-                                        <th>Longitude</th>
-                                        <th>Latitue</th>
-                                        <th>Created By</th>
+                                        <th>Instrument</th>
+                                        <th>Name</th>
+                                        <th>Caption</th>
+                                        <th>Unit</th>
+                                        <th>Molecular Mass</th>
+                                        <th>Formula</th>
+                                        <th>View</th>
+                                        <th>Graph</th>
+                                        <th>Labjack Value</th>
+                                        <th>Voltage 1</th>
+                                        <th>Voltage 2</th>
+                                        <th>Consentration 1</th>
+                                        <th>Consentration 2</th>
+                                        <th>Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($stacks as $stack) : ?>
+                                    <?php foreach ($parameters as $param) : ?>
                                         <tr>
                                             <td>
-                                                <a href="<?= base_url("stack/edit/{$stack->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
+                                                <a href="<?= base_url("parameter/edit/{$param->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
-                                                <button class="btn btn-sm btn-danger btn-delete" data-id='<?= @$stack->id ?>' title='Delete'>
+                                                <button class="btn btn-sm btn-danger btn-delete" data-id='<?= @$param->id ?>' title='Delete'>
                                                     <i class="fa fa-xs fa-trash"></i>
                                                 </button>
                                             </td>
-                                            <td class="stack_id"><?= @$stack->id ?></td>
-                                            <td><?= @$stack->code ?></td>
-                                            <td class="params"></td>
-                                            <td><?= @$stack->height ?></td>
-                                            <td><?= @$stack->diameter ?></td>
-                                            <td><?= @$stack->flow ?></td>
-                                            <td><?= @$stack->lon ?></td>
-                                            <td><?= @$stack->lat ?></td>
-                                            <td><?= @$stack->created_by ?></td>
+                                            <td><?= $param->id ?></td>
+                                            <td><?= $param->instrument_name ?></td>
+                                            <td><?= $param->name ?></td>
+                                            <td><?= $param->caption ?></td>
+                                            <td><?= $param->unit ?></td>
+                                            <td><?= $param->molecular_mass ?></td>
+                                            <td><?= $param->formula ?></td>
+                                            <td><?=
+                                                $param->is_view == 1 ? '<span class="badge badge-success">
+                                                                        Showed
+                                                                        </span>' : '<span class="badge badge-danger">
+                                                                            Hidden
+                                                                        </span>'; ?>
+                                            </td>
+                                            <td><?=
+                                                $param->is_graph == 1 ? '<span class="badge badge-success">
+                                                                        Showed
+                                                                        </span>' : '<span class="badge badge-danger">
+                                                                            Hidden
+                                                                        </span>'; ?>
+                                            </td>
+                                            <td><?= $param->labjack_value ?></td>
+                                            <td><?= $param->voltage1 ?></td>
+                                            <td><?= $param->voltage2 ?></td>
+                                            <td><?= $param->concentration1 ?></td>
+                                            <td><?= $param->concentration2 ?></td>
+                                            <td class="timestamp"><?= $param->xtimestamp ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 

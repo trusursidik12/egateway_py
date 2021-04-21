@@ -24,7 +24,10 @@ class Parameter extends BaseController
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Parameters";
 		$data = $data + $this->common();
-		$data['parameters'] = $this->parameters->findAll();
+		$data['parameters'] = $this->parameters->select('instruments.name as instrument_name,units.name as unit,labjack_values.data as labjack_value,parameters.*')
+			->join('labjack_values', 'labjack_values.id=parameters.labjack_value_id')
+			->join('instruments', 'instruments.id=parameters.instrument_id')
+			->join('units', 'units.id=parameters.unit_id')->findAll();
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('parameters/v_list');
