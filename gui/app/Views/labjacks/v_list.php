@@ -27,9 +27,9 @@
                                             <a class="btn btn-info btn-sm" href="/labjack/edit/<?= $labjack->id ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a id="getiddelete" data-iddelete="<?= $labjack->id ?>" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-delete">
+                                            <button data-id="<?= $labjack->id ?>" class="btn-delete text-white btn btn-danger btn-sm">
                                                 <i class="fas fa-trash"></i>
-                                            </a>
+                                            </button>
                                         </td>
                                         <td><?= $no++ ?></td>
                                         <td><?= $labjack->labjack_code; ?></td>
@@ -45,26 +45,26 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-delete">
+<!-- <div class="modal fade" id="modal-delete">
     <div class="modal-dialog">
-        <div class="modal-content bg-primary">
+        <div class="modal-content">
             <form action="/process/labjack/delete" method="post">
                 <?= csrf_field() ?>
                 <div class="modal-header">
-                    <h4 class="modal-title">Konfirmasi Persetujuan Permohonan!</h4>
+                    <h4 class="modal-title">Confirmation</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="iddelete" id="iddelete">
+                    <input type="hidden" name="iddelete" id="iddelete">
                     <p>Are you sure want to delete this data ?&hellip;</p>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-outline-light">Delete</button>
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</div> -->

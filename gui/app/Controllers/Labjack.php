@@ -24,14 +24,16 @@ class Labjack extends BaseController
     public function index()
     {
         $this->privilege_check($this->menu_ids);
-        $data = $this->labjacks->findAll();
+        $data = $this->labjacks->select()
+            ->join('instruments', 'labjacks.instrument_id=instruments.id')->findAll();
         $data["labjacks"] = $data;
-        $data["__modulename"] = "labjacks";
+        $data["__modulename"] = "Labjaks";
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('labjacks/v_list');
         echo view('v_footer');
+        echo view('labjacks/v_js');
     }
 
     public function fields()
@@ -111,7 +113,7 @@ class Labjack extends BaseController
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         $data['instruments'] = $this->instruments->findAll();
         $data["labjack"] = $this->labjacks->find([$id])[0];
-        $data["__modulename"] = "labjacks";
+        $data["__modulename"] = "Labjack Edit";
         $data['validation']    = \Config\Services::validation();
         $data = $data + $this->common();
         echo view('v_header', $data);
@@ -122,7 +124,7 @@ class Labjack extends BaseController
 
     public function delete()
     {
-        $this->labjacks->delete($this->request->getPost('iddelete'));
+        $this->labjacks->delete($this->request->getPost('id'));
         $this->session->setFlashdata("flash_message", ["success", "Success delete data labjack"]);
         return redirect()->to('/labjacks');
     }

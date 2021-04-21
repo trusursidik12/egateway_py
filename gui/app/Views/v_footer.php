@@ -29,6 +29,30 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+<!-- Modal Delete -->
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="" method="post">
+                <?= csrf_field() ?>
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="id-delete">
+                    <p>Are you sure want to delete this data ?&hellip;</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                    <button name="Delete" type="submit" class="btn btn-outline-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="<?= base_url(); ?>/plugins/jquery/jquery.min.js" type="text/javascript"></script>
 <script src="<?= base_url(); ?>/plugins/datatables/jquery.dataTables.js"></script>
@@ -99,104 +123,16 @@
     });
 </script>
 <script>
-    let cleanNumber = (value) => {
-        value = value.toString();
-        value = value.replace(/,/g, '');
-        value = value.replace(/[^\d.-]/g, '');
-        return parseFloat(value);
-    }
-    formatNumber = (angka) => {
-        angka = cleanNumber(angka);
-        var rupiah = '';
-        var angkarev = angka.toString().split('').reverse().join('');
-        for (var i = 0; i < angkarev.length; i++)
-            if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + ',';
-        return rupiah.split('', rupiah.length - 1).reverse().join('');
-    }
-    $(document).delegate('input[data="amount"]', 'keyup', function() {
-        let value = !isNaN(cleanNumber($(this).val())) ? $(this).val() : '0';
-        $(this).val(formatNumber(value));
-    });
+    // Function Delete General. Can use in anywhere
+    let function_delete = (id, url) => {
+        $('#modal-delete').find('form').attr('action', url); /* Set Action */
+        $('#modal-delete').find('input[name="id"]').val(id); /* Set ID */
+        $('#modal-delete').modal('show');
 
-    function view_noification(id) {
-        $.ajax({
-            url: "<?= base_url(); ?>/notification/get_notification/" + id,
-            success: function(result) {
-                var notification = JSON.parse(result);
-                if (notification.icon == "") notification.icon = "far fa-bell";
-                $('#modal_title').html("<i class='" + notification.icon + "'></i> " + 'Notification');
-                $('#modal_message').html(notification.message);
-                $('#modal_type').attr("class", 'modal-content');
-                $('#modal-form').modal();
-                $.ajax({
-                    url: "<?= base_url(); ?>/notification/set_notification_read/" + notification.id,
-                    success: function(result2) {
-                        load_notifications();
-                    }
-                });
-            }
-        });
-    }
-
-    function load_notifications() {
-        $.ajax({
-            url: "<?= base_url(); ?>/notification/get_notifications/0",
-            success: function(result) {
-                var notifications = JSON.parse(result);
-                var notifications_length = notifications.count;
-                notifications = notifications.data;
-                var notification_details = "";
-                if (notifications_length > 0) {
-                    $("#notifications_count").removeClass('d-none');
-                    blink_notifications();
-                    $("#notifications_count").html(notifications_length);
-
-                    notification_details += "<span class=\"dropdown-item dropdown-header\">" + notifications_length + " Notification";
-                    if (notifications_length == 1) notification_details += "</span>";
-                    else notification_details += "s</span>";
-
-                    for (var i = 0; i < notifications.length; i++) {
-                        notification_details += "<div class=\"dropdown-divider\"></div>";
-                        notification_details += "<a href=\"javascript:view_noification(" + notifications[i].id + ");\" class=\"dropdown-item\">";
-                        if (notifications[i].icon == "" || notifications[i].icon == undefined)
-                            notification_details += "<i class=\"far fa-bell\"></i> ";
-                        else
-                            notification_details += "<i class=\"" + notifications[i].icon + "\"></i> ";
-                        notification_details += notifications[i].message.substring(0, 15) + " ...";
-                        notification_details += "    <span class=\"float-right text-muted text-sm\">Read More ..</span>";
-                        notification_details += "</a>";
-                    }
-                } else {
-                    $("#notifications_count").html("");
-                    $("#notifications_count").addClass('d-none');
-                    $("#notification_details").html("");
-                }
-                notification_details += "<div class=\"dropdown-divider\"></div>";
-                notification_details += "<a href=\"<?= base_url(); ?>/notifications\" class=\"dropdown-item dropdown-footer\">See All Notifications</a>";
-                $("#notification_details").html(notification_details);
-            }
-        });
-        setTimeout(function() {
-            load_notifications();
-        }, 60000);
-    }
-    // load_notifications();
-
-    function blink_notifications() {
-        $('#notifications_count').fadeOut(200).fadeIn(200, blink_notifications);
     }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
 <!-- </body></html> -->
-
-
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '#getiddelete', function() {
-            $('#iddelete').val($(this).data('iddelete'));
-        })
-    });
-</script>
 </body>
 
 </html>

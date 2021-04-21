@@ -10,7 +10,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Labjack Code *</label>
-                                        <input type="hidden" name="id" value="<?= $labjack->id ?>">
+                                        <input type="hidden" name="id" value="<?= @$labjack->id ?>">
                                         <input name="labjack_code" type="text" class="form-control <?= $validation->hasError('labjack_code') ? 'is-invalid' : '' ?>" placeholder="Labjack Code .. *" value="<?= empty(@$labjack->labjack_code) ? old('labjack_code') : @$labjack->labjack_code ?>">
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('labjack_code') ?>
