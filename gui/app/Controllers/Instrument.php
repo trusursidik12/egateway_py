@@ -23,7 +23,6 @@ class Instrument extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
-		// helper('form');
 		$this->route_name = "instruments";
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		$this->instruments = new m_instrument();
