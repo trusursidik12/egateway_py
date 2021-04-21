@@ -86,6 +86,6 @@ class FormulaMeasurementLogs extends BaseCommand
 			$this->measurement_logs->save($measurement_logs);
 		}
 
-		echo json_encode($data);
+		// echo json_encode($data);
 	}
 }
