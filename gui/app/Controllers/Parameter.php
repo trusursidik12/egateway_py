@@ -5,16 +5,15 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\m_parameter;
 use App\Models\m_stack;
-use Exception;
 
-class Stack extends BaseController
+class Parameter extends BaseController
 {
 	protected $parameters;
 	protected $stacks;
 	public function __construct()
 	{
 		parent::__construct();
-		$this->route_name = "stacks";
+		$this->route_name = "parameters";
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		// $this->validation = \Config\Services::validation();
 		$this->parameters = new m_parameter();
@@ -23,14 +22,14 @@ class Stack extends BaseController
 	public function index()
 	{
 		$this->privilege_check($this->menu_ids);
-		$data["__modulename"] = "Stacks";
+		$data["__modulename"] = "Parameters";
 		$data = $data + $this->common();
-		$data['stacks'] = $this->stacks->where(['is_deleted' => 0])->findAll();
+		$data['parameters'] = $this->parameters->findAll();
 		echo view('v_header', $data);
 		echo view('v_menu');
-		echo view('stacks/v_list');
+		echo view('parameters/v_list');
 		echo view('v_footer');
-		echo view('stacks/v_js');
+		echo view('parameters/v_js');
 	}
 	public function saving_add($id = null)
 	{
@@ -133,19 +132,5 @@ class Stack extends BaseController
 		}
 		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
 		return redirect()->to('/stacks');
-	}
-	public function get_parameter($stack_id)
-	{
-		$data = [];
-		try {
-			$data = [];
-			$instrument = $this->stacks->find($stack_id);
-			$parameter_id = explode(',', $instrument->parameter_ids);
-			foreach ($parameter_id as $key => $id) {
-				$data[$key] = $this->parameters->select('name')->find($id);
-			}
-		} catch (Exception $e) {
-		}
-		return json_encode($data, JSON_PRETTY_PRINT);
 	}
 }

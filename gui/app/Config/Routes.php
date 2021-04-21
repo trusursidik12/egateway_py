@@ -56,7 +56,8 @@ $routes->add('/menu/delete/(:num)', 'A_menu::delete/$1');
 $routes->get('/instruments', 'Instrument::index');
 // Stakcs
 $routes->get('/stacks', 'Stack::index');
-
+// Parameter
+$routes->get('/parameters', 'Parameter::index');
 // LABJACKS
 $routes->get('/labjacks', 'Labjack::index');
 $routes->get('/labjack/add', 'Labjack::add');
