@@ -20,8 +20,9 @@ mycursor.execute("SELECT id FROM labjacks ORDER BY id")
 rec = mycursor.fetchall()
 for row in rec: 
     subprocess.Popen("python labjack_reader.py " + str(row[0]), shell=True)
+    time.sleep(2)
 
-time.sleep(3)
+time.sleep(5)
 subprocess.Popen("python formula_measurement_logs.py", shell=True)
 time.sleep(2)
 

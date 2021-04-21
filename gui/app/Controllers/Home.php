@@ -25,11 +25,12 @@ class Home extends BaseController
 		$this->units =  new m_unit();
 	}
 
-	public function index()
+	public function index($instrument_id = 1)
 	{
 		$data["__modulename"] = "";
 		$data = $data + $this->common();
 
+		$data["instrument_id"] = $instrument_id;
 		$data["instruments"] = $this->instruments->findAll();
 		foreach ($data["instruments"] as $instrument) {
 			$data["parameters"][$instrument->id] = $this->parameters->where("instrument_id", $instrument->id)->findAll();
