@@ -34,28 +34,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($stacks as $stack):?>
-                                    <tr>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-primary" title='Edit'>
-                                                <i class="fa fa-xs fa-pen"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-danger btn-delete" data-id=''
-                                            title='Delete'>
-                                                <i class="fa fa-xs fa-trash"></i>
-                                            </button>
-                                        </td>
-                                        <td class="stack_id"><?=@$stack->id?></td>
-                                        <td><?=@$stack->code?></td>
-                                        <td class="params"></td>
-                                        <td><?=@$stack->height?></td>
-                                        <td><?=@$stack->diameter?></td>
-                                        <td><?=@$stack->flow?></td>
-                                        <td><?=@$stack->lon?></td>
-                                        <td><?=@$stack->lat?></td>
-                                        <td><?=@$stack->created_by?></td>
-                                    </tr>
-                                    <?php endforeach;?>
+                                    <?php foreach ($stacks as $stack) : ?>
+                                        <tr>
+                                            <td>
+                                                <a href="<?= base_url("stack/edit/{$stack->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
+                                                    <i class="fa fa-xs fa-pen"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-danger btn-delete" data-id='' title='Delete'>
+                                                    <i class="fa fa-xs fa-trash"></i>
+                                                </button>
+                                            </td>
+                                            <td class="stack_id"><?= @$stack->id ?></td>
+                                            <td><?= @$stack->code ?></td>
+                                            <td class="params"></td>
+                                            <td><?= @$stack->height ?></td>
+                                            <td><?= @$stack->diameter ?></td>
+                                            <td><?= @$stack->flow ?></td>
+                                            <td><?= @$stack->lon ?></td>
+                                            <td><?= @$stack->lat ?></td>
+                                            <td><?= @$stack->created_by ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
 
                                 </tbody>
                             </table>
