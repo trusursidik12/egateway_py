@@ -132,11 +132,11 @@ class Instrument extends BaseController
 			return redirect()->to('/instruments');
 		}
 	}
-	public function delete($id)
+	public function delete()
 	{
 		if (isset($_POST['Delete'])) {
 			try {
-				$this->instruments->update($id, ['is_deleted' => 1] + $this->deleted_values());
+				$this->instruments->update($this->request->getPost('id'), ['is_deleted' => 1] + $this->deleted_values());
 			} catch (Exception $e) {
 				session()->setFlashdata('flash_message', ['error', 'Error: ' . $e->getMessage()]);
 				return redirect()->to('/instruments');

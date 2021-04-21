@@ -37,11 +37,9 @@
                                                 <a href="/instrument/edit/<?= $instrument->id ?>" title="Edit" class="btn btn-sm btn-info">
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
-                                                <form class="d-inline" action="/instrument/delete/<?= $instrument->id ?>" method="post">
-                                                    <button onclick="return confirm('Are you sure?')" type="submit" name="Delete" class="btn btn-sm btn-danger" title="Delete">
-                                                        <i class="fa fa-xs fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button data-id='<?= $instrument->id ?>' type="button" class="btn-delete btn btn-sm btn-danger" title="Delete">
+                                                    <i class="fa fa-xs fa-trash"></i>
+                                                </button>
                                             </td>
                                             <td class="instrument_id"><?= $instrument->id ?></td>
                                             <td><?= $instrument->name ?></td>
