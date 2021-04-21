@@ -24,32 +24,39 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Name</label>
-                                                <input type="text" placeholder="Name" class="form-control">
+                                                <input type="text" name="name" placeholder="Name" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Caption</label>
-                                                <input type="text" placeholder="Caption" class="form-control">
+                                                <input type="text" name="caption" placeholder="Caption" class="form-control">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Instrument</label>
-                                        <select name="instrument_id" class="form-control">
-                                            <?php foreach ($instruments as $instrument) : ?>
-                                                <option value="<?= $instrument->id ?>"><?= $instrument->name ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Instrument</label>
+                                                <select name="instrument_id" class="form-control">
+                                                    <?php foreach ($instruments as $instrument) : ?>
+                                                        <option value="<?= $instrument->id ?>"><?= $instrument->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Unit</label>
+                                                <select name="unit_id" class="form-control">
+                                                    <?php foreach ($units as $unit) : ?>
+                                                        <option value="<?= $unit->id ?>"><?= $unit->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Unit</label>
-                                        <select name="unit_id" class="form-control">
-                                            <?php foreach ($units as $unit) : ?>
-                                                <option value="<?= $unit->id ?>"><?= $unit->name ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
+
                                     <div class="form-group">
                                         <label>Labjack Value</label>
                                         <select name="labjack_value_id" class="form-control">
@@ -65,15 +72,15 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Mocular Mass</label>
-                                                <input type="text" placeholder="Mocular Mass" class="form-control">
+                                                <label>Molecular Mass</label>
+                                                <input type="text" name="molecular_mass" placeholder="Molecular Mass" class="form-control">
                                             </div>
 
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Formula</label>
-                                                <input type="text" placeholder="Formula" class="form-control">
+                                                <input type="text" name="formula" placeholder="Formula" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -81,14 +88,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Voltage 1</label>
-                                                <input type="text" placeholder="Voltage 1" class="form-control">
+                                                <input type="text" name="voltage1" placeholder="Voltage 1" class="form-control">
                                             </div>
 
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Voltage 2</label>
-                                                <input type="text" placeholder="Voltage 2" class="form-control">
+                                                <input type="text" name="voltage2" placeholder="Voltage 2" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -96,14 +103,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Concentration 1</label>
-                                                <input type="text" placeholder="Concentration 1" class="form-control">
+                                                <input type="text" name="concentration1" placeholder="Concentration 1" class="form-control">
                                             </div>
 
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Concentration 2</label>
-                                                <input type="text" placeholder="Concentration 2" class="form-control">
+                                                <input type="text" name="concentration2" placeholder="Concentration 2" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -126,12 +133,12 @@
                                             <div class="form-group">
                                                 <label class="d-block">Graph</label>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" name="is_graph" type="radio" id="showed" value="1">
-                                                    <label class="form-check-label text-success" for="showed">Showed</label>
+                                                    <input class="form-check-input" name="is_graph" type="radio" id="showed-graph" value="1">
+                                                    <label class="form-check-label text-success" for="showed-graph">Showed</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" name="is_graph" type="radio" id="hidden" value="0">
-                                                    <label class="form-check-label text-danger" for="hidden">Hidden</label>
+                                                    <input class="form-check-input" name="is_graph" type="radio" id="hidden-graph" value="0">
+                                                    <label class="form-check-label text-danger" for="hidden-graph">Hidden</label>
                                                 </div>
                                             </div>
                                         </div>

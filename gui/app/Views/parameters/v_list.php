@@ -34,8 +34,8 @@
                                         <th>Labjack Value</th>
                                         <th>Voltage 1</th>
                                         <th>Voltage 2</th>
-                                        <th>Consentration 1</th>
-                                        <th>Consentration 2</th>
+                                        <th>Concentration 1</th>
+                                        <th>Concentration 2</th>
                                         <th>Timestamp</th>
                                     </tr>
                                 </thead>
