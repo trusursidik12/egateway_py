@@ -17,12 +17,12 @@
                     dataType: 'json',
                     success: function(data) {
                         if (data !== null) {
-                            let html = `<ul>`;
+                            let html = `<div class='d-inline'>`;
                             data.map((response, index) => {
                                 console.log(response);
-                                html += `<li>` + response.name + `</li>`;
+                                html += `<span class='mx-1 badge badge-info'>` + response.name + `</span>`;
                             });
-                            html += `</ul>`;
+                            html += `</div>`;
                             parameters.innerHTML = html;
                         } else {
                             parameters.innerHTML = `Cant get parameter value`;

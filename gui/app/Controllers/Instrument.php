@@ -139,7 +139,7 @@ class Instrument extends BaseController
 				session()->setFlashdata('flash_message', ['error', 'Error: ' . $e->getMessage()]);
 				return redirect()->to('/instruments');
 			}
-			session()->setFlashdata('flash_message', ['success', 'Instrument added succcesfully!']);
+			session()->setFlashdata('flash_message', ['success', 'Delete instrument succcesfully!']);
 			return redirect()->to('/instruments');
 		}
 		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);

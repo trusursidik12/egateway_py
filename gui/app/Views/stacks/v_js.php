@@ -17,12 +17,12 @@
                     dataType: 'json',
                     success: function(data) {
                         if (data !== null) {
-                            let html = `<ul>`;
+                            let html = `<div class='d-inline'>`;
                             data.map((response, index) => {
                                 console.log(response);
-                                html += `<li>` + response.name + `</li>`;
+                                html += `<span class='mx-1 badge badge-info'>` + response.name + `</span>`;
                             });
-                            html += `</ul>`;
+                            html += `</div>`;
                             parameters.innerHTML = html;
                         } else {
                             parameters.innerHTML = `Cant get parameter value`;
@@ -41,7 +41,7 @@
     $(document).ready(function() {
         $('.btn-delete').click(function() {
             let id = $(this).attr('data-id');
-            function_delete(id, '<?= base_url('instrument/delete') ?>');
+            function_delete(id, '<?= base_url('stack/delete') ?>');
         })
     });
 </script>

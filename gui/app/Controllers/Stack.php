@@ -119,6 +119,21 @@ class Stack extends BaseController
 		echo view('v_footer');
 		echo view('stacks/v_js');
 	}
+	public function delete()
+	{
+		if (isset($_POST['Delete'])) {
+			try {
+				$this->stacks->update($this->request->getPost('id'), ['is_deleted' => 1] + $this->deleted_values());
+			} catch (Exception $e) {
+				session()->setFlashdata('flash_message', ['error', 'Error: ' . $e->getMessage()]);
+				return redirect()->to('/stacks');
+			}
+			session()->setFlashdata('flash_message', ['success', 'Delete stack succcesfully!']);
+			return redirect()->to('/stacks');
+		}
+		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
+		return redirect()->to('/stacks');
+	}
 	public function get_parameter($stack_id)
 	{
 		$data = [];

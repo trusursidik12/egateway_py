@@ -40,7 +40,7 @@
                                                 <a href="<?= base_url("stack/edit/{$stack->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
-                                                <button class="btn btn-sm btn-danger btn-delete" data-id='' title='Delete'>
+                                                <button class="btn btn-sm btn-danger btn-delete" data-id='<?= @$stack->id ?>' title='Delete'>
                                                     <i class="fa fa-xs fa-trash"></i>
                                                 </button>
                                             </td>
