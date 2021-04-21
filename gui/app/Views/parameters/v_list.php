@@ -42,7 +42,7 @@
                                 <tbody>
                                     <?php foreach ($parameters as $param) : ?>
                                         <tr>
-                                            <td>
+                                            <td style="min-width: 60px;">
                                                 <a href="<?= base_url("parameter/edit/{$param->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
