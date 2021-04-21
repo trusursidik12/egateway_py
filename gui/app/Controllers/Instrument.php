@@ -35,7 +35,6 @@ class Instrument extends BaseController
 	}
 	public function index()
 	{
-		$pager = \Config\Services::pager();
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Instruments";
 		$data['instruments'] = $this->instruments->select('statuses.name as status,instruments.*')
