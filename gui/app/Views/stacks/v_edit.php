@@ -17,16 +17,6 @@
 
                     </div><!-- /.card-header -->
                     <div class="card-body">
-                        <?php if (isset($errors)) : ?>
-                            <?php foreach ($errors as $error) : ?>
-                                <p class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <?= esc($error) ?>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </p>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
                         <form action="" method="post">
                             <div class="form-group">
                                 <label>Stack Code</label>

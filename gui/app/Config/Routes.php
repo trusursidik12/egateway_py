@@ -58,6 +58,8 @@ $routes->get('/instruments', 'Instrument::index');
 $routes->get('/stacks', 'Stack::index');
 // Parameter
 $routes->get('/parameters', 'Parameter::index');
+// Configurations
+$routes->get('/configurations', 'Configuration::index');
 // LABJACKS
 $routes->get('/labjacks', 'Labjack::index');
 $routes->get('/labjack/add', 'Labjack::add');

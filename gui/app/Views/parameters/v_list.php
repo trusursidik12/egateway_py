@@ -34,15 +34,15 @@
                                         <th>Labjack Value</th>
                                         <th>Voltage 1</th>
                                         <th>Voltage 2</th>
-                                        <th>Consentration 1</th>
-                                        <th>Consentration 2</th>
+                                        <th>Concentration 1</th>
+                                        <th>Concentration 2</th>
                                         <th>Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($parameters as $param) : ?>
                                         <tr>
-                                            <td>
+                                            <td style="min-width: 60px;">
                                                 <a href="<?= base_url("parameter/edit/{$param->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
