@@ -32,9 +32,9 @@ class Parameter extends BaseController
 		$data["__modulename"] = "Parameters";
 		$data = $data + $this->common();
 		$data['parameters'] = $this->parameters->select('instruments.name as instrument_name,units.name as unit,labjack_values.data as labjack_value,parameters.*')
-			->join('labjack_values', 'labjack_values.id=parameters.labjack_value_id')
-			->join('instruments', 'instruments.id=parameters.instrument_id')
-			->join('units', 'units.id=parameters.unit_id')->findAll();
+			->join('labjack_values', 'labjack_values.id=parameters.labjack_value_id', "left")
+			->join('instruments', 'instruments.id=parameters.instrument_id', "left")
+			->join('units', 'units.id=parameters.unit_id', "left")->findAll();
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('parameters/v_list');
@@ -109,7 +109,7 @@ class Parameter extends BaseController
 			$data['instruments'] = $this->instruments->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['units'] = $this->units->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['labjack_values'] = $this->labjack_values->select('labjacks.labjack_code as code,labjack_values.*')
-				->join('labjacks', 'labjacks.id=labjack_values.labjack_id')->findAll();
+				->join('labjacks', 'labjacks.id=labjack_values.labjack_id')->orderBy("labjack_id,ain_id")->findAll();
 		} catch (Exception $e) {
 		}
 		return $data;

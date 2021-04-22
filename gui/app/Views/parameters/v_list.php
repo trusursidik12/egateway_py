@@ -28,7 +28,6 @@
                                         <th>Caption</th>
                                         <th>Unit</th>
                                         <th>Molecular Mass</th>
-                                        <th>Formula</th>
                                         <th>View</th>
                                         <th>Graph</th>
                                         <th>Labjack Value</th>
@@ -56,7 +55,6 @@
                                             <td><?= $param->caption ?></td>
                                             <td><?= $param->unit ?></td>
                                             <td><?= $param->molecular_mass ?></td>
-                                            <td><?= $param->formula ?></td>
                                             <td><?=
                                                 $param->is_view == 1 ? '<span class="badge badge-success">
                                                                         Showed
@@ -77,6 +75,11 @@
                                             <td><?= $param->concentration1 ?></td>
                                             <td><?= $param->concentration2 ?></td>
                                             <td class="timestamp"><?= $param->xtimestamp ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="13"><b>Formula : </b><?= $param->formula ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 
