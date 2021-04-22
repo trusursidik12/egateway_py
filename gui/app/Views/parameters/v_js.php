@@ -32,16 +32,19 @@
     <?php endif ?>
 
     function generate_formula() {
-        var a = 0.0;
-        var b = 0.0;
-        var sign = "";
-        a = $("#concentration2").val() / ($("#voltage2").val() - $("#voltage1").val());
-        b = -1 * a * $("#voltage1").val();
-        if (b < 0) {
-            b = b * -1;
-            sign = "-";
-        } else sign = "+";
-        var formula = "round((" + a + " * " + "xxxx) " + sign + " " + b + ",6)";
-        $("#formula").val(formula);
+        $.get("<?= base_url(); ?>/labjack_value/get_labjack_id_ain_id/" + $("#labjack_value_id").val(), function(labjack_value) {
+            labjack_value = JSON.parse(labjack_value);
+            var a = 0.0;
+            var b = 0.0;
+            var sign = "";
+            a = $("#concentration2").val() / ($("#voltage2").val() - $("#voltage1").val());
+            b = -1 * a * $("#voltage1").val();
+            if (b < 0) {
+                b = b * -1;
+                sign = "-";
+            } else sign = "+";
+            var formula = "round((" + a + " * " + "$labjack[" + labjack_value.labjack_id + "][" + labjack_value.ain_id + "]) " + sign + " " + b + ",6)";
+            $("#formula").val(formula);
+        });
     }
 </script>

@@ -113,7 +113,7 @@
                                     <div class="form-group">
                                         <label>Labjack Value</label>
                                         <select id="labjack_value_id" name="labjack_value_id" class="form-control <?= $validation->hasError('labjack_value_id') ? 'is-invalid' : '' ?>">
-                                            <option value="" selected disabled>Select Labjact Value</option>
+                                            <option value="" selected disabled>Select Labjack Value</option>
 
                                             <?php foreach ($labjack_values as $labval) : ?>
                                                 <option value="<?= $labval->id ?>" <?= $labval->id == old('labjack_value_id', @$parameter->labjack_value_id) ? 'selected' : null ?>>[<?= $labval->code ?>] - AIN<?= $labval->ain_id ?> => $labjack[<?= $labval->labjack_id ?>][<?= $labval->ain_id ?>]</option>
