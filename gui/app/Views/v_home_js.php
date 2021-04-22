@@ -1,7 +1,7 @@
 <script>
     function reload_graph() {
         $.ajax({
-            url: "<?= site_url('home/graph'); ?>",
+            url: "<?= base_url(); ?>/home/graph/1/",
             success: function(graphview) {
                 try {
                     $("#graph").html(graphview);
@@ -12,7 +12,7 @@
 
     function reload_measurement_log() {
         $.ajax({
-            url: "http://localhost:8080/measurement_log/get",
+            url: "<?= base_url(); ?>/measurement_log/get",
             success: function(result) {
                 var data = JSON.parse(result);
                 for (var i = 0; i < data.length; i++) {
@@ -23,7 +23,8 @@
             }
         });
         setTimeout(function() {
-            reload_measurement_log()
+            reload_measurement_log();
+            reload_graph();
         }, 1000);
     }
     reload_measurement_log();

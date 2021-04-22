@@ -46,36 +46,32 @@ class Home extends BaseController
 		echo view('v_home_js');
 	}
 
-	public function graph($parameter_id)
+	public function graph($instrument_id, $parameter_id = "")
 	{
-		$graph_interval = 1;
-		$data["graph_fields"] = "'" . $parameter_id . "'";
+		if ($parameter_id != "")
+			$parameters = $this->parameters->where("id IN (" . $parameter_id . ")")->where(["instrument_id" => $instrument_id])->findAll();
+		else
+			$parameters = $this->parameters->where("instrument_id", $instrument_id)->findAll();
 
-		$times = "";
-		$ii = 0;
-		$start = false;
-		$menit = date("i");
-		while ($ii < 600) {
-			if ($menit % $graph_interval == 0) $start = true;
-			if ($start) {
-				$times .= "'" . date("Y-m-d H:i", mktime(date("H"), ($menit - ($ii * $graph_interval)))) . ":00',";
-				$ii++;
-			} else {
-				$menit--;
-			}
+		$graph_fields = "";
+		foreach ($parameters as $parameter) {
+			$graph_fields .= "'" . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . "',";
+			$measurement_logs[$parameter->id] = $this->measurement_logs->where("parameter_id='" . $parameter->id . "'")->orderBy("xtimestamp DESC")->findAll(30);
 		}
-		$times = substr($times, 0, -1);
-		$measurement_logs = $this->measurement_logs->where("parameter_id='" . $parameter_id . "' AND xtimestamp IN ($times)")->orderBy("id DESC")->findAll(30);
+
 		$graph_data = "";
-		foreach ($measurement_logs as $measurement_log) {
-			$graph_data .= "{time: '" . $measurement_log->xtimestamp . "', ";
-			$graph_data .= " " . $parameter_id . ": " . $measurement_log->value . " ,";
+		foreach ($measurement_logs[$parameters[0]->id] as $key => $measurement_log) {
+			foreach ($parameters as $key2 => $parameter) {
+				if ($key2 == 0) $graph_data .= "{time: '" . $measurement_logs[$parameter->id][$key]->xtimestamp . "', ";
+				$graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $measurement_logs[$parameter->id][$key]->value . " ,";
+			}
+			$graph_data = substr($graph_data, 0, -1) . "},";
 		}
-		$graph_data = substr($graph_data, 0, -1) . "},";
-		$data["graph_data"] = $graph_data;
-		echo "<pre>";
-		print_r($data["graph_data"]);
-		echo "</pre>";
+
+		$data["graph_fields"] = substr($graph_fields, 0, -1);
+		$data["graph_data"] = substr($graph_data, 0, -1);
+		echo view('v_graph', $data);
+		//'pm10','so2','tsp'
 		// {time: '2021-04-20 14:00:40',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 14:00:38',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 13:33:53',  pm10: 0 , so2: 0 , tsp: 0 },
 		// $this->load->view('master/home/graph', $data);
 	}
