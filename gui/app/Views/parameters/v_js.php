@@ -10,7 +10,7 @@
         })
     });
 
-    <?php if ($_mode == "edit") : ?>
+    <?php if (@$_mode == "edit") : ?>
 
         function reload_voltage() {
             if ($("#labjack_value_id").val() > 0) {

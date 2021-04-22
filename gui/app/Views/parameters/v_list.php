@@ -41,7 +41,7 @@
                                 <tbody>
                                     <?php foreach ($parameters as $param) : ?>
                                         <tr>
-                                            <td style="min-width: 60px;">
+                                            <td style="min-width: 60px;" nowrap>
                                                 <a href="<?= base_url("parameter/edit/{$param->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
