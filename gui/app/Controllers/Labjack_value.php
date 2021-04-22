@@ -23,13 +23,14 @@ class Labjack_value extends BaseController
 		$this->measurement_logs =  new m_measurement_log();
 	}
 
-	public function get()
+	public function get($labjack_id, $ain_id)
 	{
-		$return = [];
-		foreach ($this->labjack_values->findAll() as $labjack_value) {
-			$return["labjack_" . $labjack_value->labjack_id . "_AIN" . $labjack_value->ain_id] = $labjack_value->data;
-		}
-		echo json_encode($return);
+		return @$this->labjack_values->where(["labjack_id" => $labjack_id, "ain_id" => $ain_id])->findAll()[0]->data;
+	}
+
+	public function get_labjack_id_ain_id($id)
+	{
+		return json_encode($this->labjack_values->where(["id" => $id])->findAll()[0]);
 	}
 
 	public function formula_measurement_logs()

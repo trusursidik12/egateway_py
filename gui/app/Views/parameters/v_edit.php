@@ -3,7 +3,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 mx-auto">
-
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <div class="d-flex justify-content-between">
@@ -14,7 +13,6 @@
                                 </a>
                             </div>
                         </div>
-
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <form action="" method="post">
@@ -110,21 +108,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Current Voltage</label>
-                                        <input type="text" id="voltage" class="form-control">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('voltage1') ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
                                         <label>Labjack Value</label>
-                                        <select name="labjack_value_id" class="form-control <?= $validation->hasError('labjack_value_id') ? 'is-invalid' : '' ?>">
+                                        <select id="labjack_value_id" name="labjack_value_id" class="form-control <?= $validation->hasError('labjack_value_id') ? 'is-invalid' : '' ?>">
                                             <option value="" selected disabled>Select Labjact Value</option>
 
                                             <?php foreach ($labjack_values as $labval) : ?>
@@ -136,12 +124,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ($_mode == "edit") : ?>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Current Voltage</label>
+                                            <div class="input-group">
+                                                <input type="text" id="voltage" class="form-control" readonly>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-info btn-flat" onclick="$('#voltage1').val($('#voltage').val());">Set V1</button>
+                                                    <button type="button" class="btn btn-info btn-flat" onclick="$('#voltage2').val($('#voltage').val());">Set V2</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Voltage 1</label>
-                                        <input type="text" name="voltage1" value="<?= old('voltage1', @$parameter->voltage1) ?>" placeholder="Voltage 1" class="form-control <?= $validation->hasError('voltage1') ? 'is-invalid' : '' ?>">
+                                        <input type="text" id="voltage1" name="voltage1" value="<?= old('voltage1', @$parameter->voltage1) ?>" placeholder="Voltage 1" class="form-control <?= $validation->hasError('voltage1') ? 'is-invalid' : '' ?>">
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('voltage1') ?>
                                         </div>
@@ -150,7 +152,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Voltage 2</label>
-                                        <input type="text" name="voltage2" value="<?= old('voltage2', @$parameter->voltage2) ?>" placeholder="Voltage 2" class="form-control <?= $validation->hasError('voltage2') ? 'is-invalid' : '' ?>">
+                                        <input type="text" id="voltage2" name="voltage2" value="<?= old('voltage2', @$parameter->voltage2) ?>" placeholder="Voltage 2" class="form-control <?= $validation->hasError('voltage2') ? 'is-invalid' : '' ?>">
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('voltage2') ?>
                                         </div>
@@ -161,7 +163,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Concentration 1</label>
-                                        <input type="text" name="concentration1" value="<?= old('concentration1', @$parameter->concentration1) ?>" placeholder="Concentration 1" class="form-control <?= $validation->hasError('concentration1') ? 'is-invalid' : '' ?>">
+                                        <input type="text" id="concentration1" name="concentration1" value="<?= old('concentration1', @$parameter->concentration1) ?>" placeholder="Concentration 1" class="form-control <?= $validation->hasError('concentration1') ? 'is-invalid' : '' ?>">
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('concentration1') ?>
                                         </div>
@@ -170,7 +172,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Concentration 2</label>
-                                        <input type="text" name="concentration2" value="<?= old('concentration2', @$parameter->concentration2) ?>" placeholder="Concentration 2" class="form-control <?= $validation->hasError('concentration2') ? 'is-invalid' : '' ?>">
+                                        <input type="text" id="concentration2" name="concentration2" value="<?= old('concentration2', @$parameter->concentration2) ?>" placeholder="Concentration 2" class="form-control <?= $validation->hasError('concentration2') ? 'is-invalid' : '' ?>">
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('concentration2') ?>
                                         </div>
@@ -178,28 +180,28 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Formula</label>
-                                        <input type="text" name="formula" value="<?= old('formula', @$parameter->formula) ?>" placeholder="Formula" class="form-control <?= $validation->hasError('formula') ? 'is-invalid' : '' ?>">
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('formula') ?>
+                                        <div class="input-group">
+                                            <input type="text" id="formula" name="formula" value="<?= old('formula', @$parameter->formula) ?>" placeholder="Formula" class="form-control <?= $validation->hasError('formula') ? 'is-invalid' : '' ?>">
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('formula') ?>
+                                            </div>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-flat" onclick="generate_formula();">Generate Formula</button>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                    </div>
+                            <div class="d-flex justify-content-end">
+                                <button name="Save" type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div><!-- /.card-body -->
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button name="Save" type="submit" class="btn btn-primary">
-                        Save
-                    </button>
-                </div>
-                </form>
-            </div><!-- /.card-body -->
+            </div>
         </div>
     </div>
-</div>
-</div>
 </div>

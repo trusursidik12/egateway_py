@@ -122,6 +122,7 @@ class Parameter extends BaseController
 		$this->privilege_check($this->menu_ids);
 		$data['validation']    = \Config\Services::validation();
 		$data['__modulename'] = "Add Parameter";
+		$data['_mode'] = "add";
 		$data = $data + $this->get_reference() + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
@@ -129,6 +130,7 @@ class Parameter extends BaseController
 		echo view('v_footer');
 		echo view('parameters/v_js');
 	}
+
 	public function edit($id)
 	{
 		$this->privilege_check($this->menu_ids);
@@ -137,6 +139,7 @@ class Parameter extends BaseController
 		}
 		$data['validation']    = \Config\Services::validation();
 		$data['__modulename'] = "Edit Parameter";
+		$data['_mode'] = "edit";
 		$data['parameter'] = $this->parameters->find($id);
 		$data = $data + $this->get_reference() + $this->common();
 		$data = $data + $this->common();
