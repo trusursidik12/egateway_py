@@ -41,17 +41,12 @@ class A_user extends BaseController
         if (isset($_GET["name"]) && $_GET["name"] != "")
             $wherclause .= "AND name LIKE '%" . $_GET["name"] . "%'";
 
-        if (isset($_GET["division_id"]) && $_GET["division_id"] != "")
-            $wherclause .= "AND division_id = '" . $_GET["division_id"] . "'";
-
         if ($users = $this->users->where($wherclause)->findAll(MAX_ROW, $startrow)) {
 
             $numrow = count($this->users->where($wherclause)->findAll());
 
             foreach ($users as $user) {
-                $user_detail[$user->id]["leader"] = @$this->users->where("id", $user->leader_user_id)->get()->getResult()[0];
                 $user_detail[$user->id]["group"] = @$this->groups->where("id", $user->group_id)->get()->getResult()[0];
-                $user_detail[$user->id]["division"] = @$this->divisions->where("id", $user->division_id)->get()->getResult()[0];
             }
         } else {
             $numrow = 0;
@@ -63,7 +58,6 @@ class A_user extends BaseController
         $data["users"] = $users;
         $data["user_detail"] = @$user_detail;
         $data["groups"] = $this->groups->where("is_deleted", 0)->findAll();
-        $data["divisions"] = $this->divisions->where("is_deleted", 0)->findAll();
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
@@ -96,7 +90,6 @@ class A_user extends BaseController
         $data["__mode"] = "add";
         $data["users"] = $this->users->where("is_deleted", 0)->findAll();
         $data["groups"] = $this->groups->where("is_deleted", 0)->findAll();
-        $data["divisions"] = $this->divisions->where("is_deleted", 0)->findAll();
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
@@ -148,7 +141,6 @@ class A_user extends BaseController
         $data["__mode"] = "edit";
         $data["users"] = $this->users->where("is_deleted", 0)->findAll();
         $data["groups"] = $this->groups->where("is_deleted", 0)->findAll();
-        $data["divisions"] = $this->divisions->where("is_deleted", 0)->findAll();
         $data["user"] = $this->users->where("is_deleted", 0)->find([$id])[0];
         $data = $data + $this->common();
         echo view('v_header', $data);
@@ -204,7 +196,6 @@ class A_user extends BaseController
         $data["__mode"] = "edit";
         $data["users"] = $this->users->where("is_deleted", 0)->findAll();
         $data["groups"] = $this->groups->where("is_deleted", 0)->findAll();
-        $data["divisions"] = $this->divisions->where("is_deleted", 0)->findAll();
         $data["user"] = $this->users->where("is_deleted", 0)->find([$id])[0];
         $data = $data + $this->common();
         echo view('v_header', $data);
