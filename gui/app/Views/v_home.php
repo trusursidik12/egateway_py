@@ -33,7 +33,7 @@
                                         <?php endforeach ?>
                                     </div>
                                     <div class="col-md-8 border-left">
-                                        <div id="graph" style="height:380px;background-color:white;border:1px solid red;"></div>
+                                        <div id="graph" style="height:380px;background-color:white;"></div>
                                     </div>
                                 </div>
                             </div>
