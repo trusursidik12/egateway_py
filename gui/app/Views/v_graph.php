@@ -12,6 +12,7 @@
         xkey: 'time',
         ykeys: [<?= $graph_fields; ?>],
         labels: [<?= $graph_fields; ?>],
-        resize: true
+        resize: true,
+        hideHover: 'yes'
     });
 </script>

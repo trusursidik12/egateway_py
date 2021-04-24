@@ -138,12 +138,12 @@ class FormulaMeasurementLogs extends BaseCommand
 		print_r($measurement_logs);
 	}
 
-	public function run(array $params)
+	public function Xrun(array $params)
 	{
 		$this->measurements_averaging();
 	}
 
-	public function Xrun(array $params)
+	public function run(array $params)
 	{
 		foreach ($this->labjack_values->findAll() as $labjack_value) {
 			$labjack[$labjack_value->labjack_id][$labjack_value->ain_id] = $labjack_value->data;

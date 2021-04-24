@@ -8,6 +8,9 @@
                 } catch (ex) {}
             }
         });
+        setTimeout(function() {
+            reload_graph();
+        }, 3000);
     }
 
     function reload_measurement_log() {
@@ -24,8 +27,8 @@
         });
         setTimeout(function() {
             reload_measurement_log();
-            reload_graph();
         }, 1000);
     }
     reload_measurement_log();
+    reload_graph();
 </script>
