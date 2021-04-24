@@ -8,8 +8,8 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <?php foreach ($instruments as $instrument) : ?>
-                                <li class="nav-item"><a class="nav-link <?= $instrument->id == $instrument_id ? 'active' : '' ?>" href="<?= base_url(); ?>/home/index/<?= $instrument->id ?>"><?= $instrument->name; ?></a></li>
+                            <?php foreach ($stacks as $stack) : ?>
+                                <li class="nav-item"><a class="nav-link <?= $stack->id == $stack_id ? 'active' : '' ?>" href="<?= base_url(); ?>/home/index/<?= $stack->id ?>"><?= $stack->code; ?></a></li>
                             <?php endforeach ?>
                         </ul>
                     </div><!-- /.card-header -->
@@ -18,7 +18,7 @@
                             <div class="tab-pane active">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <?php foreach ($parameters[$instrument_id] as $parameter) : ?>
+                                        <?php foreach ($parameters[$stack_id] as $parameter) : ?>
                                             <ul class="list-group list-group-unbordered">
                                                 <li class="list-group-item">
                                                     <div class="d-flex justify-content-between align-items-center">

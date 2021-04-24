@@ -5,12 +5,14 @@ namespace App\Controllers;
 use App\Models\m_instrument;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
+use App\Models\m_stack;
 use App\Models\m_unit;
 
 class Home extends BaseController
 {
 	protected $menu_ids;
 	protected $route_name;
+	protected $stacks;
 	protected $parameters;
 	protected $measurement_logs;
 	protected $instruments;
@@ -19,23 +21,25 @@ class Home extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
+		$this->stacks =  new m_stack();
 		$this->parameters =  new m_parameter();
 		$this->measurement_logs =  new m_measurement_log();
 		$this->instruments =  new m_instrument();
 		$this->units =  new m_unit();
 	}
 
-	public function index($instrument_id = 1)
+	public function index($stack_id = 1)
 	{
 		$data["__modulename"] = "";
 		$data = $data + $this->common();
 
-		$data["instrument_id"] = $instrument_id;
-		$data["instruments"] = $this->instruments->findAll();
+		$data["stack_id"] = $stack_id;
+		$data["stacks"] = $this->stacks->findAll();
+		$data["instruments"] = $this->instruments->where("stack_id", $stack_id)->findAll();
 		foreach ($data["instruments"] as $instrument) {
-			$data["parameters"][$instrument->id] = $this->parameters->where("instrument_id", $instrument->id)->findAll();
-			foreach ($data["parameters"][$instrument->id] as $key => $parameter) {
-				$data["parameters"][$instrument->id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
+			$data["parameters"][$instrument->stack_id] = $this->parameters->where("instrument_id", $instrument->stack_id)->findAll();
+			foreach ($data["parameters"][$instrument->stack_id] as $key => $parameter) {
+				$data["parameters"][$instrument->stack_id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
 			}
 		}
 
@@ -71,9 +75,6 @@ class Home extends BaseController
 		$data["graph_fields"] = substr($graph_fields, 0, -1);
 		$data["graph_data"] = substr($graph_data, 0, -1);
 		echo view('v_graph', $data);
-		//'pm10','so2','tsp'
-		// {time: '2021-04-20 14:00:40',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 14:00:38',  pm10: 0 , so2: 0 , tsp: 0 },{time: '2021-04-20 13:33:53',  pm10: 0 , so2: 0 , tsp: 0 },
-		// $this->load->view('master/home/graph', $data);
 	}
 
 	public function changepassword()
