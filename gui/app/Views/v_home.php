@@ -18,18 +18,20 @@
                             <div class="tab-pane active">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <?php foreach ($parameters[$stack_id] as $parameter) : ?>
-                                            <ul class="list-group list-group-unbordered">
-                                                <li class="list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <p class="h3"><?= $parameter->caption ?></p>
-                                                        <span>
-                                                            <p class="h1 d-inline" id="parameter_value_<?= $parameter->id; ?>"></p>
-                                                            <p class="small d-inline"><?= $parameter->unit->name ?></p>
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        <?php foreach ($parameters[$stack_id] as $instrument_id => $parameters) : ?>
+                                            <?php foreach ($parameters as $parameter) : ?>
+                                                <ul class="list-group list-group-unbordered">
+                                                    <li class="list-group-item">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="h3"><?= $parameter->caption ?></p>
+                                                            <span>
+                                                                <p class="h1 d-inline" id="parameter_value_<?= $parameter->id; ?>"></p>
+                                                                <p class="small d-inline"><?= $parameter->unit->name ?></p>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            <?php endforeach ?>
                                         <?php endforeach ?>
                                     </div>
                                     <div class="col-md-8 border-left">

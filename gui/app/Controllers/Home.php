@@ -37,9 +37,9 @@ class Home extends BaseController
 		$data["stacks"] = $this->stacks->findAll();
 		$data["instruments"] = $this->instruments->where("stack_id", $stack_id)->findAll();
 		foreach ($data["instruments"] as $instrument) {
-			$data["parameters"][$instrument->stack_id] = $this->parameters->where("instrument_id", $instrument->stack_id)->findAll();
-			foreach ($data["parameters"][$instrument->stack_id] as $key => $parameter) {
-				$data["parameters"][$instrument->stack_id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
+			$data["parameters"][$instrument->stack_id][$instrument->id] = $this->parameters->where("instrument_id", $instrument->id)->findAll();
+			foreach ($data["parameters"][$instrument->stack_id][$instrument->id] as $key => $parameter) {
+				$data["parameters"][$instrument->stack_id][$instrument->id][$key]->unit = $this->units->where("id", $parameter->unit_id)->findAll()[0];
 			}
 		}
 
@@ -50,12 +50,12 @@ class Home extends BaseController
 		echo view('v_home_js');
 	}
 
-	public function graph($instrument_id, $parameter_id = "")
+	public function graph($stack_id, $parameter_id = "")
 	{
 		if ($parameter_id != "")
-			$parameters = $this->parameters->where("id IN (" . $parameter_id . ")")->where(["instrument_id" => $instrument_id])->findAll();
+			$parameters = $this->parameters->where("id IN (" . $parameter_id . ")")->where("instrument_id IN (SELECT id FROM instruments WHERE stack_id = '" . $stack_id . "')")->findAll();
 		else
-			$parameters = $this->parameters->where("instrument_id", $instrument_id)->findAll();
+			$parameters = $this->parameters->where("instrument_id IN (SELECT id FROM instruments WHERE stack_id = '" . $stack_id . "')")->findAll();
 
 		$graph_fields = "";
 		foreach ($parameters as $parameter) {
