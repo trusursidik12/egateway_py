@@ -74,9 +74,9 @@ class A_user extends BaseController
                 "email" => @$_POST["email"],
                 "password" => password_hash(@$_POST["password"], PASSWORD_ARGON2I),
                 "name" => @$_POST["name"],
-                "job_title" => @$_POST["job_title"],
-                "division_id" => @$_POST["division_id"],
-                "leader_user_id" => @$_POST["leader_user_id"],
+                "job_title" => @$_POST["job_title"] . "",
+                "division_id" => @$_POST["division_id"] * 1,
+                "leader_user_id" => @$_POST["leader_user_id"] * 1,
             ];
             $user = $user + $this->created_values() + $this->updated_values();
             if ($this->users->save($user))
@@ -120,9 +120,9 @@ class A_user extends BaseController
                 "group_id" => @$_POST["group_id"],
                 "email" => @$_POST["email"],
                 "name" => @$_POST["name"],
-                "job_title" => @$_POST["job_title"],
-                "division_id" => @$_POST["division_id"],
-                "leader_user_id" => @$_POST["leader_user_id"],
+                "job_title" => @$_POST["job_title"] . "",
+                "division_id" => @$_POST["division_id"] * 1,
+                "leader_user_id" => @$_POST["leader_user_id"] * 1,
             ];
             if ($signature_filename != "") $user = $user + ["signature" => $signature_filename];
             if ($photo_filename != "") $user = $user + ["photo" => $photo_filename];
