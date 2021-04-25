@@ -2,8 +2,6 @@
 <script src="<?= base_url(); ?>/plugins/jquery/jquery.min.js"></script>
 <script src="<?= base_url(); ?>/dist/js/raphael-min.js"></script>
 <script src="<?= base_url(); ?>/dist/js/morris.min.js"></script>
-<script src="<?= base_url(); ?>/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?= base_url(); ?>/dist/js/bootstrap-toggle.min.js"></script>
 
 <script type="text/javascript">
     var chart = Morris.Line({
