@@ -26,7 +26,7 @@ class Measurement extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->route_name = "labjacks";
+		$this->route_name = "measurements";
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		$this->measurements = new m_measurement();
 		$this->instruments = new m_instrument();
