@@ -1,7 +1,7 @@
 <script>
     function reload_graph() {
         $.ajax({
-            url: "<?= base_url(); ?>/home/graph/1/",
+            url: "<?= base_url(); ?>/home/graph/<?= $stack_id; ?>/",
             success: function(graphview) {
                 try {
                     $("#graph").html(graphview);
@@ -20,7 +20,7 @@
                 var data = JSON.parse(result);
                 for (var i = 0; i < data.length; i++) {
                     try {
-                        $("#parameter_value_" + data[i].parameter_id).html(data[i].value);
+                        $("#parameter_value_" + data[i].parameter_id).html(data[i].avg_value);
                     } catch (ex) {}
                 }
             }

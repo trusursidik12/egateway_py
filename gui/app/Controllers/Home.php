@@ -50,6 +50,11 @@ class Home extends BaseController
 		echo view('v_home_js');
 	}
 
+	public function get_measurement_log($parameter_id, $time)
+	{
+		return @$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value;
+	}
+
 	public function graph($stack_id, $parameter_id = "")
 	{
 		if ($parameter_id != "")
@@ -66,14 +71,19 @@ class Home extends BaseController
 		$graph_data = "";
 		foreach ($measurement_logs[$parameters[0]->id] as $key => $measurement_log) {
 			foreach ($parameters as $key2 => $parameter) {
-				if ($key2 == 0) $graph_data .= "{time: '" . $measurement_logs[$parameter->id][$key]->xtimestamp . "', ";
-				$graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $measurement_logs[$parameter->id][$key]->value . " ,";
+				if ($key2 == 0) {
+					$graph_data .= "{time: '" . $measurement_logs[$parameter->id][$key]->xtimestamp . "', ";
+					$time = $measurement_logs[$parameter->id][$key]->xtimestamp;
+				}
+				$graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $this->get_measurement_log($parameter->id, $time) . " ,";
+				//$measurement_logs[$parameter->id][$key]->value
 			}
 			$graph_data = substr($graph_data, 0, -1) . "},";
 		}
 
 		$data["graph_fields"] = substr($graph_fields, 0, -1);
 		$data["graph_data"] = substr($graph_data, 0, -1);
+		// print_r($data);
 		echo view('v_graph', $data);
 	}
 

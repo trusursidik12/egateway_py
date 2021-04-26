@@ -20,6 +20,11 @@ class Measurement_log extends BaseController
 		$this->measurement_logs =  new m_measurement_log();
 	}
 
+	public function get_measurement_log($parameter_id, $time)
+	{
+		return @$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value;
+	}
+
 	public function get($parameter_id = 0)
 	{
 		$this->measurement_logs->where("(xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 48 HOUR))")->delete();
@@ -29,7 +34,9 @@ class Measurement_log extends BaseController
 		else {
 			$data = [];
 			foreach ($this->parameters->findAll() as $parameter) {
-				array_push($data, $this->measurement_logs->where("parameter_id", $parameter->id)->orderBy("xtimestamp DESC")->findAll(1)[0]);
+				$measurement_logs = $this->measurement_logs->where("parameter_id", $parameter->id)->orderBy("xtimestamp DESC")->findAll(1)[0];
+				$measurement_logs->avg_value = $this->get_measurement_log($measurement_logs->parameter_id, $measurement_logs->xtimestamp);
+				array_push($data, $measurement_logs);
 			}
 			return json_encode($data);
 		}

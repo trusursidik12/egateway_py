@@ -78,3 +78,5 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 
 defined('MAX_ROW')              || define('MAX_ROW', 50);
 defined('LIMIT_SUBWINDOW')      || define('LIMIT_SUBWINDOW', 50);
+
+defined('LOG_AVG_NUM')          || define('LOG_AVG_NUM', 30);
