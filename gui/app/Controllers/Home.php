@@ -52,7 +52,7 @@ class Home extends BaseController
 
 	public function get_measurement_log($parameter_id, $time)
 	{
-		return @$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value;
+		return round(@$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value, DECIMAL_NUM);
 	}
 
 	public function graph($stack_id, $parameter_id = "")
