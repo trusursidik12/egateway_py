@@ -52,7 +52,15 @@ class Home extends BaseController
 
 	public function get_measurement_log($parameter_id, $time)
 	{
-		return round(@$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value, DECIMAL_NUM);
+		return @$this->measurement_logs->where("parameter_id", $parameter_id)->where("xtimestamp = '" . $time . "'")->findAll()[0]->value;
+		// $measurement_logs = @$this->measurement_logs->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM);
+		// $avg_value = 0;
+		// foreach ($measurement_logs as $measurement_log) {
+		// 	$avg_value += $measurement_log->value;
+		// }
+		// return round($avg_value / count($measurement_logs), DECIMAL_NUM);
+		// return round(@$this->measurement_logs->select("avg(value) as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll(LOG_AVG_NUM)[0]->avg_value, DECIMAL_NUM);
+		// return round(@$this->measurement_logs->select("value as avg_value")->where("parameter_id", $parameter_id)->where("xtimestamp <= '" . $time . "'")->orderBy("xtimestamp DESC")->findAll()[0]->avg_value, DECIMAL_NUM);
 	}
 
 	public function graph($stack_id, $parameter_id = "")
@@ -75,8 +83,11 @@ class Home extends BaseController
 					$graph_data .= "{time: '" . $measurement_logs[$parameter->id][$key]->xtimestamp . "', ";
 					$time = $measurement_logs[$parameter->id][$key]->xtimestamp;
 				}
-				$graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $this->get_measurement_log($parameter->id, $time) . " ,";
-				//$measurement_logs[$parameter->id][$key]->value
+				//dengan  average:
+				// $graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $this->get_measurement_log($parameter->id, $time) . " ,";
+
+				//tanpa average:
+				$graph_data .= " " . str_replace(["<sub>", "</sub>"], "", $parameter->caption) . ": " . $measurement_logs[$parameter->id][$key]->value . " ,";
 			}
 			$graph_data = substr($graph_data, 0, -1) . "},";
 		}

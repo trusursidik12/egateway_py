@@ -20,6 +20,7 @@
                 var data = JSON.parse(result);
                 for (var i = 0; i < data.length; i++) {
                     try {
+                        // $("#parameter_value_" + data[i].parameter_id).html(data[i].value);
                         $("#parameter_value_" + data[i].parameter_id).html(data[i].avg_value);
                     } catch (ex) {}
                 }

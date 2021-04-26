@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
                                 <?php if ($_mode == "edit") : ?>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Current Voltage</label>
                                             <div class="input-group">

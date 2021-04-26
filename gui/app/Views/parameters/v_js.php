@@ -37,8 +37,8 @@
             var a = 0.0;
             var b = 0.0;
             var sign = "";
-            a = $("#concentration2").val() / ($("#voltage2").val() - $("#voltage1").val());
-            b = -1 * a * $("#voltage1").val();
+            a = ($("#concentration2").val() - $("#concentration1").val()) / ($("#voltage2").val() - $("#voltage1").val());
+            b = $("#concentration1").val() - (a * $("#voltage1").val());
             if (b < 0) {
                 b = b * -1;
                 sign = "-";

@@ -80,4 +80,4 @@ defined('MAX_ROW')              || define('MAX_ROW', 50);
 defined('LIMIT_SUBWINDOW')      || define('LIMIT_SUBWINDOW', 50);
 
 defined('LOG_AVG_NUM')          || define('LOG_AVG_NUM', 60);
-defined('DECIMAL_NUM')          || define('DECIMAL_NUM', 3);
+defined('DECIMAL_NUM')          || define('DECIMAL_NUM', 2);
