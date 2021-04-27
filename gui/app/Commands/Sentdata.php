@@ -98,7 +98,7 @@ class Sentdata extends BaseCommand
 
 			$responseLogin = curl_exec($cLogin);
 
-			// curl_close($cLogin);
+			curl_close($cLogin);
 			$resultLogin = json_decode($responseLogin, true);
 
 			$token = $resultLogin['token'];
