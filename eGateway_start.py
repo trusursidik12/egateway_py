@@ -11,6 +11,9 @@ try:
 except Exception as e:
     print("[X]  DB Not Connected " + e)
     sys.exit()
+    
+mycursor.execute("TRUNCATE labjack_values");
+mycursor.execute("TRUNCATE labjack_value_histories");
 
 subprocess.Popen("php gui\spark serve", shell=True)
 time.sleep(1)
