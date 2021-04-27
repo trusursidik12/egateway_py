@@ -66,52 +66,54 @@ class Sentdata extends BaseCommand
 	public function run(array $params)
 	{
 		//CURL
-		$mData = $this->measurements->where(["is_sent_cloud" => 0])->orderBy("id DESC")->findAll()[0];
-		$cnfig = $this->configurations->findAll()[0];
+		$mData = @$this->measurements->where(["is_sent_cloud" => 0])->orderBy("id DESC")->findAll()[0];
+		$cnfig = @$this->configurations->findAll()[0];
 
-		/* Data */
-		$data =
-			[
-				'egateway_code' => $cnfig->egateway_code,
-				'measured_at' => $mData->measured_at,
-				'client_parameter_id' => $mData->parameter_id,
-				'value' => $mData->value,
-				'unit_id' => $mData->unit_id,
-				'is_sent' => $mData->is_sent_klhk,
-				'sent_type' => $mData->sent_klhk_type,
-				'sent_by' => $mData->sent_klhk_by,
-				'sent_at' => $mData->sent_klhk_at,
-				'sent_tries' => $mData->sent_klhk_tries,
-			];
+		if (!empty($mData)) {
+			/* Data */
+			$data =
+				[
+					'egateway_code' => $cnfig->egateway_code,
+					'measured_at' => $mData->measured_at,
+					'client_parameter_id' => $mData->parameter_id,
+					'value' => $mData->value,
+					'unit_id' => $mData->unit_id,
+					'is_sent' => $mData->is_sent_klhk,
+					'sent_type' => $mData->sent_klhk_type,
+					'sent_by' => $mData->sent_klhk_by,
+					'sent_at' => $mData->sent_klhk_at,
+					'sent_tries' => $mData->sent_klhk_tries,
+				];
 
-		$dEncode = http_build_query($data);
+			$dEncode = http_build_query($data);
 
-		$curl = curl_init();
+			$curl = curl_init();
 
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://ispumaps.id/egateway_server/public/api/send/measurement',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => $dEncode,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSEVfQ0xBSU0iLCJhdWQiOiJUSEVfQVVESUVOQ0UiLCJpYXQiOjE2MTk0OTM0NDMsIm5iZiI6MTYxOTQ5MzQ1MywiZXhwIjozODU1Mjk2NTIzLCJkYXRhIjp7ImlkIjoiMSIsImNsaWVudG5hbWUiOiJSQVBQIiwiZW1haWwiOiJyYXBwQHRydXN1ci5jb20ifX0.AZxn_k5GxkiTjk3pXv-KJQcyCbjl-F570ldhWhNtDms',
-				'Content-Type: application/x-www-form-urlencoded'
-			),
-		));
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => 'https://ispumaps.id/egateway_server/public/api/send/measurement',
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => '',
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 0,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_POSTFIELDS => $dEncode,
+				CURLOPT_HTTPHEADER => array(
+					'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSEVfQ0xBSU0iLCJhdWQiOiJUSEVfQVVESUVOQ0UiLCJpYXQiOjE2MTk0OTM0NDMsIm5iZiI6MTYxOTQ5MzQ1MywiZXhwIjozODU1Mjk2NTIzLCJkYXRhIjp7ImlkIjoiMSIsImNsaWVudG5hbWUiOiJSQVBQIiwiZW1haWwiOiJyYXBwQHRydXN1ci5jb20ifX0.AZxn_k5GxkiTjk3pXv-KJQcyCbjl-F570ldhWhNtDms',
+					'Content-Type: application/x-www-form-urlencoded'
+				),
+			));
 
-		$response = curl_exec($curl);
+			$response = curl_exec($curl);
 
-		curl_close($curl);
-		$result = json_decode($response, true);
+			curl_close($curl);
+			$result = json_decode($response, true);
 
-		if ($result['status'] == 200) {
-			$this->measurements->update($mData->id, ['is_sent_cloud' => 1]);
+			if ($result['status'] == 200) {
+				$this->measurements->update($mData->id, ['is_sent_cloud' => 1]);
+			}
+			print_r($response);
 		}
-		print_r($response);
 	}
 }
