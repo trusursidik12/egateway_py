@@ -33,6 +33,16 @@
                                                 </ul>
                                             <?php endforeach ?>
                                         <?php endforeach ?>
+                                        <ul class="list-group list-group-unbordered">
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p class="h3">Time</p>
+                                                    <span>
+                                                        <p class="h1 d-inline" id="current_time"><?= date("d/m/Y H:i:s"); ?></p>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div class="col-md-8 border-left">
                                         <div id="graph" style="height:380px;background-color:white;"></div>
