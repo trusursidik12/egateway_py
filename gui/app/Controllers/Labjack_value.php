@@ -33,6 +33,11 @@ class Labjack_value extends BaseController
 		return json_encode($this->labjack_values->where(["id" => $id])->findAll()[0]);
 	}
 
+	public function get_voltages_by_labjack_id($labjack_id)
+	{
+		return json_encode($this->labjack_values->where(["labjack_id" => $labjack_id])->findAll());
+	}
+
 	public function formula_measurement_logs()
 	{
 		foreach ($this->labjack_values->findAll() as $labjack_value) {

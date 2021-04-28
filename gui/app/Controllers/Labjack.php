@@ -122,6 +122,19 @@ class Labjack extends BaseController
         echo view('v_footer');
     }
 
+    public function voltages()
+    {
+        $this->privilege_check($this->menu_ids, 2, $this->route_name);
+        $data["__modulename"] = "Labjack Voltages";
+        $data = $data + $this->common();
+        $data['labjacks'] = $this->labjacks->orderBy("id")->findAll();
+        echo view('v_header', $data);
+        echo view('v_menu');
+        echo view('labjacks/v_voltages');
+        echo view('v_footer');
+        echo "<script> reload_voltages(); </script>";
+    }
+
     public function delete()
     {
         $this->labjacks->delete($this->request->getPost('id'));
