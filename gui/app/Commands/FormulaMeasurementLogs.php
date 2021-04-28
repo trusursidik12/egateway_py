@@ -135,7 +135,7 @@ class FormulaMeasurementLogs extends BaseCommand
 
 	public function run(array $params)
 	{
-		$this->measurement_logs->where("(xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
+		$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
 
 		foreach ($this->labjack_values->findAll() as $labjack_value) {
 			$labjack[$labjack_value->labjack_id][$labjack_value->ain_id] = $labjack_value->data;
