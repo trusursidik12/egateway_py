@@ -37,7 +37,7 @@ class Measurement_log extends BaseController
 
 	public function get($parameter_id = 0)
 	{
-		$this->measurement_logs->where("(xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 48 HOUR))")->delete();
+		$this->measurement_logs->where("(xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
 
 		if ($parameter_id > 0) {
 			$data = [];
