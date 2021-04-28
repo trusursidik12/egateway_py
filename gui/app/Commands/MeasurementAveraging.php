@@ -10,7 +10,7 @@ use App\Models\m_measurement;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
 
-class FormulaMeasurementLogs extends BaseCommand
+class MeasurementAveraging extends BaseCommand
 {
 	/**
 	 * The Command's Group
@@ -34,13 +34,12 @@ class FormulaMeasurementLogs extends BaseCommand
 		$this->measurements =  new m_measurement();
 		$this->lastPutData = "0000-00-00 00:00";
 	}
-
 	/**
 	 * The Command's Name
 	 *
 	 * @var string
 	 */
-	protected $name = 'command:formula_measurement_logs';
+	protected $name = 'command:measurement_averaging';
 
 	/**
 	 * The Command's Description
@@ -132,28 +131,8 @@ class FormulaMeasurementLogs extends BaseCommand
 			$this->lastPutData = date("Y-m-d H:i");
 		}
 	}
-
 	public function run(array $params)
 	{
-		$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
-
-		foreach ($this->labjack_values->findAll() as $labjack_value) {
-			$labjack[$labjack_value->labjack_id][$labjack_value->ain_id] = $labjack_value->data;
-		}
-
-		foreach ($this->parameters->findAll() as $parameter) {
-			@eval("\$data[$parameter->id] = $parameter->formula;");
-			$labjack_value = @$this->labjack_values->where("id", $parameter->labjack_value_id)->findAll()[0];
-			$voltage = @$labjack[@$labjack_value->labjack_id * 1][@$labjack_value->ain_id * 1] * 1;
-			$measurement_logs = [
-				"instrument_id" => $parameter->instrument_id,
-				"parameter_id" => $parameter->id,
-				"value" => ($data[$parameter->id] < 0) ? 0 : $data[$parameter->id],
-				"voltage" => $voltage,
-				"unit_id" => $parameter->unit_id,
-				"is_averaged" => 0
-			];
-			$this->measurement_logs->save($measurement_logs);
-		}
+		$this->measurements_averaging();
 	}
 }
