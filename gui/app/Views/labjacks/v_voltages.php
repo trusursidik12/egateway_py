@@ -42,6 +42,17 @@
                                         </li>
                                     </ul>
                                 <?php endfor ?>
+
+                                <ul class="list-group list-group-unbordered">
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="h3">Time</p>
+                                            <span>
+                                                <p class="h1 d-inline" id="current_time"><?= date("d/m/Y H:i:s"); ?></p>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div><!-- /.card-body -->
@@ -53,6 +64,8 @@
 
 <script>
     function reload_voltages() {
+        let now = new Date();
+        $("#current_time").html(("00" + now.getDate()).slice(-2) + "/" + ("00" + (now.getMonth() + 1)).slice(-2) + "/" + ("00" + now.getFullYear()).slice(-2) + " " + ("00" + now.getHours()).slice(-2) + ":" + ("00" + now.getMinutes()).slice(-2) + ":" + ("00" + now.getSeconds()).slice(-2));
         if ($("#labjack_id").val()) {
             $.get("<?= base_url(); ?>/labjack_value/get_voltages_by_labjack_id/" + $("#labjack_id").val(), function(labjack_values) {
                 labjack_values = JSON.parse(labjack_values);
