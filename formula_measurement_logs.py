@@ -9,4 +9,4 @@ while True:
     if(counter >= 5):
         subprocess.Popen("php gui\spark command:sentdata", shell=False)
         counter = 0
-    time.sleep(6)
+    time.sleep(60)
