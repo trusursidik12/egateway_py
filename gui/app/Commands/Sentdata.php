@@ -101,7 +101,7 @@ class Sentdata extends BaseCommand
 			curl_close($cLogin);
 			$resultLogin = json_decode($responseLogin, true);
 
-			$token = $resultLogin['token'];
+			$token = @$resultLogin['token'];
 
 			if ($token != "") {
 				$data =
