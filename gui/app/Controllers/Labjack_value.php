@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\m_labjack_value;
+use App\Models\m_labjack_value_history;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
 
@@ -13,6 +14,7 @@ class Labjack_value extends BaseController
 	protected $route_name;
 	protected $parameters;
 	protected $labjack_values;
+	protected $labjack_value_histories;
 	protected $measurement_logs;
 
 	public function __construct()
@@ -20,6 +22,7 @@ class Labjack_value extends BaseController
 		parent::__construct();
 		$this->parameters =  new m_parameter();
 		$this->labjack_values =  new m_labjack_value();
+		$this->labjack_value_histories =  new m_labjack_value_history();
 		$this->measurement_logs =  new m_measurement_log();
 	}
 
@@ -35,7 +38,11 @@ class Labjack_value extends BaseController
 
 	public function get_voltages_by_labjack_id($labjack_id)
 	{
-		return json_encode($this->labjack_values->where(["labjack_id" => $labjack_id])->findAll());
+		$labjack_values = $this->labjack_values->where(["labjack_id" => $labjack_id])->findAll();
+		foreach ($labjack_values as $key => $labjack_value) {
+			$labjack_values[$key]->realtime = @$this->labjack_value_histories->where(["labjack_value_id" => $labjack_value->id])->orderBy("id DESC")->findAll()[0]->data;
+		}
+		return json_encode($labjack_values);
 	}
 
 	public function formula_measurement_logs()

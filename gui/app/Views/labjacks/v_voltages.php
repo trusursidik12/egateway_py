@@ -30,6 +30,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
+                                <b>AVERAGE</b>
                                 <?php for ($i = 0; $i < 4; $i++) : ?>
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
@@ -37,6 +38,21 @@
                                                 <p class="h3">AIN <?= $i ?></p>
                                                 <span>
                                                     <p class="h1 d-inline" id="AIN_<?= $i; ?>"></p>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php endfor ?>
+                            </div>
+                            <div class="col-md-4">
+                                <b>REAL TIME</b>
+                                <?php for ($i = 0; $i < 4; $i++) : ?>
+                                    <ul class="list-group list-group-unbordered">
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class="h3">&nbsp;</p>
+                                                <span>
+                                                    <p class="h1 d-inline" id="AIN_REAL<?= $i; ?>"></p>
                                                 </span>
                                             </div>
                                         </li>
@@ -71,11 +87,13 @@
                 labjack_values = JSON.parse(labjack_values);
                 for (var i = 0; i < labjack_values.length; i++) {
                     $("#AIN_" + labjack_values[i].ain_id).html(labjack_values[i].data);
+                    $("#AIN_REAL" + labjack_values[i].ain_id).html(labjack_values[i].realtime);
                 }
             });
         } else {
             for (var i = 0; i < 4; i++) {
                 $("#AIN_" + i).html(0);
+                $("#AIN_REAL" + i).html(0);
             }
         }
 
