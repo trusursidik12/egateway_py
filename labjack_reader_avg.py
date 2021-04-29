@@ -30,7 +30,7 @@ while True:
     
     for x in [0,1,2,3]:
         try:
-            mycursor.execute("DELETE FROM labjack_value_histories WHERE xtimestamp < ('" + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "' - INTERVAL 24 HOUR)")
+            mycursor.execute("DELETE FROM labjack_value_histories WHERE xtimestamp < ('" + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "' - INTERVAL 2 HOUR)")
         
             mycursor.execute("SELECT id FROM labjack_values WHERE labjack_id = '"+ str(sys.argv[1]) +"' AND ain_id = '" + str(x) + "'")
             labjack_value_id = mycursor.fetchone()[0]
