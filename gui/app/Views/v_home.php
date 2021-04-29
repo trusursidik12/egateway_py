@@ -38,7 +38,7 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <p class="h3">Time</p>
                                                     <span>
-                                                        <p class="h1 d-inline" id="current_time"><?= date("d/m/Y H:i:s"); ?></p>
+                                                        <p class="h4 d-inline" id="current_time"><?= date("d/m/Y H:i:s"); ?></p>
                                                     </span>
                                                 </div>
                                             </li>
