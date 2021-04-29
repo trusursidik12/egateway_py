@@ -29,6 +29,7 @@ class BaseController extends Controller
 	protected $constant_values;
 	protected $specific_privileges;
 	protected $_form;
+	protected $request;
 
 	public function __construct()
 	{
@@ -130,7 +131,7 @@ class BaseController extends Controller
 			$privileges[$_menu_ids[$key]] = $privilege;
 		}
 
-		if ($this->session->get("user")->group_id == 0) $allowed = true;
+		if (@$this->session->get("user")->group_id == 0) $allowed = true;
 
 		foreach ($menu_ids as $menu_id) {
 			if ($mode == "0") {

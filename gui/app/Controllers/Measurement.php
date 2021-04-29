@@ -60,11 +60,15 @@ class Measurement extends BaseController
 		$instrument_id 			= @$this->request->getPost('instrument_id');
 		$instrument_status_id 	= @$this->request->getPost('instrument_status_id');
 		$data_status_id 		= @$this->request->getPost('data_status_id');
+		$is_sent_cloud 			= @$this->request->getPost('is_sent_cloud');
+		$is_sent_klhk 			= @$this->request->getPost('is_sent_klhk');
 		$measured_at 			= @$this->request->getPost('measured_at');
 		$where					= "is_deleted = '0'";
 		if ($instrument_id != '') $where .= "AND instrument_id = '{$instrument_id}'";
 		if ($instrument_status_id != '') $where .= "AND instrument_status_id = '{$instrument_status_id}'";
 		if ($data_status_id != '') $where .= "AND data_status_id = '{$data_status_id}'";
+		if ($is_sent_cloud != '') $where .= "AND is_sent_cloud = '{$is_sent_cloud}'";
+		if ($is_sent_klhk != '') $where .= "AND is_sent_klhk = '{$is_sent_klhk}'";
 		if ($measured_at != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') = '{$measured_at}'";
 		$measurements		= [];
 		$numrow				= $this->measurements->where($where)->countAllResults();
@@ -81,16 +85,18 @@ class Measurement extends BaseController
 			$no++;
 			$measurements[$key] = [
 				$no,
-				$instrument->name,
-				$instrument_status->name,
-				$data_status->name,
+				@$instrument->name,
+				@$instrument_status->name,
+				@$data_status->name,
 				date('d-m-Y H:i', strtotime($mlist->time_group)),
 				date('d-m-Y H:i', strtotime($mlist->measured_at)),
 				$mlist->value,
 				@$parameter->name,
-				$unit->name,
-				$validation->name,
-				$conditionn->name,
+				@$unit->name,
+				@$validation->name,
+				@$conditionn->name,
+				$mlist->is_sent_cloud == 1 ? 'SENT' : 'NOT YET',
+				$mlist->is_sent_klhk == 1 ? 'SENT' : 'NOT YET',
 			];
 		}
 

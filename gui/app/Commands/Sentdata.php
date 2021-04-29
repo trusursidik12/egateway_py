@@ -66,20 +66,20 @@ class Sentdata extends BaseCommand
 	public function run(array $params)
 	{
 		//CURL
-		$measurementData = @$this->measurements->where(["is_sent_cloud" => 0])->orderBy("id DESC")->findAll(50);
+		$measurementData = @$this->measurements->where(["is_sent_cloud" => 0])->orderBy("id DESC")->findAll(15);
 		$cnfig = @$this->configurations->findAll()[0];
 
 		if (!empty($measurementData)) {
 			$token = "";
 			$client =
 				[
-					'keys' 		=> 'UkFQUDE2MTk1MTQyMjE=',
-					'email' 	=> 'rapp@trusur.com',
-					'password' 	=> '4p&)z6)JNuLTeJ3'
+					'keys'         => 'UkFQUDE2MTk1MTQyMjE=',
+					'email'     => 'rapp@trusur.com',
+					'password'     => '4p&)z6)JNuLTeJ3'
 				];
 			$cEncode = http_build_query($client);
 
-			$cLogin = curl_init();
+			/*$cLogin = curl_init();
 
 			curl_setopt_array($cLogin, array(
 				CURLOPT_URL => 'https://ispumaps.id/egateway_server/public/api/auth/clientlogin',
@@ -87,7 +87,6 @@ class Sentdata extends BaseCommand
 				CURLOPT_ENCODING => '',
 				CURLOPT_MAXREDIRS => 10,
 				CURLOPT_TIMEOUT => 0,
-				CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 				CURLOPT_CUSTOMREQUEST => 'POST',
 				CURLOPT_POSTFIELDS => $cEncode,
@@ -101,7 +100,8 @@ class Sentdata extends BaseCommand
 			curl_close($cLogin);
 			$resultLogin = json_decode($responseLogin, true);
 
-			$token = @$resultLogin['token'];
+			$token = @$resultLogin['token'];*/
+			$token = "Tokenkbncvnmbvklnmom";
 
 			if ($token != "") {
 				foreach ($measurementData as $mData) {
@@ -127,26 +127,23 @@ class Sentdata extends BaseCommand
 						CURLOPT_URL => 'https://ispumaps.id/egateway_server/public/api/send/measurement',
 						CURLOPT_RETURNTRANSFER => true,
 						CURLOPT_ENCODING => '',
-						CURLOPT_MAXREDIRS => 10,
-						CURLOPT_TIMEOUT => 0,
-						CURLOPT_FOLLOWLOCATION => true,
+						CURLOPT_TIMEOUT => 3,
 						CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 						CURLOPT_CUSTOMREQUEST => 'POST',
 						CURLOPT_POSTFIELDS => $dEncode,
 						CURLOPT_HTTPHEADER => array(
-							'Authorization: Bearer ' . $token,
 							'Content-Type: application/x-www-form-urlencoded',
 						),
 					));
 
-					$response = curl_exec($curl);
+					echo $response = curl_exec($curl);
 
 					curl_close($curl);
 					$result = json_decode($response, true);
 					print_r($response);
 
-					if ($result['status'] == 200) {
-						$this->measurements->update($mData->id, ['is_sent_cloud' => 1]);
+					if (@$result['status'] == 200) {
+						$this->measurements->update($mData->id, ['is_sent_cloud' => 1, 'sent_cloud_at' => date('Y-m-d H:i:s'), 'sent_cloud_by' => 'system']);
 					}
 				}
 			}

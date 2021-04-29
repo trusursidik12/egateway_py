@@ -33,6 +33,22 @@
                             </select>
                         </div>
                         <div class="col-sm">
+                            <label>Sent To Trusur</label>
+                            <select id="is_sent_cloud" class="form-control">
+                                <option value="">-- Select Status --</option>
+                                <option value="1">SENT</option>
+                                <option value="0">NOT YET</option>
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <label>Sent To SISPEK</label>
+                            <select id="is_sent_klhk" class="form-control">
+                                <option value="">-- Select Status --</option>
+                                <option value="1">SENT</option>
+                                <option value="0">NOT YET</option>
+                            </select>
+                        </div>
+                        <div class="col-sm">
                             <label>Date</label>
                             <input type="date" id="measured_at" class="form-control">
                         </div>
@@ -59,6 +75,8 @@
                                     <th>Unit</th>
                                     <th>Validation</th>
                                     <th>Condition</th>
+                                    <th>SENT&nbsp;TO&nbsp;TRUSUR</th>
+                                    <th>SENT&nbsp;TO&nbsp;SISPEK</th>
                                 </tr>
                             </thead>
                         </table>
