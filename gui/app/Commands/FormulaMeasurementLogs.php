@@ -145,10 +145,11 @@ class FormulaMeasurementLogs extends BaseCommand
 			@eval("\$data[$parameter->id] = $parameter->formula;");
 			$labjack_value = @$this->labjack_values->where("id", $parameter->labjack_value_id)->findAll()[0];
 			$voltage = @$labjack[@$labjack_value->labjack_id * 1][@$labjack_value->ain_id * 1] * 1;
+			//"value" => ($data[$parameter->id] < 0) ? 0 : $data[$parameter->id],
 			$measurement_logs = [
 				"instrument_id" => $parameter->instrument_id,
 				"parameter_id" => $parameter->id,
-				"value" => ($data[$parameter->id] < 0) ? 0 : $data[$parameter->id],
+				"value" => $data[$parameter->id],
 				"voltage" => $voltage,
 				"unit_id" => $parameter->unit_id,
 				"is_averaged" => 0
