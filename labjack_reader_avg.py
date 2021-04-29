@@ -38,7 +38,7 @@ while True:
             mycursor.execute("INSERT INTO labjack_value_histories (labjack_value_id,data) VALUES ('" + str(labjack_value_id) + "','" + str(AIN[x]) + "')")
             mydb.commit()
             
-            mycursor.execute("SELECT data FROM labjack_value_histories WHERE labjack_value_id = '" + str(labjack_value_id) + "' ORDER BY id DESC LIMIT 60")
+            mycursor.execute("SELECT data FROM labjack_value_histories WHERE labjack_value_id = '" + str(labjack_value_id) + "' ORDER BY id DESC LIMIT 10")
             labjack_value_histories = mycursor.fetchall()
             total = 0.0
             average = 0.0
