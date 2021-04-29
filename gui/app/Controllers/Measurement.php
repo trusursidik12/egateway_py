@@ -86,17 +86,17 @@ class Measurement extends BaseController
 			$measurements[$key] = [
 				$no,
 				@$instrument->name,
-				@$instrument_status->name,
-				@$data_status->name,
+				// @$instrument_status->name,
+				// @$data_status->name,
 				date('d-m-Y H:i', strtotime($mlist->time_group)),
 				date('d-m-Y H:i', strtotime($mlist->measured_at)),
 				$mlist->value,
 				@$parameter->name,
 				@$unit->name,
-				@$validation->name,
-				@$conditionn->name,
-				$mlist->is_sent_cloud == 1 ? 'SENT' : 'NOT YET',
-				$mlist->is_sent_klhk == 1 ? 'SENT' : 'NOT YET',
+				// @$validation->name,
+				// @$conditionn->name,
+				$mlist->is_sent_cloud == 1 ? '<span class="mx-1 badge badge-success">SENT</span>' : '<span class="mx-1 badge badge-danger">NOT YET</span>',
+				$mlist->is_sent_klhk == 1 ? '<span class="mx-1 badge badge-success">SENT</span>' : '<span class="mx-1 badge badge-danger">NOT YET</span>',
 			];
 		}
 

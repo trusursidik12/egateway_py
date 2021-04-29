@@ -66,15 +66,15 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Instrument</th>
-                                    <th>Instrument Status</th>
-                                    <th>Data Status</th>
+                                    <!-- <th>Instrument Status</th> -->
+                                    <!-- <th>Data Status</th> -->
                                     <th>Time Group</th>
                                     <th>Date</th>
                                     <th>Value</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>
-                                    <th>Validation</th>
-                                    <th>Condition</th>
+                                    <!-- <th>Validation</th> -->
+                                    <!-- <th>Condition</th> -->
                                     <th>SENT&nbsp;TO&nbsp;TRUSUR</th>
                                     <th>SENT&nbsp;TO&nbsp;SISPEK</th>
                                 </tr>
