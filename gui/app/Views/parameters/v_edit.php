@@ -107,6 +107,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Parameter Type</label>
+                                        <?= $__form->select("p_type", $p_types, @$parameter->p_type); ?>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">

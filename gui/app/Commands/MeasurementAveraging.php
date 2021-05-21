@@ -23,7 +23,6 @@ class MeasurementAveraging extends BaseCommand
 	protected $labjack_values;
 	protected $measurement_logs;
 	protected $configurations;
-	protected $lastPutData;
 
 	public function __construct()
 	{
@@ -32,7 +31,6 @@ class MeasurementAveraging extends BaseCommand
 		$this->measurement_logs =  new m_measurement_log();
 		$this->configurations =  new m_configuration();
 		$this->measurements =  new m_measurement();
-		$this->lastPutData = "0000-00-00 00:00";
 	}
 	/**
 	 * The Command's Name
@@ -81,7 +79,8 @@ class MeasurementAveraging extends BaseCommand
 		$lasttime = date("Y-m-d H:i:%", mktime(date("H"), date("i") - $minute));
 		$mm = date("i") * 1;
 		$current_time = date("Y-m-d H:i");
-		if ($mm % $minute == 0 && $this->lastPutData != $current_time) {
+		$lastPutData = @$this->measurements->orderBy("time_group DESC")->findAll()[0]->time_group;
+		if ($mm % $minute == 0 && $lastPutData != $current_time) {
 			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
 			if ($id_start > 0) {
 				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
@@ -128,7 +127,6 @@ class MeasurementAveraging extends BaseCommand
 				}
 			}
 			$this->measurement_logs->set(["is_averaged" => 1])->where("id BETWEEN '" . $measurement_logs["id_start"] . "' AND '" . $measurement_logs["id_end"] . "'")->update();
-			$this->lastPutData = date("Y-m-d H:i");
 		}
 	}
 	public function run(array $params)

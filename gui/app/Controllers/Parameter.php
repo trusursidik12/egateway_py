@@ -67,6 +67,7 @@ class Parameter extends BaseController
 			$data['instrument_id'] = $this->request->getPost('instrument_id');
 			$data['name'] = $this->request->getPost('name');
 			$data['caption'] = $this->request->getPost('caption');
+			$data['p_type'] = $this->request->getPost('p_type');
 			$data['unit_id'] = $this->request->getPost('unit_id');
 			$data['molecular_mass'] = $this->request->getPost('molecular_mass');
 			$data['formula'] = $this->request->getPost('formula');
@@ -106,10 +107,12 @@ class Parameter extends BaseController
 	{
 		$data = [];
 		try {
+			$data["__form"] = $this->_form;
 			$data['instruments'] = $this->instruments->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['units'] = $this->units->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['labjack_values'] = $this->labjack_values->select('labjacks.labjack_code as code,labjack_values.*')
 				->join('labjacks', 'labjacks.id=labjack_values.labjack_id')->orderBy("labjack_id,ain_id")->findAll();
+			$data["p_types"] = [(object)["id" => "main", "name" => "Main"], (object)["id" => "o2", "name" => "O<sub>2</sub>"], (object)["id" => "support", "name" => "Support"]];
 		} catch (Exception $e) {
 		}
 		return $data;
