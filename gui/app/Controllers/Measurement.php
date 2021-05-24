@@ -89,7 +89,7 @@ class Measurement extends BaseController
 				// @$instrument_status->name,
 				// @$data_status->name,
 				date('d-m-Y H:i', strtotime($mlist->time_group)),
-				date('d-m-Y H:i', strtotime($mlist->measured_at)),
+				$mlist->value,
 				$mlist->value,
 				@$parameter->name,
 				@$unit->name,

@@ -39,8 +39,8 @@ class BaseController extends Controller
 		$this->session = \Config\Services::session();
 
 		if ($_SERVER["REQUEST_URI"] != "/" && $_SERVER["REQUEST_URI"] != "/login" && stripos(" " . $_SERVER["REQUEST_URI"], "/home") <= 0 && !$this->session->get("loggedin")) {
-			echo "<script> window.location='" . base_url() . "/login'; </script>";
-			exit();
+			// echo "<script> window.location='" . base_url() . "/login'; </script>";
+			// exit();
 		}
 
 		$this->_form =  new A_form();

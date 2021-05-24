@@ -68,9 +68,9 @@
                                     <th>Instrument</th>
                                     <!-- <th>Instrument Status</th> -->
                                     <!-- <th>Data Status</th> -->
-                                    <th>Time Group</th>
                                     <th>Date</th>
                                     <th>Value</th>
+                                    <th>Correction</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>
                                     <!-- <th>Validation</th> -->

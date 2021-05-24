@@ -37,11 +37,8 @@ class Configuration extends BaseController
 			'province' => ['rules' => 'required', 'errors' => ['required' => 'Province Mass cant be empty!']],
 			'lon' => ['rules' => 'required', 'errors' => ['required' => 'Longitude cant be empty!']],
 			'lat' => ['rules' => 'required', 'errors' => ['required' => 'Latitude cant be empty!']],
-			'interval_request' => ['rules' => 'required', 'errors' => ['required' => 'Interval Request cant be empty!']],
-			'interval_sending' => ['rules' => 'required', 'errors' => ['required' => 'Interval Sending cant be empty!']],
-			'interval_retry' => ['rules' => 'required', 'errors' => ['required' => 'Interval Retry cant be empty!']],
+			'interval_das_logs' => ['rules' => 'required', 'errors' => ['required' => 'Interval Das Logs cant be empty!']],
 			'interval_average' => ['rules' => 'required', 'errors' => ['required' => 'Interval Average cant be empty!']],
-			'delay_sending' => ['rules' => 'required', 'errors' => ['required' => 'Delay Sending cant be empty!']],
 		])) {
 			if (is_null($id)) {
 				return redirect()->to(base_url('configuration/add'))->withInput();
@@ -56,11 +53,13 @@ class Configuration extends BaseController
 			$data['province'] = $this->request->getPost('province');
 			$data['lon'] = $this->request->getPost('lon');
 			$data['lat'] = $this->request->getPost('lat');
-			$data['interval_request'] = $this->request->getPost('interval_request');
-			$data['interval_sending'] = $this->request->getPost('interval_sending');
-			$data['interval_retry'] = $this->request->getPost('interval_retry');
+			$data['interval_request'] = @$this->request->getPost('interval_request');
+			$data['interval_sending'] = @$this->request->getPost('interval_sending');
+			$data['interval_retry'] = @$this->request->getPost('interval_retry');
+			$data['interval_das_logs'] = $this->request->getPost('interval_das_logs');
 			$data['interval_average'] = $this->request->getPost('interval_average');
 			$data['delay_sending'] = $this->request->getPost('delay_sending');
+			$data['oxygen_reference'] = $this->request->getPost('oxygen_reference');
 			try {
 				if (is_null($id)) {
 					$this->configurations->insert($data + $this->created_values());

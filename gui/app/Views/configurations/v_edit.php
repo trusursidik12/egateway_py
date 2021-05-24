@@ -84,34 +84,16 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Interval Request</label>
-                                                <input type="text" name="interval_request" value="<?= old('interval_request', @$configuration->interval_request) ?>" placeholder="Interval Request" class="form-control <?= $validation->hasError('interval_request') ? 'is-invalid' : '' ?>">
+                                                <label>Interval Das Logs (Minute(s))</label>
+                                                <input type="text" name="interval_das_logs" value="<?= old('interval_das_logs', @$configuration->interval_das_logs) ?>" placeholder="Interval DAS Logs" class="form-control <?= $validation->hasError('interval_das_logs') ? 'is-invalid' : '' ?>">
                                                 <div class="invalid-feedback">
-                                                    <?= $validation->getError('interval_request') ?>
+                                                    <?= $validation->getError('interval_das_logs') ?>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Interval Sending</label>
-                                                <input type="text" name="interval_sending" value="<?= old('interval_sending', @$configuration->interval_sending) ?>" placeholder="Interval Sending" class="form-control <?= $validation->hasError('interval_sending') ? 'is-invalid' : '' ?>">
-                                                <div class="invalid-feedback">
-                                                    <?= $validation->getError('interval_sending') ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Interval Retry</label>
-                                                <input type="text" name="interval_retry" value="<?= old('interval_retry', @$configuration->interval_retry) ?>" placeholder="Interval Retry" class="form-control <?= $validation->hasError('interval_retry') ? 'is-invalid' : '' ?>">
-                                                <div class="invalid-feedback">
-                                                    <?= $validation->getError('interval_retry') ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Interval Average</label>
+                                                <label>Interval Average (Minute(s))</label>
                                                 <input type="text" name="interval_average" value="<?= old('interval_average', @$configuration->interval_average) ?>" placeholder="Interval Average" class="form-control <?= $validation->hasError('interval_average') ? 'is-invalid' : '' ?>">
                                                 <div class="invalid-feedback">
                                                     <?= $validation->getError('interval_average') ?>
@@ -120,26 +102,24 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Delay Sending</label>
-                                                <input type="text" name="delay_sending" value="<?= old('delay_sending', @$configuration->delay_sending) ?>" placeholder="Delay Sending" class="form-control <?= $validation->hasError('delay_sending') ? 'is-invalid' : '' ?>">
-                                                <div class="invalid-feedback">
-                                                    <?= $validation->getError('delay_sending') ?>
-                                                </div>
+                                                <label>Oxygen Reference (%)</label>
+                                                <input type="text" name="oxygen_reference" value="<?= old('oxygen_reference', @$configuration->oxygen_reference) ?>" placeholder="Oxygen Reference" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                    </div>
 
-                            <div class="d-flex justify-content-end">
-                                <button name="Save" type="submit" class="btn btn-primary">
-                                    Save
-                                </button>
-                            </div>
-                        </form>
-                    </div><!-- /.card-body -->
-                </div>
+                    <div class="d-flex justify-content-end">
+                        <button name="Save" type="submit" class="btn btn-primary">
+                            Save
+                        </button>
+                    </div>
+                    </form>
+                </div><!-- /.card-body -->
             </div>
         </div>
     </div>
+</div>
 </div>
