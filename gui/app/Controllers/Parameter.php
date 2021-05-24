@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\m_instrument;
 use App\Models\m_labjack_value;
 use App\Models\m_parameter;
+use App\Models\m_status;
 use App\Models\m_unit;
 use Exception;
 
@@ -15,6 +16,7 @@ class Parameter extends BaseController
 	protected $instruments;
 	protected $units;
 	protected $labjack_values;
+	protected $statuses;
 	public function __construct()
 	{
 		parent::__construct();
@@ -25,15 +27,17 @@ class Parameter extends BaseController
 		$this->instruments = new m_instrument();
 		$this->units = new m_unit();
 		$this->labjack_values = new m_labjack_value();
+		$this->statuses = new m_status();
 	}
 	public function index()
 	{
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Parameters";
 		$data = $data + $this->common();
-		$data['parameters'] = $this->parameters->select('instruments.name as instrument_name,units.name as unit,labjack_values.data as labjack_value,parameters.*')
+		$data['parameters'] = $this->parameters->select('instruments.name as instrument_name,statuses.id as status_id,statuses.name as status,units.name as unit,labjack_values.data as labjack_value,parameters.*')
 			->join('labjack_values', 'labjack_values.id=parameters.labjack_value_id', "left")
 			->join('instruments', 'instruments.id=parameters.instrument_id', "left")
+			->join('statuses', 'statuses.id=parameters.status_id', "left")
 			->join('units', 'units.id=parameters.unit_id', "left")->findAll();
 		echo view('v_header', $data);
 		echo view('v_menu');
@@ -47,6 +51,7 @@ class Parameter extends BaseController
 			'instrument_id' => ['rules' => 'required', 'errors' => ['required' => 'Instrument cant be empty!']],
 			'name' => ['rules' => 'required', 'errors' => ['required' => 'Name cant be empty!']],
 			'caption' => ['rules' => 'required', 'errors' => ['required' => 'Caption cant be empty!']],
+			'status_id' => ['rules' => 'required', 'errors' => ['required' => 'Status cant be empty!']],
 			'unit_id' => ['rules' => 'required', 'errors' => ['required' => 'Unit cant be empty!']],
 			'molecular_mass' => ['rules' => 'required', 'errors' => ['required' => 'Molecular Mass cant be empty!']],
 			'formula' => ['rules' => 'required', 'errors' => ['required' => 'Formula cant be empty!']],
@@ -67,6 +72,7 @@ class Parameter extends BaseController
 			$data['instrument_id'] = $this->request->getPost('instrument_id');
 			$data['name'] = $this->request->getPost('name');
 			$data['caption'] = $this->request->getPost('caption');
+			$data['status_id'] = $this->request->getPost('status_id');
 			$data['p_type'] = $this->request->getPost('p_type');
 			$data['unit_id'] = $this->request->getPost('unit_id');
 			$data['molecular_mass'] = $this->request->getPost('molecular_mass');
@@ -113,6 +119,7 @@ class Parameter extends BaseController
 			$data['labjack_values'] = $this->labjack_values->select('labjacks.labjack_code as code,labjack_values.*')
 				->join('labjacks', 'labjacks.id=labjack_values.labjack_id')->orderBy("labjack_id,ain_id")->findAll();
 			$data["p_types"] = [(object)["id" => "main", "name" => "Main"], (object)["id" => "o2", "name" => "O<sub>2</sub>"], (object)["id" => "support", "name" => "Support"]];
+			$data['statuses'] = $this->statuses->where(['is_deleted' => 0])->findAll();
 		} catch (Exception $e) {
 		}
 		return $data;

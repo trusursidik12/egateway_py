@@ -29,7 +29,6 @@ class BaseController extends Controller
 	protected $constant_values;
 	protected $specific_privileges;
 	protected $_form;
-	protected $request;
 
 	public function __construct()
 	{
@@ -53,6 +52,14 @@ class BaseController extends Controller
 	 * @var array
 	 */
 	protected $helpers = [];
+
+	/**
+	 * Intelephense @mixin Solved
+	 * Instance of the main Request Object
+	 * 
+	 * @var HTTP\IncomingRequest
+	 */
+	protected $request;
 
 	/**
 	 * Constructor.

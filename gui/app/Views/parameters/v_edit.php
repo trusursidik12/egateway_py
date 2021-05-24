@@ -35,21 +35,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Instrument</label>
-                                        <select name="instrument_id" class="form-control <?= $validation->hasError('instrument_id') ? 'is-invalid' : '' ?>">
-                                            <option value="" selected disabled>Select Instrument</option>
-                                            <?php foreach ($instruments as $instrument) : ?>
-                                                <option value="<?= $instrument->id ?>" <?= $instrument->id == old('instrument_id', @$parameter->instrument_id) ? 'selected' : null ?>><?= $instrument->name ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('instrument_id') ?>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Instrument</label>
+                                                <select name="instrument_id" class="form-control <?= $validation->hasError('instrument_id') ? 'is-invalid' : '' ?>">
+                                                    <option value="" selected disabled>Select Instrument</option>
+                                                    <?php foreach ($instruments as $instrument) : ?>
+                                                        <option value="<?= $instrument->id ?>" <?= $instrument->id == old('instrument_id', @$parameter->instrument_id) ? 'selected' : null ?>><?= $instrument->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('instrument_id') ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select name="status_id" class="form-control <?= $validation->hasError('status_id') ? 'is-invalid' : '' ?>">
+                                                    <option value="" selected disabled>Select Status</option>
+
+                                                    <?php foreach ($statuses as $status) : ?>
+                                                        <option value="<?= $status->id ?>" <?= $status->id == old('status_id', @$parameter->status_id) ? 'selected' : null ?>><?= $status->name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('status_id') ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-1">
                                     <div class="form-group">
                                         <label>Unit</label>
                                         <select name="unit_id" class="form-control <?= $validation->hasError('unit_id') ? 'is-invalid' : '' ?>">
