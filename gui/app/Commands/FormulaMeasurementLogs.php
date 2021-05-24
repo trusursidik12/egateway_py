@@ -9,6 +9,7 @@ use App\Models\m_labjack_value;
 use App\Models\m_measurement;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
+use App\Models\m_system_check;
 
 class FormulaMeasurementLogs extends BaseCommand
 {
@@ -24,6 +25,7 @@ class FormulaMeasurementLogs extends BaseCommand
 	protected $measurement_logs;
 	protected $configurations;
 	protected $lastPutData;
+	protected $system_checks;
 
 	public function __construct()
 	{
@@ -33,6 +35,7 @@ class FormulaMeasurementLogs extends BaseCommand
 		$this->configurations =  new m_configuration();
 		$this->measurements =  new m_measurement();
 		$this->lastPutData = "0000-00-00 00:00";
+		$this->system_checks = new m_system_check();
 	}
 
 	/**
@@ -135,26 +138,40 @@ class FormulaMeasurementLogs extends BaseCommand
 
 	public function run(array $params)
 	{
-		$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
+		$system_name = "formula_measurement_logs";
+		$system_checks_id = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->id * 1;
+		if ($system_checks_id <= 0) {
+			$this->system_checks->save(["system" => $system_name, "status" => "1"]);
+			$system_checks_id = $this->system_checks->insertID();
+		} else
+			$this->system_checks->update($system_checks_id, ["status" => "1"]);
 
-		foreach ($this->labjack_values->findAll() as $labjack_value) {
-			$labjack[$labjack_value->labjack_id][$labjack_value->ain_id] = $labjack_value->data;
-		}
+		$is_looping = 1;
 
-		foreach ($this->parameters->findAll() as $parameter) {
-			@eval("\$data[$parameter->id] = $parameter->formula;");
-			$labjack_value = @$this->labjack_values->where("id", $parameter->labjack_value_id)->findAll()[0];
-			$voltage = @$labjack[@$labjack_value->labjack_id * 1][@$labjack_value->ain_id * 1] * 1;
-			//"value" => ($data[$parameter->id] < 0) ? 0 : $data[$parameter->id],
-			$measurement_logs = [
-				"instrument_id" => $parameter->instrument_id,
-				"parameter_id" => $parameter->id,
-				"value" => $data[$parameter->id],
-				"voltage" => $voltage,
-				"unit_id" => $parameter->unit_id,
-				"is_averaged" => 0
-			];
-			$this->measurement_logs->save($measurement_logs);
+		while ($is_looping) {
+			$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
+
+			foreach ($this->labjack_values->findAll() as $labjack_value) {
+				$labjack[$labjack_value->labjack_id][$labjack_value->ain_id] = $labjack_value->data;
+			}
+
+			foreach ($this->parameters->findAll() as $parameter) {
+				@eval("\$data[$parameter->id] = $parameter->formula;");
+				$labjack_value = @$this->labjack_values->where("id", $parameter->labjack_value_id)->findAll()[0];
+				$voltage = @$labjack[@$labjack_value->labjack_id * 1][@$labjack_value->ain_id * 1] * 1;
+				//"value" => ($data[$parameter->id] < 0) ? 0 : $data[$parameter->id],
+				$measurement_logs = [
+					"instrument_id" => $parameter->instrument_id,
+					"parameter_id" => $parameter->id,
+					"value" => $data[$parameter->id],
+					"voltage" => $voltage,
+					"unit_id" => $parameter->unit_id,
+					"is_averaged" => 0
+				];
+				$this->measurement_logs->save($measurement_logs);
+			}
+			sleep(1);
+			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
 		}
 	}
 }

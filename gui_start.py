@@ -1,5 +1,15 @@
+from mysql.connector.constants import ClientFlag
 from PyQt5 import QtWebEngineWidgets, QtWidgets, QtCore
 import sys
+import mysql.connector
+
+try:
+    mydb = mysql.connector.connect(host="localhost",user="root",passwd="root",database="egateway")
+    mycursor = mydb.cursor()
+    print("[V] GUI DB CONNECTED")
+except Exception as e:
+    print("[X] GUI DB Not Connected " + e)
+    sys.exit()
 
 class WebEnginePage(QtWebEngineWidgets.QWebEnginePage):
     def __init__(self, *args, **kwargs):
@@ -24,5 +34,8 @@ if __name__ == '__main__':
     view.load(QtCore.QUrl("http://localhost:8080/"))
     view.showFullScreen()
     # view.show()
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())
+    app.exec_()
+    mycursor.execute("TRUNCATE system_checks");
+    
 

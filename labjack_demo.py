@@ -28,7 +28,7 @@ while True:
         try:
             mycursor.execute("SELECT id FROM labjack_values WHERE labjack_id = '"+ str(sys.argv[1]) +"' AND ain_id = '" + str(x) + "'")
             labjack_value_id = mycursor.fetchone()[0]
-            print("UPDATE labjack_values SET data = '" + str(AIN[x]) + "' WHERE id = '" + str(labjack_value_id) + "'")
+            # print("UPDATE labjack_values SET data = '" + str(AIN[x]) + "' WHERE id = '" + str(labjack_value_id) + "'")
             mycursor.execute("UPDATE labjack_values SET data = '" + str(AIN[x]) + "' WHERE id = '" + str(labjack_value_id) + "'")
             mydb.commit()
         except Exception as e:

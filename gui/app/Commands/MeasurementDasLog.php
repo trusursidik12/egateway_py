@@ -6,12 +6,12 @@ use App\Models\m_configuration;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use App\Models\m_labjack_value;
-use App\Models\m_measurement;
+use App\Models\m_das_log;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
 use App\Models\m_system_check;
 
-class MeasurementAveraging extends BaseCommand
+class MeasurementDasLog extends BaseCommand
 {
 	/**
 	 * The Command's Group
@@ -24,6 +24,7 @@ class MeasurementAveraging extends BaseCommand
 	protected $labjack_values;
 	protected $measurement_logs;
 	protected $configurations;
+	protected $das_logs;
 	protected $system_checks;
 
 	public function __construct()
@@ -32,15 +33,16 @@ class MeasurementAveraging extends BaseCommand
 		$this->labjack_values =  new m_labjack_value();
 		$this->measurement_logs =  new m_measurement_log();
 		$this->configurations =  new m_configuration();
-		$this->measurements =  new m_measurement();
+		$this->das_logs =  new m_das_log();
 		$this->system_checks = new m_system_check();
 	}
+
 	/**
 	 * The Command's Name
 	 *
 	 * @var string
 	 */
-	protected $name = 'command:measurement_averaging';
+	protected $name = 'command:measurement_das_log';
 
 	/**
 	 * The Command's Description
@@ -75,18 +77,17 @@ class MeasurementAveraging extends BaseCommand
 	 *
 	 * @param array $params
 	 */
-
 	public function get_measurement_logs_range($minute)
 	{
 		$id_end = @$this->measurement_logs->orderBy("id DESC")->findAll()[0]->id;
 		$lasttime = date("Y-m-d H:i", mktime(date("H"), date("i") - $minute));
 		$mm = date("i") * 1;
 		$current_time = date("Y-m-d H:i");
-		$lastPutData = @$this->measurements->orderBy("time_group DESC")->findAll()[0]->time_group;
+		$lastPutData = @$this->das_logs->orderBy("time_group DESC")->findAll()[0]->time_group;
 		if ($mm % $minute == 0 && $lastPutData != $current_time) {
-			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
+			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_das_log", 0)->orderBy("id")->findAll()[0]->id;
 			if ($id_start > 0) {
-				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
+				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_das_log", 0)->findAll();
 				$return["id_start"] = $id_start;
 				$return["id_end"] = $id_end;
 				$return["waktu"] = $current_time . ":00";
@@ -100,10 +101,10 @@ class MeasurementAveraging extends BaseCommand
 		}
 	}
 
-	public function measurements_averaging()
+	public function measurements_das_log()
 	{
 		$configuration = $this->configurations->where("id", 1)->findAll()[0];
-		$measurement_logs = $this->get_measurement_logs_range($configuration->interval_average);
+		$measurement_logs = $this->get_measurement_logs_range($configuration->interval_das_logs);
 		if ($measurement_logs != 0) {
 			foreach ($measurement_logs["data"] as $measurement_log) {
 				@$instrument_id[$measurement_log->parameter_id] = $measurement_log->instrument_id;
@@ -112,29 +113,23 @@ class MeasurementAveraging extends BaseCommand
 			}
 			foreach ($this->parameters->findAll() as $parameter) {
 				if (@$numdata[$parameter->id] > 0) {
-					$measurements = [
+					$das_logs = [
 						"instrument_id" => $instrument_id[$parameter->id],
 						"time_group" => $measurement_logs["waktu"],
 						"measured_at" => $measurement_logs["waktu"],
 						"parameter_id" => $parameter->id,
 						"value" => $total[$parameter->id] / $numdata[$parameter->id],
 						"unit_id" => $parameter->unit_id,
-						"created_at" => date("Y-m-d H:i:s"),
-						"created_by" => "",
-						"created_ip" => "127.0.0.1",
-						"updated_at" => date("Y-m-d H:i:s"),
-						"updated_by" => "",
-						"updated_ip" => "127.0.0.1",
 					];
-					$this->measurements->save($measurements);
+					$this->das_logs->save($das_logs);
 				}
 			}
-			$this->measurement_logs->set(["is_averaged" => 1])->where("id BETWEEN '" . $measurement_logs["id_start"] . "' AND '" . $measurement_logs["id_end"] . "'")->update();
+			$this->measurement_logs->set(["is_das_log" => 1])->where("id BETWEEN '" . $measurement_logs["id_start"] . "' AND '" . $measurement_logs["id_end"] . "'")->update();
 		}
 	}
 	public function run(array $params)
 	{
-		$system_name = "measurement_averaging";
+		$system_name = "measurement_das_log";
 		$system_checks_id = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->id * 1;
 		if ($system_checks_id <= 0) {
 			$this->system_checks->save(["system" => $system_name, "status" => "1"]);
@@ -145,7 +140,7 @@ class MeasurementAveraging extends BaseCommand
 		$is_looping = 1;
 
 		while ($is_looping) {
-			$this->measurements_averaging();
+			$this->measurements_das_log();
 			sleep(60);
 			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
 		}

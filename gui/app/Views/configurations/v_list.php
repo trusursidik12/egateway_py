@@ -40,8 +40,8 @@
                                             <td><?= @$config->province ?></td>
                                             <td><?= @$config->latitude ?></td>
                                             <td><?= @$config->longitude ?></td>
-                                            <td><?= @$config->interval_average * 1 ?> minute(s)</td>
                                             <td><?= @$config->interval_das_logs * 1 ?> minute(s)</td>
+                                            <td><?= @$config->interval_average * 1 ?> minute(s)</td>
                                             <td><?= @$config->oxygen_reference * 1 ?> %</td>
                                         </tr>
                                     <?php endforeach; ?>
