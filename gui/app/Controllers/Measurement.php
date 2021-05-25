@@ -46,7 +46,7 @@ class Measurement extends BaseController
 				'instrument_statuses' 	=> $this->statuses->where("is_deleted", 0)->findAll(),
 				'data_statuses' 		=> $this->statuses->where("is_deleted", 0)->findAll(),
 			];
-		$data["__modulename"] = "measurements";
+		$data["__modulename"] = "Measurements";
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');

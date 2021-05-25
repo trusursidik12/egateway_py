@@ -2,6 +2,8 @@ from mysql.connector.constants import ClientFlag
 from PyQt5 import QtWebEngineWidgets, QtWidgets, QtCore
 import sys
 import mysql.connector
+import subprocess
+import time
 
 try:
     mydb = mysql.connector.connect(host="localhost",user="root",passwd="root",database="egateway")
@@ -36,6 +38,8 @@ if __name__ == '__main__':
     # view.show()
     # sys.exit(app.exec_())
     app.exec_()
-    mycursor.execute("TRUNCATE system_checks");
-    
-
+    mycursor.execute("TRUNCATE system_checks")
+    time.sleep(2)
+    subprocess.Popen("taskkill /IM \"php.exe\" /F", shell=False)
+    time.sleep(2)
+    subprocess.Popen("taskkill /IM \"python.exe\" /F", shell=False)
