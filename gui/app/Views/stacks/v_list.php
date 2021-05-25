@@ -46,7 +46,7 @@
                                             </td>
                                             <td class="stack_id"><?= @$stack->id ?></td>
                                             <td><?= @$stack->code ?></td>
-                                            <td class="params"></td>
+                                            <td><?= @$parameters[$stack->id] ?></td>
                                             <td><?= @$stack->height ?></td>
                                             <td><?= @$stack->diameter ?></td>
                                             <td><?= @$stack->flow ?></td>

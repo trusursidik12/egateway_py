@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\m_instrument;
 use App\Models\m_labjack_value;
 use App\Models\m_parameter;
+use App\Models\m_stack;
 use App\Models\m_status;
 use App\Models\m_unit;
 use Exception;
@@ -14,6 +15,7 @@ class Parameter extends BaseController
 {
 	protected $parameters;
 	protected $instruments;
+	protected $stacks;
 	protected $units;
 	protected $labjack_values;
 	protected $statuses;
@@ -25,6 +27,7 @@ class Parameter extends BaseController
 		// $this->validation = \Config\Services::validation();
 		$this->parameters = new m_parameter();
 		$this->instruments = new m_instrument();
+		$this->stacks = new m_stack();
 		$this->units = new m_unit();
 		$this->labjack_values = new m_labjack_value();
 		$this->statuses = new m_status();
@@ -34,8 +37,9 @@ class Parameter extends BaseController
 		$this->privilege_check($this->menu_ids);
 		$data["__modulename"] = "Parameters";
 		$data = $data + $this->common();
-		$data['parameters'] = $this->parameters->select('instruments.name as instrument_name,statuses.id as status_id,statuses.name as status,units.name as unit,labjack_values.data as labjack_value,parameters.*')
+		$data['parameters'] = $this->parameters->select('stacks.code as stack_code,instruments.name as instrument_name,statuses.id as status_id,statuses.name as status,units.name as unit,labjack_values.data as labjack_value,parameters.*')
 			->join('labjack_values', 'labjack_values.id=parameters.labjack_value_id', "left")
+			->join('stacks', 'stacks.id=parameters.stack_id', "left")
 			->join('instruments', 'instruments.id=parameters.instrument_id', "left")
 			->join('statuses', 'statuses.id=parameters.status_id', "left")
 			->join('units', 'units.id=parameters.unit_id', "left")->findAll();
@@ -69,6 +73,7 @@ class Parameter extends BaseController
 			return redirect()->to(base_url("parameter/edit/{$id}"))->withInput();
 		}
 		try {
+			$data['stack_id'] = $this->request->getPost('stack_id');
 			$data['instrument_id'] = $this->request->getPost('instrument_id');
 			$data['name'] = $this->request->getPost('name');
 			$data['caption'] = $this->request->getPost('caption');
@@ -114,6 +119,7 @@ class Parameter extends BaseController
 		$data = [];
 		try {
 			$data["__form"] = $this->_form;
+			$data['stacks'] = $this->stacks->select('id,code')->where(['is_deleted' => 0])->findAll();
 			$data['instruments'] = $this->instruments->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['units'] = $this->units->select('id,name')->where(['is_deleted' => 0])->findAll();
 			$data['labjack_values'] = $this->labjack_values->select('labjacks.labjack_code as code,labjack_values.*')
