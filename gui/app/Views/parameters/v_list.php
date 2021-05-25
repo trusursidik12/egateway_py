@@ -26,6 +26,7 @@
                                         <th>Instrument</th>
                                         <th>Name</th>
                                         <th>Caption</th>
+                                        <th>Type</th>
                                         <th>Status</th>
                                         <th>Unit</th>
                                         <th>Molecular Mass</th>
@@ -54,6 +55,7 @@
                                             <td><?= $param->instrument_name ?></td>
                                             <td><?= $param->name ?></td>
                                             <td><?= $param->caption ?></td>
+                                            <td><?= $param->p_type ?></td>
                                             <td class="text-center"><span class="badge <?= $param->status_id == 1 ? 'badge-success' : ($param->status_id == 2 ? 'badge-warning' : ($param->status_id == 3 ? 'badge-primary' : ($param->status_id == 4 ? 'badge-danger' : ''))) ?>"><?= $param->status_id == 0 ? 'undefined' : $param->status ?></span></td>
                                             <td><?= $param->unit ?></td>
                                             <td><?= $param->molecular_mass ?></td>
