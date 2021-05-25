@@ -178,7 +178,7 @@ class Parameter extends BaseController
 	// check status
 	public function checkstatus()
 	{
-		$checkstatus = $this->parameters->where(['status_id >' => 1])->countAllResults();
+		$checkstatus = $this->parameters->where(['status_id !=' => 1])->countAllResults();
 		if ($checkstatus > 0) {
 			$response['normal'] = false;
 		} else {
