@@ -58,9 +58,8 @@ class Stack extends BaseController
 			$data['lat'] = $this->request->getPost('lat');
 			$data['oxygen_reference'] = $this->request->getPost('oxygen_reference');
 			foreach ($data['parameter_id'] as $param) {
-				@$data['parameter_ids'] .= "{$param},";
+				@$data['parameter_ids'] .= "|{$param}|";
 			}
-			$data['parameter_ids'] = rtrim($data['parameter_ids'], ','); /* Remove , in last param */
 			unset($data['parameter_id']);
 			try {
 				if (is_null($id)) {
@@ -112,7 +111,7 @@ class Stack extends BaseController
 		$data['__modulename'] = "Edit Stack";
 		$data['parameters'] = $this->parameters->select('id,name')->findAll();
 		$data['stack'] = $this->stacks->where(['is_deleted' => 0])->find($id);
-		$data['parameter_ids'] = explode(',', $data['stack']->parameter_ids);
+		$data['parameter_ids'] = explode('||', substr($data['stack']->parameter_ids, 1, -1));
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
@@ -141,7 +140,7 @@ class Stack extends BaseController
 		try {
 			$data = [];
 			$instrument = $this->stacks->find($stack_id);
-			$parameter_id = explode(',', $instrument->parameter_ids);
+			$parameter_id = explode('||', substr($instrument->parameter_ids, 1, -1));
 			foreach ($parameter_id as $key => $id) {
 				$data[$key] = $this->parameters->select('name')->find($id);
 			}
