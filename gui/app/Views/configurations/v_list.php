@@ -21,7 +21,6 @@
                                         <th>Longitude</th>
                                         <th>Interval DAS Logs</th>
                                         <th>Interval Average</th>
-                                        <th>Oxygen Reference</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,7 +41,6 @@
                                             <td><?= @$config->longitude ?></td>
                                             <td><?= @$config->interval_das_logs * 1 ?> minute(s)</td>
                                             <td><?= @$config->interval_average * 1 ?> minute(s)</td>
-                                            <td><?= @$config->oxygen_reference * 1 ?> %</td>
                                         </tr>
                                     <?php endforeach; ?>
 

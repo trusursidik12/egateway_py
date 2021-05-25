@@ -59,7 +59,6 @@ class Configuration extends BaseController
 			$data['interval_das_logs'] = $this->request->getPost('interval_das_logs');
 			$data['interval_average'] = $this->request->getPost('interval_average');
 			$data['delay_sending'] = $this->request->getPost('delay_sending');
-			$data['oxygen_reference'] = $this->request->getPost('oxygen_reference');
 			try {
 				if (is_null($id)) {
 					$this->configurations->insert($data + $this->created_values());

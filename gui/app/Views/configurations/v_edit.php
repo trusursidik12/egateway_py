@@ -100,12 +100,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Oxygen Reference (%)</label>
-                                                <input type="text" name="oxygen_reference" value="<?= old('oxygen_reference', @$configuration->oxygen_reference) ?>" placeholder="Oxygen Reference" class="form-control">
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
