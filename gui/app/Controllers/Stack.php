@@ -26,6 +26,10 @@ class Stack extends BaseController
 		$data["__modulename"] = "Stacks";
 		$data = $data + $this->common();
 		$data['stacks'] = $this->stacks->where(['is_deleted' => 0])->findAll();
+		foreach ($this->parameters->findAll() as $parameter) {
+			@$parameters[$parameter->stack_id] .= $parameter->name . ", ";
+		}
+		$data['parameters'] = @$parameters;
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('stacks/v_list');
@@ -36,7 +40,6 @@ class Stack extends BaseController
 	{
 		if (!$this->validate([
 			'code' => ['rules' => 'required', 'errors' => ['required' => 'Stack code cant be empty!']],
-			'parameter_id' => ['rules' => 'required', 'errors' => ['required' => 'Parameter cant be empty!']],
 			'height' => ['rules' => 'required', 'errors' => ['required' => 'Height cant be empty!']],
 			'diameter' => ['rules' => 'required', 'errors' => ['required' => 'Diameter cant be empty!']],
 			'flow' => ['rules' => 'required', 'errors' => ['required' => 'Flow cant be empty!']],
@@ -50,18 +53,12 @@ class Stack extends BaseController
 		}
 		try {
 			$data['code'] = $this->request->getPost('code');
-			$data['parameter_id'] = $this->request->getPost('parameter_id');
 			$data['height'] = $this->request->getPost('height');
 			$data['diameter'] = $this->request->getPost('diameter');
 			$data['flow'] = $this->request->getPost('flow');
 			$data['lon'] = $this->request->getPost('lon');
 			$data['lat'] = $this->request->getPost('lat');
 			$data['oxygen_reference'] = $this->request->getPost('oxygen_reference');
-			foreach ($data['parameter_id'] as $param) {
-				@$data['parameter_ids'] .= "{$param},";
-			}
-			$data['parameter_ids'] = rtrim($data['parameter_ids'], ','); /* Remove , in last param */
-			unset($data['parameter_id']);
 			try {
 				if (is_null($id)) {
 					$this->stacks->insert($data + $this->created_values());
@@ -112,7 +109,6 @@ class Stack extends BaseController
 		$data['__modulename'] = "Edit Stack";
 		$data['parameters'] = $this->parameters->select('id,name')->findAll();
 		$data['stack'] = $this->stacks->where(['is_deleted' => 0])->find($id);
-		$data['parameter_ids'] = explode(',', $data['stack']->parameter_ids);
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');
@@ -134,19 +130,5 @@ class Stack extends BaseController
 		}
 		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
 		return redirect()->to('/stacks');
-	}
-	public function get_parameter($stack_id)
-	{
-		$data = [];
-		try {
-			$data = [];
-			$instrument = $this->stacks->find($stack_id);
-			$parameter_id = explode(',', $instrument->parameter_ids);
-			foreach ($parameter_id as $key => $id) {
-				$data[$key] = $this->parameters->select('name')->find($id);
-			}
-		} catch (Exception $e) {
-		}
-		return json_encode($data, JSON_PRETTY_PRINT);
 	}
 }

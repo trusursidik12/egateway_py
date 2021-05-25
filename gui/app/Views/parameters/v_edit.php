@@ -39,6 +39,17 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label>Stack</label>
+                                                <select name="stack_id" class="form-control <?= $validation->hasError('stack_id') ? 'is-invalid' : '' ?>">
+                                                    <option value="" selected disabled>Select Stack</option>
+                                                    <?php foreach ($stacks as $stack) : ?>
+                                                        <option value="<?= $stack->id ?>" <?= $stack->id == old('stack_id', @$parameter->stack_id) ? 'selected' : null ?>><?= $stack->code ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label>Instrument</label>
                                                 <select name="instrument_id" class="form-control <?= $validation->hasError('instrument_id') ? 'is-invalid' : '' ?>">
                                                     <option value="" selected disabled>Select Instrument</option>

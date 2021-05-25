@@ -23,7 +23,7 @@
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>Instrument</th>
+                                        <th>Stack</th>
                                         <th>Name</th>
                                         <th>Caption</th>
                                         <th>Type</th>
@@ -52,7 +52,7 @@
                                                 </button>
                                             </td>
                                             <td><?= $param->id ?></td>
-                                            <td><?= $param->instrument_name ?></td>
+                                            <td><?= $param->stack_code ?></td>
                                             <td><?= $param->name ?></td>
                                             <td><?= $param->caption ?></td>
                                             <td><?= $param->p_type ?></td>

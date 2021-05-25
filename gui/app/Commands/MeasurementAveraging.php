@@ -9,6 +9,7 @@ use App\Models\m_labjack_value;
 use App\Models\m_measurement;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
+use App\Models\m_stack;
 use App\Models\m_system_check;
 
 class MeasurementAveraging extends BaseCommand
@@ -25,6 +26,7 @@ class MeasurementAveraging extends BaseCommand
 	protected $measurement_logs;
 	protected $configurations;
 	protected $system_checks;
+	protected $stacks;
 
 	public function __construct()
 	{
@@ -34,6 +36,7 @@ class MeasurementAveraging extends BaseCommand
 		$this->configurations =  new m_configuration();
 		$this->measurements =  new m_measurement();
 		$this->system_checks = new m_system_check();
+		$this->stacks = new m_stack();
 	}
 	/**
 	 * The Command's Name
@@ -100,11 +103,21 @@ class MeasurementAveraging extends BaseCommand
 		}
 	}
 
-	// public function measurements_value_correction()
-	// {
-	// 	foreach ($this->parameters->where()->findAll() as $parameter) {
-	// 	}
-	// }
+	public function get_oxygen_reference($parameter_id)
+	{
+		return @$this->stacks->where("parameter_ids LIKE '%|" . $parameter_id . "|%'")->findAll()[0]->oxygen_reference;
+	}
+
+	public function get_oxygen_value($parameter_id, $time_group)
+	{
+		$stack_id = @$this->stacks->where("parameter_ids LIKE '%|" . $parameter_id . "|%'")->findAll()[0]->id;
+	}
+
+	public function measurements_value_correction()
+	{
+		foreach ($this->parameters->where(["p_type" => "main"])->findAll() as $parameter) {
+		}
+	}
 
 	public function measurements_averaging()
 	{
