@@ -8,7 +8,7 @@
                         <div class="d-flex justify-content-between">
                             <div class="card-title"><?= $__modulename ?></div>
                             <div>
-                                <a href="#" onclick="return window.history.go(-1);" class="btn btn-sm btn-link">
+                                <a href="/parameters" class="btn btn-sm btn-link">
                                     <i class="fa fa-arrow-left fa-xs"></i> Back
                                 </a>
                             </div>

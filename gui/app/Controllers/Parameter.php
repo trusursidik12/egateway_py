@@ -174,4 +174,16 @@ class Parameter extends BaseController
 		session()->setFlashdata('flash_message', ['error', 'Something when wrong!']);
 		return redirect()->to('/parameters');
 	}
+
+	// check status
+	public function checkstatus()
+	{
+		$checkstatus = $this->parameters->where(['status_id >' => 1])->countAllResults();
+		if ($checkstatus > 0) {
+			$response['normal'] = false;
+		} else {
+			$response['normal'] = true;
+		}
+		return json_encode($response);
+	}
 }
