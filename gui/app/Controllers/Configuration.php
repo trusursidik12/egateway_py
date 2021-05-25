@@ -11,14 +11,14 @@ class Configuration extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->route_name = "parameters";
+		$this->route_name = "configurations";
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		$this->configurations = new m_configuration();
 	}
 	public function index()
 	{
 		$this->privilege_check($this->menu_ids);
-		$data["__modulename"] = "Parameters";
+		$data["__modulename"] = "Configurations";
 		$data = $data + $this->common();
 		$data['configurations'] = $this->configurations->where(['is_deleted' => 0])->findAll();
 		echo view('v_header', $data);
