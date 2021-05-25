@@ -27,6 +27,7 @@ class MeasurementAveraging extends BaseCommand
 	protected $configurations;
 	protected $system_checks;
 	protected $stacks;
+	protected $file;
 
 	public function __construct()
 	{
@@ -37,6 +38,8 @@ class MeasurementAveraging extends BaseCommand
 		$this->measurements =  new m_measurement();
 		$this->system_checks = new m_system_check();
 		$this->stacks = new m_stack();
+		// $file = new \CodeIgniter\Files\File("../../measurement_averaging_log.txt");
+		// $this->file = $file->openFile('w');
 	}
 	/**
 	 * The Command's Name
@@ -84,7 +87,7 @@ class MeasurementAveraging extends BaseCommand
 		$id_end = @$this->measurement_logs->orderBy("id DESC")->findAll()[0]->id;
 		$lasttime = date("Y-m-d H:i", mktime(date("H"), date("i") - $minute));
 		$mm = date("i") * 1;
-		$current_time = date("Y-m-d H:i");
+		$current_time = date("Y-m-d H:i") . ":00";
 		$lastPutData = @$this->measurements->orderBy("time_group DESC")->findAll()[0]->time_group;
 		if ($mm % $minute == 0 && $lastPutData != $current_time) {
 			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
@@ -92,7 +95,7 @@ class MeasurementAveraging extends BaseCommand
 				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
 				$return["id_start"] = $id_start;
 				$return["id_end"] = $id_end;
-				$return["waktu"] = $current_time . ":00";
+				$return["waktu"] = $current_time;
 				$return["data"] = $measurement_logs;
 				return $return;
 			} else {
@@ -103,24 +106,32 @@ class MeasurementAveraging extends BaseCommand
 		}
 	}
 
-	public function get_oxygen_reference($parameter_id)
-	{
-		return @$this->stacks->where("parameter_ids LIKE '%|" . $parameter_id . "|%'")->findAll()[0]->oxygen_reference;
-	}
 
 	public function get_oxygen_value($parameter_id, $time_group)
 	{
-		$stack_id = @$this->stacks->where("parameter_ids LIKE '%|" . $parameter_id . "|%'")->findAll()[0]->id;
+		$parameter = @$this->parameters->where("id", $parameter_id)->findAll()[0];
+		$oxygen_parameter_id = @$this->parameters->where(["stack_id" => $parameter->stack_id, "p_type" => "o2"])->findAll()[0]->id;
+		return @$this->measurements->where(["time_group" => $time_group, "parameter_id" => $oxygen_parameter_id])->findAll()[0]->value;
 	}
 
-	public function measurements_value_correction()
+	public function measurements_value_correction($time_group)
 	{
-		foreach ($this->parameters->where(["p_type" => "main"])->findAll() as $parameter) {
+		foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
+			if (!isset($oxygen_value[$parameter->stack_id]))
+				$oxygen_value[$parameter->stack_id] = @$this->get_oxygen_value($parameter->id, $time_group);
+			if (!isset($oxygen_reference[$parameter->stack_id]))
+				$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
+
+			$measurement = @$this->measurements->where(["time_group" => $time_group, "parameter_id" => $parameter->id])->findAll()[0];
+			$correction = @$measurement->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+			if (@$measurement->id > 0)
+				$this->measurements->update($measurement->id, ["value_correction" => $correction]);
 		}
 	}
 
 	public function measurements_averaging()
 	{
+		$correcting = false;
 		$configuration = $this->configurations->where("id", 1)->findAll()[0];
 		$measurement_logs = $this->get_measurement_logs_range($configuration->interval_average);
 		if ($measurement_logs != 0) {
@@ -130,6 +141,7 @@ class MeasurementAveraging extends BaseCommand
 				@$numdata[$measurement_log->parameter_id]++;
 			}
 			foreach ($this->parameters->findAll() as $parameter) {
+				$correcting = true;
 				if (@$numdata[$parameter->id] > 0) {
 					$measurements = [
 						"instrument_id" => $instrument_id[$parameter->id],
@@ -149,6 +161,8 @@ class MeasurementAveraging extends BaseCommand
 				}
 			}
 			$this->measurement_logs->set(["is_averaged" => 1])->where("id BETWEEN '" . $measurement_logs["id_start"] . "' AND '" . $measurement_logs["id_end"] . "'")->update();
+			if ($correcting)
+				$this->measurements_value_correction($measurement_logs["waktu"]);
 		}
 	}
 	public function run(array $params)
@@ -165,7 +179,7 @@ class MeasurementAveraging extends BaseCommand
 
 		while ($is_looping) {
 			$this->measurements_averaging();
-			sleep(60);
+			sleep(10);
 			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
 		}
 	}

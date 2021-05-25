@@ -90,7 +90,7 @@ class Measurement extends BaseController
 				// @$data_status->name,
 				date('d-m-Y H:i', strtotime($mlist->time_group)),
 				$mlist->value,
-				$mlist->value,
+				$mlist->value_correction,
 				@$parameter->name,
 				@$unit->name,
 				// @$validation->name,

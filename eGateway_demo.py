@@ -22,21 +22,21 @@ mycursor.execute("SELECT id FROM labjacks ORDER BY id")
 rec = mycursor.fetchall()
 for row in rec: 
     subprocess.Popen("python labjack_demo.py " + str(row[0]), shell=True)
-    time.sleep(2)
+    time.sleep(1)
 
 
 subprocess.Popen("php gui\spark command:formula_measurement_logs", shell=True)
 print("php gui\spark command:formula_measurement_logs")
-time.sleep(2)
+time.sleep(1)
 subprocess.Popen("php gui\spark command:sentdata", shell=True)
 print("php gui\spark command:sentdata")
-time.sleep(2)
+time.sleep(1)
 subprocess.Popen("php gui\spark command:measurement_averaging", shell=True)
 print("php gui\spark command:measurement_averaging")
-time.sleep(2)
+time.sleep(1)
 subprocess.Popen("php gui\spark command:measurement_das_log", shell=True)
 print("php gui\spark command:measurement_das_log")
 
 
-time.sleep(2)
+time.sleep(1)
 subprocess.Popen("python gui_start.py", shell=True)
