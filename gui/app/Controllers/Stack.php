@@ -56,6 +56,7 @@ class Stack extends BaseController
 			$data['flow'] = $this->request->getPost('flow');
 			$data['lon'] = $this->request->getPost('lon');
 			$data['lat'] = $this->request->getPost('lat');
+			$data['oxygen_reference'] = $this->request->getPost('oxygen_reference');
 			foreach ($data['parameter_id'] as $param) {
 				@$data['parameter_ids'] .= "{$param},";
 			}

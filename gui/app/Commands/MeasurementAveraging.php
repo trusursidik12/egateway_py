@@ -100,6 +100,12 @@ class MeasurementAveraging extends BaseCommand
 		}
 	}
 
+	// public function measurements_value_correction()
+	// {
+	// 	foreach ($this->parameters->where()->findAll() as $parameter) {
+	// 	}
+	// }
+
 	public function measurements_averaging()
 	{
 		$configuration = $this->configurations->where("id", 1)->findAll()[0];

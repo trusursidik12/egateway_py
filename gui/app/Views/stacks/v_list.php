@@ -30,6 +30,7 @@
                                         <th>Flow</th>
                                         <th>Longitude</th>
                                         <th>Latitue</th>
+                                        <th>Oxygen Reference (%)</th>
                                         <th>Created By</th>
                                     </tr>
                                 </thead>
@@ -52,6 +53,7 @@
                                             <td><?= @$stack->flow ?></td>
                                             <td><?= @$stack->lon ?></td>
                                             <td><?= @$stack->lat ?></td>
+                                            <td><?= @$stack->oxygen_reference ?></td>
                                             <td><?= @$stack->created_by ?></td>
                                         </tr>
                                     <?php endforeach; ?>
