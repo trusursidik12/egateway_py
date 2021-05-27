@@ -27,7 +27,7 @@ class MeasurementAveraging extends BaseCommand
 	protected $configurations;
 	protected $system_checks;
 	protected $stacks;
-	protected $file;
+	// protected $file;
 
 	public function __construct()
 	{
@@ -106,7 +106,6 @@ class MeasurementAveraging extends BaseCommand
 		}
 	}
 
-
 	public function get_oxygen_value($parameter_id, $time_group)
 	{
 		$parameter = @$this->parameters->where("id", $parameter_id)->findAll()[0];
@@ -165,6 +164,7 @@ class MeasurementAveraging extends BaseCommand
 				$this->measurements_value_correction($measurement_logs["waktu"]);
 		}
 	}
+
 	public function run(array $params)
 	{
 		$system_name = "measurement_averaging";
@@ -179,7 +179,7 @@ class MeasurementAveraging extends BaseCommand
 
 		while ($is_looping) {
 			$this->measurements_averaging();
-			sleep(10);
+			sleep(1);
 			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
 		}
 	}

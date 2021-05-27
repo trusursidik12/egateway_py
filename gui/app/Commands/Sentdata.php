@@ -126,7 +126,7 @@ class Sentdata extends BaseCommand
 								'egateway_code' => $cnfig->egateway_code,
 								'measured_at' => $mData->measured_at,
 								'client_parameter_id' => $mData->parameter_id,
-								'value' => $mData->value,
+								'value' => ($mData->value_correction == 0) ? $mData->value : $mData->value_correction,
 								'unit_id' => $mData->unit_id,
 								'is_sent' => $mData->is_sent_klhk,
 								'sent_type' => $mData->sent_klhk_type,
@@ -164,7 +164,7 @@ class Sentdata extends BaseCommand
 					}
 				}
 			}
-			sleep(60);
+			sleep(10);
 			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
 		}
 	}
