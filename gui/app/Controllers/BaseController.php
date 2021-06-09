@@ -36,15 +36,11 @@ class BaseController extends Controller
 		$this->groups =  new m_a_group();
 		$this->menus =  new m_a_menu();
 		$this->session = \Config\Services::session();
-		if ($_SERVER["REQUEST_URI"] != "/" && $_SERVER["REQUEST_URI"] != "/login" && !isset($this->session->get("user")->group_id)) {
-			echo "<script> window.location='" . base_url() . "/login'; </script>";
-			exit();
-		}
 
-		// if ($_SERVER["REQUEST_URI"] != "/" && $_SERVER["REQUEST_URI"] != "/login" && !$this->session->get("loggedin")) {
-		// 	echo "<script> window.location='" . base_url() . "/login'; </script>";
-		// 	exit();
-		// }
+		if ($_SERVER["REQUEST_URI"] != "/" && $_SERVER["REQUEST_URI"] != "/login" && stripos(" " . $_SERVER["REQUEST_URI"], "/home") <= 0 && !$this->session->get("loggedin")) {
+			// echo "<script> window.location='" . base_url() . "/login'; </script>";
+			// exit();
+		}
 
 		$this->_form =  new A_form();
 	}
@@ -56,6 +52,14 @@ class BaseController extends Controller
 	 * @var array
 	 */
 	protected $helpers = [];
+
+	/**
+	 * Intelephense @mixin Solved
+	 * Instance of the main Request Object
+	 * 
+	 * @var HTTP\IncomingRequest
+	 */
+	protected $request;
 
 	/**
 	 * Constructor.
@@ -130,7 +134,7 @@ class BaseController extends Controller
 			$privileges[$_menu_ids[$key]] = $privilege;
 		}
 
-		if ($this->session->get("user")->group_id == 0) $allowed = true;
+		if (@$this->session->get("user")->group_id == 0) $allowed = true;
 
 		foreach ($menu_ids as $menu_id) {
 			if ($mode == "0") {

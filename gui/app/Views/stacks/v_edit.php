@@ -9,7 +9,7 @@
                         <div class="d-flex justify-content-between">
                             <div class="card-title"><?= $__modulename ?></div>
                             <div>
-                                <a href="#" onclick="return window.history.go(-1);" class="btn btn-sm btn-link">
+                                <a href="/stacks" class="btn btn-sm btn-link">
                                     <i class="fa fa-arrow-left fa-xs"></i> Back
                                 </a>
                             </div>
@@ -24,21 +24,6 @@
                                 <div class="invalid-feedback">
                                     <?= $validation->getError('code') ?>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Parameter</label>
-                                <select name="parameter_id[]" class="form-control <?= $validation->hasError('parameter_id') ? 'is-invalid' : '' ?>" multiple>
-                                    <option value="" disabled>Select Parameter</option>
-                                    <?php if (isset($parameters)) : ?>
-                                        <?php foreach ($parameters as $parameter) : ?>
-                                            <option value="<?= $parameter->id ?>" <?= array_search($parameter->id, (old('parameter_id[]', @$parameter_ids) === null ? [] : @$parameter_ids)) !== false ? 'selected' : null ?>><?= $parameter->name ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('parameter_id') ?>
-                                </div>
-
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
@@ -88,6 +73,12 @@
                                         <div class="invalid-feedback">
                                             <?= $validation->getError('lat') ?>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Oxygen Reference (%)</label>
+                                        <input type="text" name="oxygen_reference" value="<?= old('oxygen_reference', @$stack->oxygen_reference) ?>" placeholder="Oxygen Reference (%)" class="form-control <?= $validation->hasError('oxygen_reference') ? 'is-invalid' : '' ?>">
                                     </div>
                                 </div>
                             </div>

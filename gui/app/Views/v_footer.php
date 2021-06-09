@@ -132,7 +132,24 @@
     }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
-<!-- </body></html> -->
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/parameter/checkstatus',
+            dataType: 'json',
+            success: function(data) {
+                let menu = $('#menu_7').find('p');
+                if (data?.normal) {
+                    menu.html(`Parameters`);
+                } else {
+                    menu.html(`Parameters <span class='badge badge-danger'>!</span>`);
+                }
+            }
+        })
+    });
+</script>
+
 </body>
 
 </html>

@@ -42,17 +42,6 @@
                                                 <input name="name" value="<?= @$_GET["name"]; ?>" type="text" class="form-control" placeholder="Name ...">
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>Division</label>
-                                                <select name="division_id" class="form-control">
-                                                    <option value="">-- Division --</option>
-                                                    <?php foreach ($divisions as $division) : ?>
-                                                        <option value="<?= $division->id; ?>" <?= (@$_GET["division_id"] == $division->id) ? "selected" : ""; ?>><?= $division->name; ?></option>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 text-right">
@@ -98,9 +87,6 @@
                                     <th>No</th>
                                     <th>Email</th>
                                     <th>Name</th>
-                                    <th>Leader</th>
-                                    <th>Division</th>
-                                    <th>Job title</th>
                                     <th>Menu Group</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
@@ -124,9 +110,6 @@
                                         <td><?= $no; ?></td>
                                         <td><?= $user->email; ?></td>
                                         <td><?= $user->name; ?></td>
-                                        <td><?= @$user_detail[$user->id]["leader"]->name; ?></td>
-                                        <td><?= @$user_detail[$user->id]["division"]->name; ?></td>
-                                        <td><?= $user->job_title; ?></td>
                                         <td><?= @$user_detail[$user->id]["group"]->name; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($user->created_at)); ?></td>
                                         <td><?= $user->created_by; ?></td>

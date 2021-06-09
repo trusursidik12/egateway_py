@@ -8,8 +8,8 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <?php foreach ($instruments as $instrument) : ?>
-                                <li class="nav-item"><a class="nav-link <?= $instrument->id == $instrument_id ? 'active' : '' ?>" href="<?= base_url(); ?>/home/index/<?= $instrument->id ?>"><?= $instrument->name; ?></a></li>
+                            <?php foreach ($stacks as $stack) : ?>
+                                <li class="nav-item"><a class="nav-link <?= $stack->id == $stack_id ? 'active' : '' ?>" href="<?= base_url(); ?>/home/index/<?= $stack->id ?>"><?= $stack->code; ?></a></li>
                             <?php endforeach ?>
                         </ul>
                     </div><!-- /.card-header -->
@@ -18,22 +18,34 @@
                             <div class="tab-pane active">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <?php foreach ($parameters[$instrument_id] as $parameter) : ?>
-                                            <ul class="list-group list-group-unbordered">
-                                                <li class="list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <p class="h3"><?= $parameter->caption ?></p>
-                                                        <span>
-                                                            <p class="h1 d-inline" id="parameter_value_<?= $parameter->id; ?>"></p>
-                                                            <p class="small d-inline"><?= $parameter->unit->name ?></p>
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        <?php foreach ($parameters[$stack_id] as $instrument_id => $parameters) : ?>
+                                            <?php foreach ($parameters as $parameter) : ?>
+                                                <ul class="list-group list-group-unbordered">
+                                                    <li class="list-group-item">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="h3"><?= $parameter->caption ?></p>
+                                                            <span>
+                                                                <p class="h1 d-inline" id="parameter_value_<?= $parameter->id; ?>"></p>
+                                                                <p class="small d-inline"><?= $parameter->unit->name ?></p>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            <?php endforeach ?>
                                         <?php endforeach ?>
+                                        <ul class="list-group list-group-unbordered">
+                                            <li class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p class="h3">Time</p>
+                                                    <span>
+                                                        <p class="h4 d-inline" id="current_time"><?= date("d/m/Y H:i:s"); ?></p>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div class="col-md-8 border-left">
-                                        <div id="graph" style="height:380px;background-color:white;border:1px solid red;"></div>
+                                        <div id="graph" style="height:380px;background-color:white;"></div>
                                     </div>
                                 </div>
                             </div>

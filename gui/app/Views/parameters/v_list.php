@@ -23,12 +23,13 @@
                                     <tr>
                                         <th></th>
                                         <th>ID</th>
-                                        <th>Instrument</th>
+                                        <th>Stack</th>
                                         <th>Name</th>
                                         <th>Caption</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
                                         <th>Unit</th>
                                         <th>Molecular Mass</th>
-                                        <th>Formula</th>
                                         <th>View</th>
                                         <th>Graph</th>
                                         <th>Labjack Value</th>
@@ -42,7 +43,7 @@
                                 <tbody>
                                     <?php foreach ($parameters as $param) : ?>
                                         <tr>
-                                            <td style="min-width: 60px;">
+                                            <td style="min-width: 60px;" nowrap>
                                                 <a href="<?= base_url("parameter/edit/{$param->id}") ?>" class="btn btn-sm btn-primary" title='Edit'>
                                                     <i class="fa fa-xs fa-pen"></i>
                                                 </a>
@@ -51,21 +52,22 @@
                                                 </button>
                                             </td>
                                             <td><?= $param->id ?></td>
-                                            <td><?= $param->instrument_name ?></td>
+                                            <td><?= $param->stack_code ?></td>
                                             <td><?= $param->name ?></td>
                                             <td><?= $param->caption ?></td>
+                                            <td><?= $param->p_type ?></td>
+                                            <td class="text-center"><span class="badge <?= $param->status_id == 1 ? 'badge-success' : ($param->status_id == 2 ? 'badge-warning' : ($param->status_id == 3 ? 'badge-primary' : ($param->status_id == 4 ? 'badge-danger' : ''))) ?>"><?= $param->status_id == 0 ? 'undefined' : $param->status ?></span></td>
                                             <td><?= $param->unit ?></td>
                                             <td><?= $param->molecular_mass ?></td>
-                                            <td><?= $param->formula ?></td>
-                                            <td><?=
-                                                $param->is_view == 1 ? '<span class="badge badge-success">
+                                            <td class="text-center"><?=
+                                                                    $param->is_view == 1 ? '<span class="badge badge-success">
                                                                         Showed
                                                                         </span>' : '<span class="badge badge-danger">
                                                                             Hidden
                                                                         </span>'; ?>
                                             </td>
-                                            <td><?=
-                                                $param->is_graph == 1 ? '<span class="badge badge-success">
+                                            <td class="text-center"><?=
+                                                                    $param->is_graph == 1 ? '<span class="badge badge-success">
                                                                         Showed
                                                                         </span>' : '<span class="badge badge-danger">
                                                                             Hidden
@@ -77,6 +79,11 @@
                                             <td><?= $param->concentration1 ?></td>
                                             <td><?= $param->concentration2 ?></td>
                                             <td class="timestamp"><?= $param->xtimestamp ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="13"><b>Formula : </b><?= $param->formula ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 

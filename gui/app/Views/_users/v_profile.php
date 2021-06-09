@@ -36,54 +36,6 @@
                                         <input name="name" type="text" class="form-control" placeholder="Name ...">
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Job Title</label>
-                                        <input name="job_title" type="text" class="form-control" placeholder="Job Title ..." disabled>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Division</label>
-                                        <select name="division_id" class="form-control" disabled>
-                                            <option value="">-- Division --</option>
-                                            <?php foreach ($divisions as $division) : ?>
-                                                <option value="<?= $division->id; ?>"><?= $division->name; ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Leader</label>
-                                        <select name="leader_user_id" class="form-control" disabled>
-                                            <option value="">-- Leader --</option>
-                                            <?php foreach ($users as $_user) : ?>
-                                                <option value="<?= $_user->id; ?>"><?= $_user->name; ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <?php if ($__mode == "edit") : ?>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>User Signature</label>
-                                            <input name="user_signature" type="file" class="form-control" placeholder="User Signature ...">
-                                            <?php if (file_exists("dist/upload/users_signature/" . $user->signature) && $user->signature != "") : ?>
-                                                <img src="<?= base_url(); ?>/dist/upload/users_signature/<?= $user->signature; ?>" height="150">
-                                            <?php endif ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>User Photo</label>
-                                            <input name="user_photo" type="file" class="form-control" placeholder="User Photo ...">
-                                            <?php if (file_exists("dist/upload/users_photo/" . $user->photo) && $user->photo != "") : ?>
-                                                <img src="<?= base_url(); ?>/dist/upload/users_photo/<?= $user->photo; ?>" height="150">
-                                            <?php endif ?>
-                                        </div>
-                                    </div>
-                                <?php endif ?>
                             </div>
                         </div>
                         <div class=" card-footer">

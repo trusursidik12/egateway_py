@@ -7,7 +7,7 @@
                 <div class="card rounded-0">
                     <div class="card-header p-2">
                         <div class="d-flex justify-content-between">
-                            <div class="card-title">Stakcs List</div>
+                            <div class="card-title">Stacks List</div>
                             <div>
                                 <a href="/stack/add" class="btn btn-sm btn-primary">
                                     <i class="fa fa-plus fa-xs"></i> Add Stack
@@ -30,7 +30,7 @@
                                         <th>Flow</th>
                                         <th>Longitude</th>
                                         <th>Latitue</th>
-                                        <th>Created By</th>
+                                        <th>Oxygen Reference (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,13 +46,13 @@
                                             </td>
                                             <td class="stack_id"><?= @$stack->id ?></td>
                                             <td><?= @$stack->code ?></td>
-                                            <td class="params"></td>
+                                            <td><?= @$parameters[$stack->id] ?></td>
                                             <td><?= @$stack->height ?></td>
                                             <td><?= @$stack->diameter ?></td>
                                             <td><?= @$stack->flow ?></td>
                                             <td><?= @$stack->lon ?></td>
                                             <td><?= @$stack->lat ?></td>
-                                            <td><?= @$stack->created_by ?></td>
+                                            <td><?= @$stack->oxygen_reference ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 

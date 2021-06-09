@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\m_labjack_value;
+use App\Models\m_labjack_value_history;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
 
@@ -13,6 +14,7 @@ class Labjack_value extends BaseController
 	protected $route_name;
 	protected $parameters;
 	protected $labjack_values;
+	protected $labjack_value_histories;
 	protected $measurement_logs;
 
 	public function __construct()
@@ -20,16 +22,27 @@ class Labjack_value extends BaseController
 		parent::__construct();
 		$this->parameters =  new m_parameter();
 		$this->labjack_values =  new m_labjack_value();
+		$this->labjack_value_histories =  new m_labjack_value_history();
 		$this->measurement_logs =  new m_measurement_log();
 	}
 
-	public function get()
+	public function get($labjack_id, $ain_id)
 	{
-		$return = [];
-		foreach ($this->labjack_values->findAll() as $labjack_value) {
-			$return["labjack_" . $labjack_value->labjack_id . "_AIN" . $labjack_value->ain_id] = $labjack_value->data;
+		return @$this->labjack_values->where(["labjack_id" => $labjack_id, "ain_id" => $ain_id])->findAll()[0]->data;
+	}
+
+	public function get_labjack_id_ain_id($id)
+	{
+		return json_encode($this->labjack_values->where(["id" => $id])->findAll()[0]);
+	}
+
+	public function get_voltages_by_labjack_id($labjack_id)
+	{
+		$labjack_values = $this->labjack_values->where(["labjack_id" => $labjack_id])->findAll();
+		foreach ($labjack_values as $key => $labjack_value) {
+			$labjack_values[$key]->realtime = @$this->labjack_value_histories->where(["labjack_value_id" => $labjack_value->id])->orderBy("id DESC")->findAll()[0]->data;
 		}
-		echo json_encode($return);
+		return json_encode($labjack_values);
 	}
 
 	public function formula_measurement_logs()

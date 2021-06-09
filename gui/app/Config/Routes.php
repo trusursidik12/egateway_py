@@ -65,6 +65,11 @@ $routes->get('/labjacks', 'Labjack::index');
 $routes->get('/labjack/add', 'Labjack::add');
 $routes->add('/labjack/edit/(:num)', 'Labjack::edit/$1');
 $routes->add('/process/labjack/delete', 'Labjack::delete');
+//
+$routes->get('/measurements', 'Measurement::index');
+$routes->add('/measurement/list', 'Measurement::getList');
+$routes->get('/das_logs', 'Das_log::index');
+$routes->add('/das_log/list', 'Das_log::getList');
 
 /**
  * --------------------------------------------------------------------

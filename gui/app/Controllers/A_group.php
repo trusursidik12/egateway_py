@@ -72,11 +72,12 @@ class A_group extends BaseController
                 $menu_ids .= $menu_id . ",";
                 $privileges .= "15,";
             }
-            foreach ($_POST["menu_detail"] as $menu_id => $value) {
-                $menu_ids .= $menu_id . ",";
-                $previlage = @$_POST["priv_a"][$menu_id] + @$_POST["priv_e"][$menu_id] + @$_POST["priv_v"][$menu_id] + @$_POST["priv_d"][$menu_id];
-                $privileges .= $previlage . ",";
-            }
+            if (isset($_POST["menu_detail"]) && count(@$_POST["menu_detail"]) > 0)
+                foreach ($_POST["menu_detail"] as $menu_id => $value) {
+                    $menu_ids .= $menu_id . ",";
+                    $previlage = @$_POST["priv_a"][$menu_id] + @$_POST["priv_e"][$menu_id] + @$_POST["priv_v"][$menu_id] + @$_POST["priv_d"][$menu_id];
+                    $privileges .= $previlage . ",";
+                }
 
             $group = [
                 "name" => @$_POST["name"],
@@ -112,11 +113,12 @@ class A_group extends BaseController
                 $menu_ids .= $menu_id . ",";
                 $privileges .= "15,";
             }
-            foreach ($_POST["menu_detail"] as $menu_id => $value) {
-                $menu_ids .= $menu_id . ",";
-                $previlage = @$_POST["priv_a"][$menu_id] + @$_POST["priv_e"][$menu_id] + @$_POST["priv_v"][$menu_id] + @$_POST["priv_d"][$menu_id];
-                $privileges .= $previlage . ",";
-            }
+            if (isset($_POST["menu_detail"]) && count(@$_POST["menu_detail"]) > 0)
+                foreach ($_POST["menu_detail"] as $menu_id => $value) {
+                    $menu_ids .= $menu_id . ",";
+                    $previlage = @$_POST["priv_a"][$menu_id] + @$_POST["priv_e"][$menu_id] + @$_POST["priv_v"][$menu_id] + @$_POST["priv_d"][$menu_id];
+                    $privileges .= $previlage . ",";
+                }
 
             $group = [
                 "name" => @$_POST["name"],
