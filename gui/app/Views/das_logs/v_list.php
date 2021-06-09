@@ -15,40 +15,6 @@
                             </select>
                         </div>
                         <div class="col-sm">
-                            <label>Instrument Status</label>
-                            <select id="instrument_status_id" class="form-control">
-                                <option value="">-- Select Instrument Status --</option>
-                                <?php foreach ($instrument_statuses as $i_status) : ?>
-                                    <option value="<?= $i_status->id ?>"><?= $i_status->name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="col-sm">
-                            <label>Data Status</label>
-                            <select id="data_status_id" class="form-control">
-                                <option value="">-- Select Data Status --</option>
-                                <?php foreach ($data_statuses as $d_status) : ?>
-                                    <option value="<?= $d_status->id ?>"><?= $d_status->name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="col-sm">
-                            <label>Sent To Trusur</label>
-                            <select id="is_sent_cloud" class="form-control">
-                                <option value="">-- Select Status --</option>
-                                <option value="1">SENT</option>
-                                <option value="0">NOT YET</option>
-                            </select>
-                        </div>
-                        <div class="col-sm">
-                            <label>Sent To SISPEK</label>
-                            <select id="is_sent_klhk" class="form-control">
-                                <option value="">-- Select Status --</option>
-                                <option value="1">SENT</option>
-                                <option value="0">NOT YET</option>
-                            </select>
-                        </div>
-                        <div class="col-sm">
                             <label>Date</label>
                             <input type="date" id="measured_at" class="form-control">
                         </div>
@@ -69,7 +35,7 @@
                                     <!-- <th>Instrument Status</th> -->
                                     <!-- <th>Data Status</th> -->
                                     <th>Date</th>
-                                    <th>Value</th>
+                                    <th>Raw Data</th>
                                     <th>Correction</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>

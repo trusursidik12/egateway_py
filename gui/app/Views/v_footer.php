@@ -139,7 +139,7 @@
             url: '/parameter/checkstatus',
             dataType: 'json',
             success: function(data) {
-                let menu = $('#menu_6').find('p');
+                let menu = $('#menu_7').find('p');
                 if (data?.normal) {
                     menu.html(`Parameters`);
                 } else {

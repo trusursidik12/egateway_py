@@ -72,12 +72,12 @@ class Das_log extends BaseController
 		$no = @$this->request->getPost('start');
 		foreach ($das_loglist as $key => $mlist) {
 			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];
-			$instrument_status 	= @$this->statuses->where("id", $mlist->instrument_status_id)->findAll()[0];
-			$data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->findAll()[0];
+			// $instrument_status 	= @$this->statuses->where("id", $mlist->instrument_status_id)->findAll()[0];
+			// $data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->findAll()[0];
 			$parameter	 		= @$this->parameters->where("id", $mlist->parameter_id)->findAll()[0];
 			$unit	 			= @$this->units->where("id", $mlist->unit_id)->findAll()[0];
-			$validation	 		= @$this->validations->where("id", $mlist->validation_id)->findAll()[0];
-			$conditionn	 		= @$this->conditions->where("id", $mlist->condition_id)->findAll()[0];
+			// $validation	 		= @$this->validations->where("id", $mlist->validation_id)->findAll()[0];
+			// $conditionn	 		= @$this->conditions->where("id", $mlist->condition_id)->findAll()[0];
 			$no++;
 			$das_logs[$key] = [
 				$no,
