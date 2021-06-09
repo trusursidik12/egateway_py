@@ -31,8 +31,12 @@
                             </select>
                         </div>
                         <div class="col-sm">
-                            <label>Date</label>
-                            <input type="date" id="measured_at" class="form-control">
+                            <label>Date Start</label>
+                            <input type="date" id="date_start" class="form-control">
+                        </div>
+                        <div class="col-sm">
+                            <label>Date End</label>
+                            <input type="date" id="date_end" class="form-control">
                         </div>
                         <div class="col-sm">
                             <label>Action Filter</label><br>

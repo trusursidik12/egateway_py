@@ -60,12 +60,14 @@ class Das_log extends BaseController
 		$instrument_id 			= @$this->request->getPost('instrument_id');
 		$instrument_status_id 	= @$this->request->getPost('instrument_status_id');
 		$data_status_id 		= @$this->request->getPost('data_status_id');
-		$measured_at 			= @$this->request->getPost('measured_at');
+		$date_start 			= @$this->request->getPost('date_start');
+		$date_end 			= @$this->request->getPost('date_end');
 		$where					= "1=1 ";
 		if ($instrument_id != '') $where .= "AND instrument_id = '{$instrument_id}'";
 		if ($instrument_status_id != '') $where .= "AND instrument_status_id = '{$instrument_status_id}'";
 		if ($data_status_id != '') $where .= "AND data_status_id = '{$data_status_id}'";
-		if ($measured_at != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') = '{$measured_at}'";
+		if ($date_start != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') >= '{$date_start}'";
+		if ($date_end != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') <= '{$date_end}'";
 		$das_logs		= [];
 		$numrow				= $this->das_logs->where($where)->countAllResults();
 		$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL($this->request->getPost('length'), $this->request->getPost('start'));

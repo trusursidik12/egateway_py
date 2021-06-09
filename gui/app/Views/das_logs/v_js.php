@@ -15,7 +15,8 @@
                     data.data_status_id = $('#data_status_id').val();
                     data.is_sent_cloud = $('#is_sent_cloud').val();
                     data.is_sent_klhk = $('#is_sent_klhk').val();
-                    data.measured_at = $('#measured_at').val();
+                    data.date_start = $('#date_start').val();
+                    data.date_end = $('#date_end').val();
                 }
             },
         })
