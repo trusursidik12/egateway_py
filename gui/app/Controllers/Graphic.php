@@ -32,13 +32,14 @@ class Graphic extends BaseController
 		echo view('v_footer');
 		echo view('graphic/v_js');
 	}
+	/**
+	 * API DIS Data
+	 *
+	 * @param [int] $stack_id
+	 * @return void
+	 */
 	public function api($stack_id)
 	{
-		/*
-		- Check parameter ada berapa
-		- Query per parameter 
-		- Munculin
-		*/
 		try {
 			$parameters = $this->parameters->where(['stack_id' => $stack_id])->findAll();
 			$data = array();
