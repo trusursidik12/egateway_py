@@ -88,7 +88,49 @@
                     });
                     generateChart($('#disGraph'), "DIS Data", labels, datasets);
 
-                    // generateChart($('#dasGraph'), "DAS Data", labels, datasets);
+
+                }
+            })
+            $.ajax({
+                url: `<?= base_url('graphic/das_api/' . $id) ?>`,
+                dataType: 'json',
+                success: function(response) {
+
+                    if (response?.success === false) {
+                        Toast.fire({
+                            type: `error`,
+                            title: `Error : ${response?.message}`
+                        });
+                        return;
+                    }
+
+                    let values = response?.data;
+                    if (values.length === 0) {
+                        Toast.fire({
+                            type: `error`,
+                            title: `No data available`
+                        });
+                    }
+                    let datasets = [];
+                    let labels = [];
+                    values.map((value, index) => {
+                        let rawData = [];
+                        let data = value?.data;
+                        data.map((val, idx) => {
+                            labels[idx] = val?.time_group;
+                            rawData.push(parseFloat(val.value));
+                        });
+                        let dataset = {
+                            label: value?.label,
+                            data: rawData,
+                            backgroundColor: randomColor(`rgba`),
+                            borderColor: randomColor(),
+                            borderWidth: 1
+                        };
+                        datasets.push(dataset);
+                    });
+                    generateChart($('#dasGraph'), "DAS Data", labels, datasets);
+
 
                 }
             })
