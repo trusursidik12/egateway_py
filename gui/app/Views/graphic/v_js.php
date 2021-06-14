@@ -17,7 +17,7 @@
                         let rawData = [];
                         let data = value?.data;
                         data.map((val, idx) => {
-                            labels.push(val?.time_group);
+                            labels[idx] = val?.time_group;
                             rawData.push(parseFloat(val.value));
                         });
                         let dataset = {
