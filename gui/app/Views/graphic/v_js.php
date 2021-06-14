@@ -19,9 +19,18 @@
                         });
                         return;
                     }
-                    var randomColor = () => {
-                        let hexColor = Math.floor(Math.random() * 16777215).toString(16);
-                        return `#${hexColor}`;
+                    var randomColor = (type = 'hex') => {
+                        let color, r, g, b;
+                        if (type == 'hex') {
+                            let hexColor = Math.floor(Math.random() * 16777215).toString(16);
+                            color = `#${hexColor}`;
+                            return color;
+                        }
+                        r = Math.floor(Math.random() * 255);
+                        g = Math.floor(Math.random() * 255);
+                        b = Math.floor(Math.random() * 255);
+                        color = `rgba(${r},${g},${b},0.2)`;
+                        return color;
                     }
                     let values = response?.data;
                     if (values.length === 0) {
@@ -42,14 +51,14 @@
                         let dataset = {
                             label: value?.label,
                             data: rawData,
-                            backgroundColor: 'rgba(255,255,255,0)',
+                            backgroundColor: randomColor(`rgba`),
                             borderColor: randomColor(),
                             borderWidth: 1
                         };
                         datasets.push(dataset);
 
                     });
-                    var ctx = $('#graph');
+                    var ctx = $('#disGraph');
                     var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -57,6 +66,10 @@
                             datasets: datasets
                         },
                         options: {
+                            title: {
+                                display: true,
+                                text: `DIS Data`
+                            },
                             responsive: true,
                             interaction: {
                                 mode: 'index',
