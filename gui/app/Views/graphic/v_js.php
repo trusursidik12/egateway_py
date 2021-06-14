@@ -6,6 +6,10 @@
                 url: `<?= base_url('graphic/api/' . $id) ?>`,
                 dataType: 'json',
                 success: function(response) {
+                    if (response?.success === false) {
+                        alert(`Error : ${response?.message}`);
+                        return;
+                    }
                     var randomColor = () => {
                         let hexColor = Math.floor(Math.random() * 16777215).toString(16);
                         return `#${hexColor}`;
