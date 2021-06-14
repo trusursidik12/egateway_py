@@ -6,8 +6,17 @@
                 url: `<?= base_url('graphic/api/' . $id) ?>`,
                 dataType: 'json',
                 success: function(response) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
                     if (response?.success === false) {
-                        alert(`Error : ${response?.message}`);
+                        Toast.fire({
+                            type: `error`,
+                            title: `Error : ${response?.message}`
+                        });
                         return;
                     }
                     var randomColor = () => {
@@ -15,6 +24,12 @@
                         return `#${hexColor}`;
                     }
                     let values = response?.data;
+                    if (values.length === 0) {
+                        Toast.fire({
+                            type: `error`,
+                            title: `No data available`
+                        });
+                    }
                     let datasets = [];
                     let labels = [];
                     values.map((value, index) => {
