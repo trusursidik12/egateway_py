@@ -49,9 +49,6 @@
                         datasets.push(dataset);
 
                     });
-                    console.log(labels);
-                    console.log(datasets);
-
                     var ctx = $('#graph');
                     var myChart = new Chart(ctx, {
                         type: 'line',
