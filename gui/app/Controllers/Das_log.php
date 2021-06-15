@@ -62,6 +62,8 @@ class Das_log extends BaseController
 		$data_status_id 		= @$this->request->getPost('data_status_id');
 		$date_start 			= @$this->request->getPost('date_start');
 		$date_end 			= @$this->request->getPost('date_end');
+		$length = @$this->request->getPost('length') ? (int) $this->request->getPost('length') : -1;
+		$start = @$this->request->getPost('start') ? (int) $this->request->getPost('start') : 0;
 		$where					= "1=1 ";
 		if ($instrument_id != '') $where .= "AND instrument_id = '{$instrument_id}'";
 		if ($instrument_status_id != '') $where .= "AND instrument_status_id = '{$instrument_status_id}'";
@@ -70,7 +72,11 @@ class Das_log extends BaseController
 		if ($date_end != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') <= '{$date_end}'";
 		$das_logs		= [];
 		$numrow				= $this->das_logs->where($where)->countAllResults();
-		$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL($this->request->getPost('length'), $this->request->getPost('start'));
+		if ($length == -1) {
+			$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL();
+		} else {
+			$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL($length, $start);
+		}
 		$no = @$this->request->getPost('start');
 		foreach ($das_loglist as $key => $mlist) {
 			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];

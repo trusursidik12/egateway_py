@@ -64,6 +64,8 @@ class Measurement extends BaseController
 		$is_sent_klhk 			= @$this->request->getPost('is_sent_klhk');
 		$date_start 			= @$this->request->getPost('date_start');
 		$date_end 			= @$this->request->getPost('date_end');
+		$length = @$this->request->getPost('length') ? (int) $this->request->getPost('length') : -1;
+		$start = @$this->request->getPost('start') ? (int) $this->request->getPost('start') : 0;
 		$where					= "is_deleted = '0'";
 		if ($instrument_id != '') $where .= "AND instrument_id = '{$instrument_id}'";
 		if ($instrument_status_id != '') $where .= "AND instrument_status_id = '{$instrument_status_id}'";
@@ -74,7 +76,11 @@ class Measurement extends BaseController
 		if ($date_end != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') <= '{$date_end}'";
 		$measurements		= [];
 		$numrow				= $this->measurements->where($where)->countAllResults();
-		$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL($this->request->getPost('length'), $this->request->getPost('start'));
+		if ($length == -1) {
+			$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL();
+		} else {
+			$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL($length, $start);
+		}
 		$no = @$this->request->getPost('start');
 		foreach ($measurementlist as $key => $mlist) {
 			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];

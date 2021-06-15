@@ -19,7 +19,11 @@
                     data.date_end = $('#date_end').val();
                 }
             },
-            dom: 'Bfrtip',
+            lengthMenu: [
+                [5, 50, 100, -1],
+                [5, 50, 100, "All"]
+            ],
+            dom: '<"dt-buttons"Bf><"clear">lirtp',
             buttons: [{
                 text: 'Export to Excel',
                 extend: 'excel',
