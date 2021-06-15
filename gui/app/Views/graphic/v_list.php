@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center flex-column">
                             <canvas id="disGraph" class="mb-5" style="max-width:60vw"></canvas>
-                            <canvas id="dasGraph" style="max-width:60vw"></canvas>
+                            <!-- <canvas id="dasGraph" style="max-width:60vw"></canvas> -->
                         </div>
                     </div>
                 </div>

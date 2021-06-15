@@ -29,7 +29,7 @@
 <aside class="main-sidebar sidebar-dark-primary navbar-navy elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="<?= base_url(); ?>/dist/img/egateway_plus.png" alt="eGateway" class="brand-image elevation-3">
+        <img src="<?= base_url(); ?>/dist/img/egateway_white_.png" alt="eGateway" class="brand-image elevation-3">
         <span class="brand-text font-weight-light">&nbsp;</span>
     </a>
 
