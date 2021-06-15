@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        dataTable = $('#das_logList').DataTable({
+        let table = $('#das_logList').DataTable({
             "ordering": false,
             "processing": true,
             "serverSide": true,
@@ -19,6 +19,13 @@
                     data.date_end = $('#date_end').val();
                 }
             },
+            dom: 'Bfrtip',
+            buttons: [{
+                text: 'Export to Excel',
+                extend: 'excel',
+                className: 'btn btn-sm btn-success mb-3',
+            }],
         })
+        $('.dt-buttons > button').removeClass('dt-button buttons-excel buttons-html5');
     })
 </script>
