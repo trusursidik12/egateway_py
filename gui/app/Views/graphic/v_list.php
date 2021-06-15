@@ -19,9 +19,16 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <form id="filter">
+                            <div class="row">
+                                <div class="col-2 col d-flex align-items-center"><label>Filter Data</label></div>
+                                <div class="col"><label>Date Start</label><input type="date" name="date_start" class="form-control form-control-sm"></div>
+                                <div class="col"><label>Date End</label><input type="date" name="date_end" class="form-control form-control-sm"></div>
+                                <div class="col d-flex align-items-end"><button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-xs fa-search"></i></button></div>
+                            </div>
+                        </form>
                         <div class="d-flex justify-content-between align-items-center flex-column">
                             <canvas id="disGraph" class="mb-5" style="max-width:60vw"></canvas>
-                            <!-- <canvas id="dasGraph" style="max-width:60vw"></canvas> -->
                         </div>
                     </div>
                 </div>
