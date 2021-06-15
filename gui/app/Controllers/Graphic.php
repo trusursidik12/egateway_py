@@ -43,34 +43,21 @@ class Graphic extends BaseController
 	public function api($stack_id)
 	{
 		try {
+			$date_start = $this->request->getPost('date_start');
+			$date_end = $this->request->getPost('date_end');
 			$parameters = $this->parameters->where(['stack_id' => $stack_id])->findAll();
 			$data = array();
+			$where = "1=1";
+			if (!empty($date_start)) {
+				$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') >= '$date_start'";
+			}
+			if (!empty($date_end)) {
+				$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') <= '$date_end'";
+			}
 			foreach ($parameters as $key => $param) {
 				$disLogs = $this->measurements
 					->select("id,time_group,value,value_correction")
-					->where(['parameter_id' => $param->id])
-					->orderBy('id', 'desc')->findAll();
-				if (!count($disLogs) > 0) {
-					continue;
-				}
-				$data[$key]['data'] = $disLogs;
-				$data[$key]['label'] = $param->name;
-				if (empty($data[$key]['data'])) unset($data[$key]['data']);
-				if (empty($data[$key]['label'])) unset($data[$key]['label']);
-			}
-			return $this->response->setJson(['success' => true, 'data' => $data]);
-		} catch (Exception $e) {
-			return $this->response->setJson(['success' => false, 'message' => $e->getMessage()]);
-		}
-	}
-	public function das_api($stack_id)
-	{
-		try {
-			$parameters = $this->parameters->where(['stack_id' => $stack_id])->findAll();
-			$data = array();
-			foreach ($parameters as $key => $param) {
-				$disLogs = $this->das_logs
-					->select("id,time_group,value,value_correction")
+					->where($where)
 					->where(['parameter_id' => $param->id])
 					->orderBy('id', 'desc')->findAll();
 				if (!count($disLogs) > 0) {
