@@ -62,17 +62,25 @@ class Measurement extends BaseController
 		$data_status_id 		= @$this->request->getPost('data_status_id');
 		$is_sent_cloud 			= @$this->request->getPost('is_sent_cloud');
 		$is_sent_klhk 			= @$this->request->getPost('is_sent_klhk');
-		$measured_at 			= @$this->request->getPost('measured_at');
+		$date_start 			= @$this->request->getPost('date_start');
+		$date_end 			= @$this->request->getPost('date_end');
+		$length = @$this->request->getPost('length') ? (int) $this->request->getPost('length') : -1;
+		$start = @$this->request->getPost('start') ? (int) $this->request->getPost('start') : 0;
 		$where					= "is_deleted = '0'";
 		if ($instrument_id != '') $where .= "AND instrument_id = '{$instrument_id}'";
 		if ($instrument_status_id != '') $where .= "AND instrument_status_id = '{$instrument_status_id}'";
 		if ($data_status_id != '') $where .= "AND data_status_id = '{$data_status_id}'";
 		if ($is_sent_cloud != '') $where .= "AND is_sent_cloud = '{$is_sent_cloud}'";
 		if ($is_sent_klhk != '') $where .= "AND is_sent_klhk = '{$is_sent_klhk}'";
-		if ($measured_at != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') = '{$measured_at}'";
+		if ($date_start != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') >= '{$date_start}'";
+		if ($date_end != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') <= '{$date_end}'";
 		$measurements		= [];
 		$numrow				= $this->measurements->where($where)->countAllResults();
-		$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL($this->request->getPost('length'), $this->request->getPost('start'));
+		if ($length == -1) {
+			$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL();
+		} else {
+			$measurementlist	= $this->measurements->where($where)->orderBy("id", "DESC")->findALL($length, $start);
+		}
 		$no = @$this->request->getPost('start');
 		foreach ($measurementlist as $key => $mlist) {
 			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];

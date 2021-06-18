@@ -29,7 +29,7 @@
 <aside class="main-sidebar sidebar-dark-primary navbar-navy elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="<?= base_url(); ?>/dist/img/egateway_white.png" alt="eGateway" class="brand-image elevation-3">
+        <img src="<?= base_url(); ?>/dist/img/egateway_white_.png" alt="eGateway" class="brand-image elevation-3">
         <span class="brand-text font-weight-light">&nbsp;</span>
     </a>
 
@@ -66,7 +66,7 @@
                 <?php if (isset($__mainmenu) && count($__mainmenu) > 0) : ?>
                     <?php foreach ($__mainmenu as $mainmenu) : ?>
                         <li id="menu_<?= $mainmenu->id; ?>" class="nav-item has-treeview">
-                            <a <?= (!@$__submenu[$mainmenu->id] != "") ? "href='" . base_url() . "/" . $mainmenu->url . "'" : "href='#'"; ?> class="nav-link">
+                            <a <?= (!@$__submenu[$mainmenu->id] != "") ? "href='" . base_url() . "/" . $mainmenu->url . "'" : "href='#'"; ?> class="nav-link <?= uri_string() == $mainmenu->url ? 'active' : '' ?>">
                                 <i class="nav-icon <?= $mainmenu->icon; ?>"></i>
                                 <p>
                                     <?= $mainmenu->name; ?>

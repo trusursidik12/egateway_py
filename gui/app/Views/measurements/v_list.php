@@ -15,24 +15,6 @@
                             </select>
                         </div>
                         <div class="col-sm">
-                            <label>Instrument Status</label>
-                            <select id="instrument_status_id" class="form-control">
-                                <option value="">-- Select Instrument Status --</option>
-                                <?php foreach ($instrument_statuses as $i_status) : ?>
-                                    <option value="<?= $i_status->id ?>"><?= $i_status->name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="col-sm">
-                            <label>Data Status</label>
-                            <select id="data_status_id" class="form-control">
-                                <option value="">-- Select Data Status --</option>
-                                <?php foreach ($data_statuses as $d_status) : ?>
-                                    <option value="<?= $d_status->id ?>"><?= $d_status->name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                        <div class="col-sm">
                             <label>Sent To Trusur</label>
                             <select id="is_sent_cloud" class="form-control">
                                 <option value="">-- Select Status --</option>
@@ -49,8 +31,12 @@
                             </select>
                         </div>
                         <div class="col-sm">
-                            <label>Date</label>
-                            <input type="date" id="measured_at" class="form-control">
+                            <label>Date Start</label>
+                            <input type="date" id="date_start" class="form-control">
+                        </div>
+                        <div class="col-sm">
+                            <label>Date End</label>
+                            <input type="date" id="date_end" class="form-control">
                         </div>
                         <div class="col-sm">
                             <label>Action Filter</label><br>
@@ -69,7 +55,7 @@
                                     <!-- <th>Instrument Status</th> -->
                                     <!-- <th>Data Status</th> -->
                                     <th>Date</th>
-                                    <th>Value</th>
+                                    <th>Raw Data</th>
                                     <th>Correction</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>
