@@ -135,18 +135,19 @@
 
 <script>
     $(document).ready(function() {
-        $.ajax({
-            url: '/parameter/checkstatus',
-            dataType: 'json',
-            success: function(data) {
-                let menu = $('#menu_6').find('p');
-                if (data?.normal) {
-                    menu.html(`Parameters`);
-                } else {
-                    menu.html(`Parameters <span class='badge badge-danger'>!</span>`);
-                }
+        $("#menu_ul").find('p').each(function(index) {
+            if ($(this).text().trim().toLowerCase() == "parameters") {
+                let menu = $(this).parent().find('p');
+                $.ajax({
+                    url: '/parameter/checkstatus',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data?.normal) menu.html(`Parameters`);
+                        else menu.html(`Parameters <span class='badge badge-danger'>!</span>`);
+                    }
+                })
             }
-        })
+        });
     });
 </script>
 
