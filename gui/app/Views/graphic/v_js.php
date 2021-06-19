@@ -26,6 +26,7 @@
             var generateChart = (el, title, labels, datasets, type) => {
                 //Cek type parameter
                 let baku_mutu = 0;
+                let is_line_active = true;
                 switch (type) {
                     case 'NOx':
                     case 'SO2':
@@ -34,13 +35,11 @@
                     case 'PM':
                         baku_mutu = 100;
                         break;
-                    case 'HG':
-                        baku_mutu = 0.003;
-                        break;
-
                     default:
+                        is_line_active = false
                         break;
                 }
+                console.log((is_line_active ? 'afterDatasetsDraw' : null))
                 var myChart = new Chart(el, {
                     type: 'line',
                     data: {
@@ -61,7 +60,12 @@
                         scales: {
                             y: {
                                 beginAtZero: true
-                            }
+                            },
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         },
                         annotation: {
                             annotations: [{
@@ -75,7 +79,8 @@
                                     enabled: true,
                                     content: `Ambang Baku Mutu ${type}`
                                 }
-                            }]
+                            }],
+                            drawTime: (is_line_active ? 'afterDatasetsDraw' : null)
                         }
                     }
 
@@ -108,7 +113,7 @@
                         let datasets = [];
                         let labels = [];
                         let date_master = [];
-                        let type = `<?= @$parameter->name ?>`;
+                        let type = `<?= @explode(" ", $parameter->name)[1] ?>`;
                         values.map((value, index) => {
                             let rawData = [];
                             let data = value?.data;
