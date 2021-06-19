@@ -114,10 +114,10 @@
                         let labels = [];
                         let date_master = [];
                         let type = `<?= @explode(" ", $parameter->name)[1] ?>`;
-                        values.map((value, index) => {
+                        values.map((value_correction, index) => {
                             let rawData = [];
-                            let data = value?.data;
-                            type = value?.label?.split(" ")[1];
+                            let data = value_correction?.data;
+                            type = value_correction?.label?.split(" ")[1];
                             data.map((val, idx) => {
                                 let time_group = val?.time_group;
                                 time_group = new Date(time_group);
@@ -128,15 +128,15 @@
                                 if (date_master.length < 1) {
                                     date_master.push(date);
                                 }
-                                date_master.map((value, index) => {
+                                date_master.map((value_correction, index) => {
                                     if (date_master[index] != date) {
                                         date_master.push(date);
                                     }
                                 })
-                                rawData.push(parseFloat(val.value));
+                                rawData.push(parseFloat(val.value_correction));
                             });
                             let dataset = {
-                                label: value?.label,
+                                label: value_correction?.label,
                                 data: rawData,
                                 backgroundColor: randomColor(`rgba`),
                                 borderColor: randomColor(),
