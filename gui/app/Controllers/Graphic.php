@@ -34,7 +34,7 @@ class Graphic extends BaseController
 		}
 		$data["param_id"] = $param_id;
 		$data["stacks"] = $this->stacks->where(["is_deleted" => 0])->findAll();
-		$data["stack"] = $this->stacks->find($id);
+		$data["_stack"] = $this->stacks->find($id);
 		$data["parameters"] = $this->parameters->where(["stack_id" => $id])->findAll();
 		$data["id"] = $id;
 		$data["__modulename"] = "Graphic";
