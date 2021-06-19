@@ -63,12 +63,18 @@ class Graphic extends BaseController
 			}
 			$data = array();
 			$where = "1=1";
-			if (!empty($date_start)) {
-				$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') >= '$date_start'";
+			if (empty($date_start) && empty($date_end)) {
+				$date = date('Y-m-d');
+				$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') >= '$date'";
+			} else {
+				if (!empty($date_start)) {
+					$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') >= '$date_start'";
+				}
+				if (!empty($date_end)) {
+					$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') <= '$date_end'";
+				}
 			}
-			if (!empty($date_end)) {
-				$where .= " AND DATE_FORMAT(time_group,'%Y-%m-%d') <= '$date_end'";
-			}
+
 			foreach ($parameters as $key => $param) {
 				$disLogs = $this->measurements
 					->select("id,time_group,value,value_correction")
