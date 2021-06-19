@@ -74,7 +74,7 @@ class Graphic extends BaseController
 					->select("id,time_group,value,value_correction")
 					->where($where)
 					->where(['parameter_id' => $param->id])
-					->orderBy('id', 'desc')->findAll();
+					->orderBy('time_group', 'asc')->findAll();
 				if (!count($disLogs) > 0) {
 					continue;
 				}

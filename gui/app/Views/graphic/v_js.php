@@ -73,11 +73,25 @@
                         }
                         let datasets = [];
                         let labels = [];
+                        let date_master = [];
                         values.map((value, index) => {
                             let rawData = [];
                             let data = value?.data;
                             data.map((val, idx) => {
-                                labels[idx] = val?.time_group;
+                                let time_group = val?.time_group;
+                                time_group = new Date(time_group);
+                                split_time_group = time_group.toLocaleString('id')?.split(" ");
+                                let date = split_time_group[0];
+                                let time = split_time_group[1];
+                                labels[idx] = time;
+                                if (date_master.length < 1) {
+                                    date_master.push(date);
+                                }
+                                date_master.map((value, index) => {
+                                    if (date_master[index] != date) {
+                                        date_master.push(date);
+                                    }
+                                })
                                 rawData.push(parseFloat(val.value));
                             });
                             let dataset = {
@@ -90,6 +104,14 @@
                             datasets.push(dataset);
                         });
                         generateChart($('#disGraph'), "DIS Data", labels, datasets);
+                        console.log(date_master);
+                        let html_date = ``;
+                        if (date_master.length > 1) {
+                            html_date += `${date_master[0]} - ${date_master[date_master.length -1]}`;
+                        } else {
+                            html_date += `${date_master[0] != undefined ? date_master[0] : ''}`;
+                        }
+                        $('#datemaster').html(html_date);
 
 
                     }

@@ -31,6 +31,7 @@
                             <div class="col-10">
                                 <div class="d-flex justify-content-between align-items-center flex-column">
                                     <canvas id="disGraph" class="mb-5" style="max-width:60vw"></canvas>
+                                    <span id="datemaster"></span>
                                 </div>
                             </div>
                             <div class="col-2">
