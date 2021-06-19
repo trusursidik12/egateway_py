@@ -32,7 +32,7 @@ class Graphic extends BaseController
 		])) {
 			return redirect()->back()->with("flash_message", ['error', 'Error!']);
 		}
-		$data["param_id"] = $param_id;
+		$data["parameter"] = $this->parameters->find($param_id);
 		$data["stacks"] = $this->stacks->where(["is_deleted" => 0])->findAll();
 		$data["_stack"] = $this->stacks->find($id);
 		$data["parameters"] = $this->parameters->where(["stack_id" => $id])->findAll();

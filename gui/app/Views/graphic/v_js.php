@@ -1,4 +1,6 @@
 <script src="<?= base_url("plugins/chart.js/Chart.min.js") ?>"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@0.5.7/src/index.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@0.5.7/chartjs-plugin-annotation.min.js"></script>
 <script>
     $(document).ready(function() {
         try {
@@ -21,7 +23,24 @@
                 showConfirmButton: false,
                 timer: 3000
             });
-            var generateChart = (el, title, labels, datasets) => {
+            var generateChart = (el, title, labels, datasets, type) => {
+                //Cek type parameter
+                let baku_mutu = 0;
+                switch (type) {
+                    case 'NOx':
+                    case 'SO2':
+                        baku_mutu = 550;
+                        break;
+                    case 'PM':
+                        baku_mutu = 100;
+                        break;
+                    case 'HG':
+                        baku_mutu = 0.003;
+                        break;
+
+                    default:
+                        break;
+                }
                 var myChart = new Chart(el, {
                     type: 'line',
                     data: {
@@ -43,14 +62,29 @@
                             y: {
                                 beginAtZero: true
                             }
+                        },
+                        annotation: {
+                            annotations: [{
+                                type: 'line',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: baku_mutu,
+                                borderColor: '#EF4444',
+                                borderWidth: 2,
+                                label: {
+                                    enabled: true,
+                                    content: `Ambang Baku Mutu ${type}`
+                                }
+                            }]
                         }
                     }
+
                 });
                 return myChart;
             }
             var requestGraphic = (data = {}) => {
                 $.ajax({
-                    url: `<?= base_url('graphic/api/' . $id . ($param_id != null ? "/" . $param_id : "")) ?>`,
+                    url: `<?= base_url('graphic/api/' . $id . (@$parameter->id != null ? "/" . @$parameter->id : "")) ?>`,
                     type: 'post',
                     dataType: 'json',
                     data: data,
@@ -74,9 +108,11 @@
                         let datasets = [];
                         let labels = [];
                         let date_master = [];
+                        let type = `<?= @$parameter->name ?>`;
                         values.map((value, index) => {
                             let rawData = [];
                             let data = value?.data;
+                            type = value?.label?.split(" ")[1];
                             data.map((val, idx) => {
                                 let time_group = val?.time_group;
                                 time_group = new Date(time_group);
@@ -103,8 +139,7 @@
                             };
                             datasets.push(dataset);
                         });
-                        generateChart($('#disGraph'), "DIS Data", labels, datasets);
-                        console.log(date_master);
+                        generateChart($('#disGraph'), "DIS Data", labels, datasets, type);
                         let html_date = ``;
                         if (date_master.length > 1) {
                             html_date += `${date_master[0]} - ${date_master[date_master.length -1]}`;
@@ -121,7 +156,6 @@
             $('#filter').submit(function(e) {
                 e.preventDefault();
                 let data = $(this).serialize();
-                console.log(data);
                 requestGraphic(data);
             })
         } catch (err) {

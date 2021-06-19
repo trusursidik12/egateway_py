@@ -38,7 +38,7 @@
                                 <div class="d-flex justity-content-start align-items-start flex-column">
                                     <b>Parameter <?= $_stack->code; ?></b>
                                     <?php foreach ($parameters as $param) : ?>
-                                        <a href="?parameter=<?= $param->id ?>" class="btn <?= $param->id == $param_id ? "btn-primary" : "btn-outline-primary" ?> my-1"><?= $param->name ?></a>
+                                        <a href="?parameter=<?= $param->id ?>" class="btn <?= $param->id == @$parameter->id ? "btn-primary" : "btn-outline-primary" ?> my-1"><?= $param->name ?></a>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
