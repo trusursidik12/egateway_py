@@ -50,7 +50,7 @@
             }
             var requestGraphic = (data = {}) => {
                 $.ajax({
-                    url: `<?= base_url('graphic/api/' . $id) ?>`,
+                    url: `<?= base_url('graphic/api/' . $id . ($param_id != null ? "/" . $param_id : "")) ?>`,
                     type: 'post',
                     dataType: 'json',
                     data: data,

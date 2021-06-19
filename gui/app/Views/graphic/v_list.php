@@ -27,9 +27,22 @@
                                 <div class="col d-flex align-items-end"><button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-xs fa-search"></i></button></div>
                             </div>
                         </form>
-                        <div class="d-flex justify-content-between align-items-center flex-column">
-                            <canvas id="disGraph" class="mb-5" style="max-width:60vw"></canvas>
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="d-flex justify-content-between align-items-center flex-column">
+                                    <canvas id="disGraph" class="mb-5" style="max-width:60vw"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="d-flex justity-content-start align-items-start flex-column">
+                                    <b>Parameter <?= $stack->code; ?></b>
+                                    <?php foreach ($parameters as $param) : ?>
+                                        <a href="?parameter=<?= $param->id ?>" class="btn <?= $param->id == $param_id ? "btn-primary" : "btn-outline-primary" ?> my-1"><?= $param->name ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
