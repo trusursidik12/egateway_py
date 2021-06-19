@@ -89,7 +89,7 @@ class MeasurementAveraging extends BaseCommand
 		$mm = date("i") * 1;
 		$current_time = date("Y-m-d H:i") . ":00";
 		$lastPutData = @$this->measurements->orderBy("time_group DESC")->findAll()[0]->time_group;
-		if ($mm % $minute == 0 && $lastPutData != $current_time) {
+		if (($mm % $minute == 0 || ($mm + 60) % $minute == 0) && $lastPutData != $current_time) {
 			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
 			if ($id_start > 0) {
 				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
