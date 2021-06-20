@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Models\m_configuration;
+use App\Models\m_instrument;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use App\Models\m_labjack_value;
@@ -22,6 +23,7 @@ class MeasurementDasLog extends BaseCommand
 	protected $group = 'CodeIgniter';
 
 	protected $parameters;
+	protected $instruments;
 	protected $labjack_values;
 	protected $measurement_logs;
 	protected $configurations;
@@ -32,6 +34,7 @@ class MeasurementDasLog extends BaseCommand
 	public function __construct()
 	{
 		$this->parameters =  new m_parameter();
+		$this->instruments = new m_instrument();
 		$this->labjack_values =  new m_labjack_value();
 		$this->measurement_logs =  new m_measurement_log();
 		$this->configurations =  new m_configuration();
@@ -146,6 +149,8 @@ class MeasurementDasLog extends BaseCommand
 				if (@$numdata[$parameter->id] > 0) {
 					$das_logs = [
 						"instrument_id" => $instrument_id[$parameter->id],
+						"instrument_status_id" => @$this->instruments->find($instrument_id[$parameter->id])->instrument_status_id * 1,
+						"data_status_id" => @$this->parameters->find($parameter->id)->status_id * 1,
 						"time_group" => $measurement_logs["waktu"],
 						"measured_at" => $measurement_logs["waktu"],
 						"parameter_id" => $parameter->id,
