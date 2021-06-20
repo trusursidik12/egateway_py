@@ -113,7 +113,6 @@ class MeasurementDasLog extends BaseCommand
 
 	public function das_log_value_correction($time_group)
 	{
-		// foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
 		foreach ($this->parameters->findAll() as $parameter) {
 			$das_log = @$this->das_logs->where(["time_group" => $time_group, "parameter_id" => $parameter->id])->findAll()[0];
 			$correction = @$das_log->value;
@@ -150,7 +149,7 @@ class MeasurementDasLog extends BaseCommand
 						"time_group" => $measurement_logs["waktu"],
 						"measured_at" => $measurement_logs["waktu"],
 						"parameter_id" => $parameter->id,
-						"value" => $total[$parameter->id] / $numdata[$parameter->id],
+						"value" => round($total[$parameter->id] / $numdata[$parameter->id], 2),
 						"unit_id" => $parameter->unit_id,
 					];
 					$this->das_logs->save($das_logs);
