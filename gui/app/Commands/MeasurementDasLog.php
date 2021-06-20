@@ -114,13 +114,17 @@ class MeasurementDasLog extends BaseCommand
 	public function das_log_value_correction($time_group)
 	{
 		foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
-			if (!isset($oxygen_value[$parameter->stack_id]))
-				$oxygen_value[$parameter->stack_id] = @$this->get_oxygen_value($parameter->id, $time_group);
-			if (!isset($oxygen_reference[$parameter->stack_id]))
-				$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
-
 			$das_log = @$this->das_logs->where(["time_group" => $time_group, "parameter_id" => $parameter->id])->findAll()[0];
-			$correction = @$das_log->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+			$correction = @$das_log->value;
+			if ($parameter->p_type == 'main') {
+				if (!isset($oxygen_value[$parameter->stack_id]))
+					$oxygen_value[$parameter->stack_id] = @$this->get_oxygen_value($parameter->id, $time_group);
+				if (!isset($oxygen_reference[$parameter->stack_id]))
+					$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
+
+				$correction = @$das_log->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+			}
+
 			if (@$das_log->id > 0)
 				$this->das_logs->update($das_log->id, ["value_correction" => $correction]);
 		}

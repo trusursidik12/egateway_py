@@ -89,7 +89,7 @@ class MeasurementAveraging extends BaseCommand
 		$mm = date("i") * 1;
 		$current_time = date("Y-m-d H:i") . ":00";
 		$lastPutData = @$this->measurements->orderBy("time_group DESC")->findAll()[0]->time_group;
-		if (($mm % $minute == 0 || ($mm + 60) % $minute == 0) && $lastPutData != $current_time) {
+		if ($mm % $minute == 0 && $lastPutData != $current_time) {
 			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
 			if ($id_start > 0) {
 				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
@@ -116,13 +116,17 @@ class MeasurementAveraging extends BaseCommand
 	public function measurements_value_correction($time_group)
 	{
 		foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
-			if (!isset($oxygen_value[$parameter->stack_id]))
-				$oxygen_value[$parameter->stack_id] = @$this->get_oxygen_value($parameter->id, $time_group);
-			if (!isset($oxygen_reference[$parameter->stack_id]))
-				$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
-
 			$measurement = @$this->measurements->where(["time_group" => $time_group, "parameter_id" => $parameter->id])->findAll()[0];
-			$correction = @$measurement->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+			$correction = @$measurement->value;
+			if ($parameter->p_type == 'main') {
+				if (!isset($oxygen_value[$parameter->stack_id]))
+					$oxygen_value[$parameter->stack_id] = @$this->get_oxygen_value($parameter->id, $time_group);
+				if (!isset($oxygen_reference[$parameter->stack_id]))
+					$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
+
+				$correction = @$measurement->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+			}
+
 			if (@$measurement->id > 0)
 				$this->measurements->update($measurement->id, ["value_correction" => $correction]);
 		}
