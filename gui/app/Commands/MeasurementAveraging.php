@@ -115,7 +115,8 @@ class MeasurementAveraging extends BaseCommand
 
 	public function measurements_value_correction($time_group)
 	{
-		foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
+		// foreach ($this->parameters->where("p_type LIKE 'main'")->findAll() as $parameter) {
+		foreach ($this->parameters->findAll() as $parameter) {
 			$measurement = @$this->measurements->where(["time_group" => $time_group, "parameter_id" => $parameter->id])->findAll()[0];
 			$correction = @$measurement->value;
 			if ($parameter->p_type == 'main') {
