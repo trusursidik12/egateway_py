@@ -126,7 +126,7 @@ class MeasurementDasLog extends BaseCommand
 			}
 
 			if (@$das_log->id > 0)
-				$this->das_logs->update($das_log->id, ["value_correction" => $correction]);
+				$this->das_logs->update($das_log->id, ["value_correction" => round($correction)]);
 		}
 	}
 

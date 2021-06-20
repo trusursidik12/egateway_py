@@ -128,7 +128,7 @@ class MeasurementAveraging extends BaseCommand
 			}
 
 			if (@$measurement->id > 0)
-				$this->measurements->update($measurement->id, ["value_correction" => $correction]);
+				$this->measurements->update($measurement->id, ["value_correction" => round($correction)]);
 		}
 	}
 
