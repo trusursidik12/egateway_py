@@ -16,7 +16,6 @@
                                     <th></th>
                                     <th>No</th>
                                     <th>Labjack Code</th>
-                                    <th>Instrument</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,7 +32,6 @@
                                         </td>
                                         <td><?= $no++ ?></td>
                                         <td><?= @$labjack->labjack_code; ?></td>
-                                        <td><?= @$labjack->name ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
