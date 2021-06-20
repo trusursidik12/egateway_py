@@ -125,7 +125,11 @@ class MeasurementDasLog extends BaseCommand
 				if (!isset($oxygen_reference[$parameter->stack_id]))
 					$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
 
-				$correction = @$das_log->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+				try {
+					$correction = @$das_log->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+				} catch (Exception $e) {
+					$correction = 0;
+				}
 			}
 
 			if (@$das_log->id > 0)
