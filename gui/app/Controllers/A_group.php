@@ -15,7 +15,7 @@ class A_group extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->route_name = "groups";
+        $this->route_name = "a_group";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->groups =  new m_a_group();
         $this->menus =  new m_a_menu();

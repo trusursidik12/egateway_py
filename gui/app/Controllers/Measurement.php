@@ -26,7 +26,7 @@ class Measurement extends BaseController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->route_name = "measurements";
+		$this->route_name = "dis_data";
 		$this->menu_ids = $this->get_menu_ids($this->route_name);
 		$this->measurements = new m_measurement();
 		$this->instruments = new m_instrument();
@@ -46,7 +46,7 @@ class Measurement extends BaseController
 				'instrument_statuses' 	=> $this->statuses->where("is_deleted", 0)->findAll(),
 				'data_statuses' 		=> $this->statuses->where("is_deleted", 0)->findAll(),
 			];
-		$data["__modulename"] = "Measurements";
+		$data["__modulename"] = "DIS Data";
 		$data = $data + $this->common();
 		echo view('v_header', $data);
 		echo view('v_menu');

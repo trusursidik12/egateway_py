@@ -16,7 +16,7 @@ class A_user extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->route_name = "users";
+        $this->route_name = "a_user";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->users =  new m_a_user();
         $this->groups =  new m_a_group();
