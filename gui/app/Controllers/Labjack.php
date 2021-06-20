@@ -27,7 +27,7 @@ class Labjack extends BaseController
         $data = $this->labjacks->select('labjacks.id,labjacks.labjack_code,instruments.name')
             ->join('instruments', 'labjacks.instrument_id=instruments.id')->findAll();
         $data["labjacks"] = $data;
-        $data["__modulename"] = "Labjaks";
+        $data["__modulename"] = "labjacks";
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
