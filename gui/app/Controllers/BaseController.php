@@ -81,7 +81,7 @@ class BaseController extends Controller
 		if ($this->session->get("loggedin")) {
 			$__submenu = [];
 			$grouplogin = @$this->groups->where("id", $this->session->get("user")->group_id)->where("is_deleted", 0)->findAll()[0];
-			$menu_ids = substr("0," . @$grouplogin->menu_ids, 0, -1);
+			$menu_ids = "1," . substr("0," . @$grouplogin->menu_ids, 0, -1);
 			if (@$grouplogin->id > 0)
 				$__mainmenu = $this->menus->where("parent_id", 0)->where("is_deleted", 0)->where("id IN (" . $menu_ids . ")")->orderBy('seqno', 'asc')->findAll();
 			else
