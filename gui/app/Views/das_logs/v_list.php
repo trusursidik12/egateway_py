@@ -37,7 +37,7 @@
                                     <th>No</th>
                                     <th>Instrument</th>
                                     <!-- <th>Instrument Status</th> -->
-                                    <!-- <th>Data Status</th> -->
+                                    <th>Data Status</th>
                                     <th>Date</th>
                                     <th>Raw Data</th>
                                     <th>Correction</th>

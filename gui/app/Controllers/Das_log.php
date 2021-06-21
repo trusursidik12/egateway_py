@@ -81,7 +81,7 @@ class Das_log extends BaseController
 		foreach ($das_loglist as $key => $mlist) {
 			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];
 			// $instrument_status 	= @$this->statuses->where("id", $mlist->instrument_status_id)->findAll()[0];
-			// $data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->findAll()[0];
+			$data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->findAll()[0];
 			$parameter	 		= @$this->parameters->where("id", $mlist->parameter_id)->findAll()[0];
 			$unit	 			= @$this->units->where("id", $mlist->unit_id)->findAll()[0];
 			// $validation	 		= @$this->validations->where("id", $mlist->validation_id)->findAll()[0];
@@ -91,7 +91,7 @@ class Das_log extends BaseController
 				$no,
 				@$instrument->name,
 				// @$instrument_status->name,
-				// @$data_status->name,
+				@$data_status->name,
 				date('d-m-Y H:i', strtotime($mlist->time_group)),
 				$mlist->value,
 				$mlist->value_correction,
