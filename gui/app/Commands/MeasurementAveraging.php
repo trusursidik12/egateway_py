@@ -129,7 +129,7 @@ class MeasurementAveraging extends BaseCommand
 
 				try {
 					$correction = @$measurement->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					$correction = 0;
 				}
 			}
