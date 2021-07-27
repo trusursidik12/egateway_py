@@ -128,7 +128,7 @@ class MeasurementAveraging extends BaseCommand
 					$oxygen_reference[$parameter->stack_id] = @$this->stacks->where("id", $parameter->stack_id)->findAll()[0]->oxygen_reference * 1;
 
 				try {
-					$correction = @$measurement->value * (20.9 - $oxygen_reference[$parameter->stack_id]) / (20.9 - $oxygen_value[$parameter->stack_id]);
+					$correction = @$measurement->value * (21 - $oxygen_reference[$parameter->stack_id]) / (21 - $oxygen_value[$parameter->stack_id]);
 				} catch (\Exception $e) {
 					$correction = 0;
 				}
