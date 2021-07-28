@@ -20,7 +20,7 @@ class Sispek extends Migration
 			'api_response_kode_cerobong'	=> ['type' => 'TEXT'],
 			'api_response_parameter'		=> ['type' => 'TEXT'],
 			'token'							=> ['type' => 'VARCHAR', 'constraint' => 255],
-			'token_expired'					=> ['type' => 'DATE'],
+			'token_expired'					=> ['type' => 'DATETIME'],
 			'xtimestamp timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()'
 		]);
 		$this->forge->addKey('id', TRUE);
