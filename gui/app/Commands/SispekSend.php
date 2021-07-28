@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
+use App\Models\m_configuration;
 use App\Models\m_sispek;
 use App\Models\m_measurement;
 use App\Models\m_das_log;
@@ -13,6 +14,7 @@ use App\Models\m_stack;
 
 class SispekSend extends BaseCommand
 {
+	protected $configurations;
 	protected $sispek;
 	protected $measurements;
 	protected $das_logs;
@@ -22,6 +24,7 @@ class SispekSend extends BaseCommand
 
 	public function __construct()
 	{
+		$this->configurations =  new m_configuration();
 		$this->measurements = new m_measurement();
 		$this->das_logs = new m_das_log();
 		$this->measurement_logs = new m_measurement_log();
@@ -178,14 +181,51 @@ class SispekSend extends BaseCommand
 
 	public function getdata()
 	{
+		$nowhour = date("Y-m-d H:00:00");
+		$interval = @$this->configurations->find(1)->interval_das_logs * 1;
+		$data = [];
+		try {
+			$time_group = $this->das_logs->where(["is_sent_sispek" => 0, "time_group < " => $nowhour])->orderBy("time_group")->limit(1)->findAll()[0]->time_group;
+			$time_group_like = substr($time_group, 0, 14);
+			// CLI::write($time_group);
+			// CLI::write($time_group_like);
+			$timegroups = [];
+			foreach ($this->das_logs->like("time_group", $time_group_like, 'after')->groupBy("time_group")->orderBy("time_group")->findAll() as $das_log) {
+				$timegroups[] = $das_log->time_group;
+			}
+
+			foreach ($this->stacks->findAll() as $stack) {
+				$parameters = $this->parameters->where(["stack_id" => $stack->id])->findAll();
+				$_parameter = array();
+				foreach ($timegroups as $timegroup) {
+					$data_time_group = array();
+					$data_time_group["waktu"] = $timegroup;
+					foreach ($parameters as $parameter) {
+						$value_correction = @$this->das_logs->where(["time_group" => $timegroup, "parameter_id" => $parameter->id])->findAll()[0]->value_correction * 1;
+						if ($value_correction < 0) $value_correction = 0;
+						$data_time_group[$parameter->sispek_code] = $value_correction;
+					}
+					$_parameter[] = $data_time_group;
+				}
+				$data[] = [
+					"kode_cerobong" => $stack->sispek_code,
+					"interval" => $interval,
+					"parameter" => $_parameter
+				];
+			}
+			return json_encode($data);
+		} catch (\Exception $e) {
+			return json_encode($data);
+		}
 	}
 
 
 
 	public function run(array $params)
 	{
-		CLI::write($this->getToken());
+		// CLI::write($this->getToken());
 		// CLI::write($this->getKodeCerobong());
 		// CLI::write($this->getParameter("Kode Cerobong 1"));
+		echo $this->getdata();
 	}
 }
