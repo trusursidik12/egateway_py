@@ -11,6 +11,7 @@ use App\Models\m_das_log;
 use App\Models\m_measurement_log;
 use App\Models\m_parameter;
 use App\Models\m_stack;
+use App\Models\m_system_check;
 
 class SispekSend extends BaseCommand
 {
@@ -21,6 +22,7 @@ class SispekSend extends BaseCommand
 	protected $measurement_logs;
 	protected $parameters;
 	protected $stacks;
+	protected $system_checks;
 
 	public function __construct()
 	{
@@ -31,6 +33,7 @@ class SispekSend extends BaseCommand
 		$this->parameters = new m_parameter();
 		$this->stacks = new m_stack();
 		$this->sispek = new m_sispek();
+		$this->system_checks = new m_system_check();
 	}
 	/**
 	 * The Command's Group
@@ -179,11 +182,61 @@ class SispekSend extends BaseCommand
 		return curl_exec($curl);
 	}
 
+	public function postSispek()
+	{
+		$sispek = $this->sispek->find(1);
+		$token = $sispek->token;
+		$sispek_server = $sispek->server;
+		$url = $sispek->api_post_data;
+
+		try {
+			$data = $this->getdata();
+			$das_log_ids = $data["das_log_ids"];
+			$data = $data["data"];
+			// $data = json_encode($data);
+			$data = json_encode(["data" => $data]);
+
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => $sispek_server . $url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_SSL_VERIFYHOST => 0,
+				CURLOPT_SSL_VERIFYPEER => 0,
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 30,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => $data,
+				CURLOPT_HTTPHEADER => array(
+					"Authorization: Bearer " . $token,
+					"Api-Key: Bearer " . $token,
+					"key: Bearer " . $token,
+					"cache-control: no-cache",
+					"content-type: application/json"
+				),
+			));
+
+
+			$response = curl_exec($curl);
+			// $message = json_decode($response, true)["response"]["message"];
+			$message = json_decode($response, true)["message"];
+
+			if (strtolower($message) == "sukses")
+				$this->das_logs->update(array_values($das_log_ids), ["is_sent_sispek" => 1, "sent_sispek_at" => date("Y-m-d H:i:s")]);
+
+			return $response;
+		} catch (\Exception $e) {
+			return "";
+		}
+	}
+
 	public function getdata()
 	{
 		$nowhour = date("Y-m-d H:00:00");
 		$interval = @$this->configurations->find(1)->interval_das_logs * 1;
 		$data = [];
+		$das_log_ids = [];
 		try {
 			$time_group = $this->das_logs->where(["is_sent_sispek" => 0, "time_group < " => $nowhour])->orderBy("time_group")->limit(1)->findAll()[0]->time_group;
 			$time_group_like = substr($time_group, 0, 14);
@@ -201,7 +254,9 @@ class SispekSend extends BaseCommand
 					$data_time_group = array();
 					$data_time_group["waktu"] = $timegroup;
 					foreach ($parameters as $parameter) {
-						$value_correction = @$this->das_logs->where(["time_group" => $timegroup, "parameter_id" => $parameter->id])->findAll()[0]->value_correction * 1;
+						$das_log = @$this->das_logs->where(["time_group" => $timegroup, "parameter_id" => $parameter->id])->findAll();
+						array_push($das_log_ids, @$das_log[0]->id);
+						$value_correction = @$das_log[0]->value_correction * 1;
 						if ($value_correction < 0) $value_correction = 0;
 						$data_time_group[$parameter->sispek_code] = $value_correction;
 					}
@@ -213,9 +268,9 @@ class SispekSend extends BaseCommand
 					"parameter" => $_parameter
 				];
 			}
-			return json_encode($data);
+			return ["data" => $data, "das_log_ids" => $das_log_ids];
 		} catch (\Exception $e) {
-			return json_encode($data);
+			return [];
 		}
 	}
 
@@ -226,6 +281,27 @@ class SispekSend extends BaseCommand
 		// CLI::write($this->getToken());
 		// CLI::write($this->getKodeCerobong());
 		// CLI::write($this->getParameter("Kode Cerobong 1"));
-		echo $this->getdata();
+		// exit();
+
+		// CLI::write($this->getToken());
+		// CLI::write($this->postSispek());
+		// exit();
+
+		$system_name = "sispeksend";
+		$system_checks_id = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->id * 1;
+		if ($system_checks_id <= 0) {
+			$this->system_checks->save(["system" => $system_name, "status" => "1"]);
+			$system_checks_id = $this->system_checks->insertID();
+		} else
+			$this->system_checks->update($system_checks_id, ["status" => "1"]);
+
+		$is_looping = 1;
+
+		while ($is_looping) {
+			$this->getToken();
+			$this->postSispek();
+			sleep(60);
+			$is_looping = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->status;
+		}
 	}
 }
