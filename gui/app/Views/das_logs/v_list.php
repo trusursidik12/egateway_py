@@ -43,6 +43,8 @@
                                     <th>Correction</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>
+                                    <th>SENT TO TRUSUR</th>
+                                    <th>SENT TO SISPEK</th>
                                     <!-- <th>Validation</th> -->
                                     <!-- <th>Condition</th> -->
                                 </tr>
