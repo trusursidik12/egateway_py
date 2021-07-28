@@ -60,6 +60,9 @@ $routes->get('/stacks', 'Stack::index');
 $routes->get('/parameters', 'Parameter::index');
 // Configurations
 $routes->get('/configurations', 'Configuration::index');
+// Sispek
+$routes->get('/sispeks', 'Sispek::index');
+$routes->post('/sispek/edit/(:num)', 'Sispek::update/$1');
 // LABJACKS
 $routes->get('/labjacks', 'Labjack::index');
 $routes->get('/labjack/add', 'Labjack::add');
