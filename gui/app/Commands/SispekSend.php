@@ -227,7 +227,7 @@ class SispekSend extends BaseCommand
 
 			return $response;
 		} catch (\Exception $e) {
-			return "";
+			return $e->getMessage();
 		}
 	}
 
@@ -252,7 +252,7 @@ class SispekSend extends BaseCommand
 				$_parameter = array();
 				foreach ($timegroups as $timegroup) {
 					$data_time_group = array();
-					$data_time_group["waktu"] = $timegroup;
+					$data_time_group["waktu"] = substr($timegroup, 0, -3);
 					foreach ($parameters as $parameter) {
 						$das_log = @$this->das_logs->where(["time_group" => $timegroup, "parameter_id" => $parameter->id])->findAll();
 						array_push($das_log_ids, @$das_log[0]->id);
