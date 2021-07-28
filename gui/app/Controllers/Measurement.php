@@ -104,7 +104,7 @@ class Measurement extends BaseController
 				// @$validation->name,
 				// @$conditionn->name,
 				$mlist->is_sent_cloud == 1 ? '<span class="mx-1 badge badge-success">SENT</span>' : '<span class="mx-1 badge badge-danger">NOT YET</span>',
-				$mlist->is_sent_klhk == 1 ? '<span class="mx-1 badge badge-success">SENT</span>' : '<span class="mx-1 badge badge-danger">NOT YET</span>',
+				// $mlist->is_sent_klhk == 1 ? '<span class="mx-1 badge badge-success">SENT</span>' : '<span class="mx-1 badge badge-danger">NOT YET</span>',
 			];
 		}
 

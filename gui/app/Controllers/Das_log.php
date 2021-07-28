@@ -97,7 +97,7 @@ class Das_log extends BaseController
 				$mlist->value_correction,
 				@$parameter->name,
 				@$unit->name,
-				(@$mlist->is_sent_cloud == 1 ? '<span class="badge badge-success">SENT</span>' : '<span class="badge badge-danger">NOT YET</span>'),
+				// (@$mlist->is_sent_cloud == 1 ? '<span class="badge badge-success">SENT</span>' : '<span class="badge badge-danger">NOT YET</span>'),
 				(@$mlist->is_sent_sispek == 1 ? '<span class="badge badge-success">SENT</span>' : '<span class="badge badge-danger">NOT YET</span>'),
 				// @$validation->name,
 				// @$conditionn->name,

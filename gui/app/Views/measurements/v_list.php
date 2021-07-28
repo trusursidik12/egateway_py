@@ -62,7 +62,7 @@
                                     <!-- <th>Validation</th> -->
                                     <!-- <th>Condition</th> -->
                                     <th>SENT&nbsp;TO&nbsp;TRUSUR</th>
-                                    <th>SENT&nbsp;TO&nbsp;SISPEK</th>
+                                    <!-- <th>SENT&nbsp;TO&nbsp;SISPEK</th> -->
                                 </tr>
                             </thead>
                         </table>
