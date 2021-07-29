@@ -90,7 +90,8 @@ class TestSispek extends BaseCommand
 		$url = $sispek->api_get_token;
 		$app_id = $sispek->app_id;
 		$app_secret = $sispek->app_secret;
-		$data = json_encode(["app_id" => $app_id, "app_pwd_hash" => md5($app_secret . $app_id)]);
+		// $data = json_encode(["app_id" => $app_id, "app_pwd_hash" => md5($app_secret . $app_id)]);
+		$data = json_encode(["app_id" => $app_id, "app_pwd_hash" => md5($app_id . $app_secret)]);
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $sispek_server . $url,
@@ -159,7 +160,8 @@ class TestSispek extends BaseCommand
 		$token = $sispek->token;
 		$sispek_server = $sispek->server;
 		$url = $sispek->api_get_parameter;
-		$data = json_encode(["Key" => "Bearer " . $token, "cerobong_kode" => $code_cerobong]);
+		$data = json_encode(["cerobong_kode" => $code_cerobong]);
+		// echo $data = '{"cerobong_kode" : "P1"}';
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $sispek_server . $url,
