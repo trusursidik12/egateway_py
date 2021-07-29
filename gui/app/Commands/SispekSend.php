@@ -263,9 +263,13 @@ class SispekSend extends BaseCommand
 					$data_time_group["waktu"] = substr($timegroup, 0, -3);
 					foreach ($parameters as $parameter) {
 						$das_log = @$this->das_logs->where(["time_group" => $timegroup, "parameter_id" => $parameter->id])->findAll();
-						array_push($das_log_ids, @$das_log[0]->id);
-						$value_correction = @$das_log[0]->value_correction * 1;
-						if ($value_correction < 0) $value_correction = 0;
+						if ((@$das_log[0]->id * 1) > 0) {
+							array_push($das_log_ids, @$das_log[0]->id);
+							$value_correction = @$das_log[0]->value_correction * 1;
+							if ($value_correction < 0) $value_correction = 0;
+						} else {
+							$value_correction = 0;
+						}
 						$data_time_group[$parameter->sispek_code] = $value_correction;
 					}
 					$_parameter[] = $data_time_group;
