@@ -266,6 +266,9 @@ class SispekSend extends BaseCommand
 						if ((@$das_log[0]->id * 1) > 0) {
 							array_push($das_log_ids, @$das_log[0]->id);
 							$value_correction = @$das_log[0]->value_correction * 1;
+							if (@$das_log[0]->data_status_id == "2") $value_correction = 1;
+							if (@$das_log[0]->data_status_id == "3") $value_correction = 1;
+							if (@$das_log[0]->data_status_id == "4") $value_correction = 0;
 							if ($value_correction < 0) $value_correction = 0;
 						} else {
 							$value_correction = 0;
