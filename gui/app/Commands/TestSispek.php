@@ -114,7 +114,6 @@ class TestSispek extends BaseCommand
 			// $token = json_decode($response, true)["response"]["token"];
 			$token = json_decode($response, true)["token"];
 		} catch (\Exception $e) {
-			return $e->getMessage();
 		}
 
 		$token_expired = date("Y-m-d H:i:s", mktime(date("H"), date("i") + 60));
