@@ -243,8 +243,12 @@ class SispekSend extends BaseCommand
 			// CLI::write($time_group);
 			// CLI::write($time_group_like);
 			$timegroups = [];
-			foreach ($this->das_logs->like("time_group", $time_group_like, 'after')->groupBy("time_group")->orderBy("time_group")->findAll() as $das_log) {
-				$timegroups[] = $das_log->time_group;
+			// foreach ($this->das_logs->like("time_group", $time_group_like, 'after')->groupBy("time_group")->orderBy("time_group")->findAll() as $das_log) {
+			// 	$timegroups[] = $das_log->time_group;
+			// }
+
+			for ($menit = 0; $menit < 60; $menit += $interval) {
+				$timegroups[] = $time_group_like . str_pad($menit, 2, "0", STR_PAD_LEFT) . ":00";
 			}
 
 			foreach ($this->stacks->findAll() as $stack) {
