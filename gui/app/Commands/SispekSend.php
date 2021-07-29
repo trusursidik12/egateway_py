@@ -111,8 +111,12 @@ class SispekSend extends BaseCommand
 		));
 
 		$response = curl_exec($curl);
-		// $token = json_decode($response, true)["response"]["token"];
-		$token = json_decode($response, true)["token"];
+		try {
+			// $token = json_decode($response, true)["response"]["token"];
+			$token = json_decode($response, true)["token"];
+		} catch (\Exception $e) {
+			return $e->getMessage();
+		}
 
 		$token_expired = date("Y-m-d H:i:s", mktime(date("H"), date("i") + 60));
 		$this->sispek->update("1", ["token" => $token, "token_expired" => $token_expired]);
