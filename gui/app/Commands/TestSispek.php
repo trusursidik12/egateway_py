@@ -305,7 +305,7 @@ class TestSispek extends BaseCommand
 			print_r(json_decode($response, true));
 		}
 		if ($params[0] == "parameter") {
-			$response = CLI::write($this->getParameter($params[1]));
+			$response = $this->getParameter($params[1]);
 			CLI::write($response);
 			print_r(json_decode($response, true));
 		}
