@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-body table-responsive p-0" style="height: 700px;">
+                    <div class="card-body table-responsive py-5">
                         <table class="table table-head-fixed text-nowrap table-striped">
                             <thead>
                                 <tr>
