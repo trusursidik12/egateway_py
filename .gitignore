@@ -97,3 +97,4 @@ gui/.vscode/
 /.phpunit.*.cache
 
 # composer.json
+gui/public/dist/upload/backups/.
