@@ -97,3 +97,5 @@ gui/.vscode/
 /.phpunit.*.cache
 
 # composer.json
+
+backups/.
