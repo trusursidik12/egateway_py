@@ -44,7 +44,17 @@ class Backup extends BaseController
 		exec("python " . $this->configurations->find(1)->main_path . "backup_execute.py");
 		echo view('v_header', $data);
 		echo view('v_menu');
-		echo "Backup Done<br><a href='/backup'>Back</a>";
+		echo "
+		<div class='row mt-5'>
+			<div class='col-12'>
+				<h3 class='text-center'>
+					<span class='text-success'>Backup Success</span>
+				</h3>
+				<h3 class='text-center'>
+					<a class='btn btn-primary mt-2' href='/backup'>Back</a>
+				</h3>
+			</div>
+		</div>";
 		echo view('v_footer');
 	}
 
@@ -56,7 +66,17 @@ class Backup extends BaseController
 		// exec("python " . $this->configurations->find(1)->main_path . "backup_execute.py");
 		echo view('v_header', $data);
 		echo view('v_menu');
-		echo "Restore Done<br><a href='/backup'>Back</a>";
+		echo "
+		<div class='row mt-5'>
+			<div class='col-12'>
+				<h3 class='text-center'>
+					<span class='text-success'>Restore Success</span>
+				</h3>
+				<h3 class='text-center'>
+					<a class='btn btn-primary mt-2' href='/backup'>Back</a>
+				</h3>
+			</div>
+		</div>";
 		echo view('v_footer');
 	}
 }

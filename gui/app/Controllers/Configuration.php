@@ -39,6 +39,8 @@ class Configuration extends BaseController
 			'lat' => ['rules' => 'required', 'errors' => ['required' => 'Latitude cant be empty!']],
 			'interval_das_logs' => ['rules' => 'required', 'errors' => ['required' => 'Interval Das Logs cant be empty!']],
 			'interval_average' => ['rules' => 'required', 'errors' => ['required' => 'Interval Average cant be empty!']],
+			'main_path' => ['rules' => 'required', 'errors' => ['required' => 'Main Path cant be empty!']],
+			'mysql_path' => ['rules' => 'required', 'errors' => ['required' => 'DBMS Path cant be empty!']],
 		])) {
 			if (is_null($id)) {
 				return redirect()->to(base_url('configuration/add'))->withInput();
@@ -59,6 +61,8 @@ class Configuration extends BaseController
 			$data['interval_das_logs'] = $this->request->getPost('interval_das_logs');
 			$data['interval_average'] = $this->request->getPost('interval_average');
 			$data['delay_sending'] = $this->request->getPost('delay_sending');
+			$data['main_path'] = $this->request->getPost('main_path');
+			$data['mysql_path'] = $this->request->getPost('mysql_path');
 			try {
 				if (is_null($id)) {
 					$this->configurations->insert($data + $this->created_values());

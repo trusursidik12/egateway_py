@@ -102,6 +102,28 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Main Path</label>
+                                                <input type="text" name="main_path" value="<?= old('main_path', @$configuration->main_path) ?>" placeholder="Interval Average" class="form-control <?= $validation->hasError('main_path') ? 'is-invalid' : '' ?>">
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('main_path') ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>DBMS Path</label>
+                                                <input type="text" name="mysql_path" value="<?= old('mysql_path', @$configuration->mysql_path) ?>" placeholder="Interval Average" class="form-control <?= $validation->hasError('mysql_path') ? 'is-invalid' : '' ?>">
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('mysql_path') ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                     </div>
 
