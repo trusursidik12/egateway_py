@@ -47,4 +47,16 @@ class Backup extends BaseController
 		echo "Backup Done<br><a href='/backup'>Back</a>";
 		echo view('v_footer');
 	}
+
+	public function restore_exec()
+	{
+		$data["__modulename"] = "Backup & Restore";
+		$data = $data + $this->common();
+
+		// exec("python " . $this->configurations->find(1)->main_path . "backup_execute.py");
+		echo view('v_header', $data);
+		echo view('v_menu');
+		echo "Restore Done<br><a href='/backup'>Back</a>";
+		echo view('v_footer');
+	}
 }

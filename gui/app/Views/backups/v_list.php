@@ -29,6 +29,22 @@
                         </table>
                     </div>
                 </div>
+
+                <form role="form" method="POST" enctype="multipart/form-data" action="backup/restore_exec">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>File Backup to Restore</label>
+                                    <input name="filename" type="file" class="form-control" placeholder="Filename ...">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" name="Restore" value="Restore" class="btn btn-primary float-right">Restore</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
