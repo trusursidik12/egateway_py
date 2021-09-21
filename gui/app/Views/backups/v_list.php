@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>File Backup to Restore</label>
+                                    <label>Backup File to Restore</label>
                                     <input name="filename" type="file" class="form-control" placeholder="Filename ...">
                                 </div>
                             </div>
