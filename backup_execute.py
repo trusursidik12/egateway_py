@@ -17,7 +17,7 @@ mycursor.execute("SELECT main_path,mysql_path FROM configurations WHERE id='1'")
 rec = mycursor.fetchall()
 
 now = datetime.now()
-dt_string = now.strftime("%d%m%Y_%H%M%S")
+dt_string = now.strftime("%Y%m%d_%H%M%S")
 
 print("Backup database backup_"+dt_string+".sql")
 
