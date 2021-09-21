@@ -63,7 +63,13 @@ class Backup extends BaseController
 		$data["__modulename"] = "Backup & Restore";
 		$data = $data + $this->common();
 
-		// exec("python " . $this->configurations->find(1)->main_path . "backup_execute.py");
+		if ($backupfile = @$this->request->getFiles()['filename'])
+			if ($backupfile->isValid() && !$backupfile->hasMoved()) {
+				$backupfilename = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . date("YmdHis") . "." . pathinfo($backupfile->getName(), PATHINFO_EXTENSION);
+				$backupfile->move('dist/upload', $backupfilename);
+				exec("python " . $this->configurations->find(1)->main_path . "restore_execute.py " . $backupfilename);
+			}
+
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo "

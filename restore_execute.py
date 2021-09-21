@@ -17,6 +17,6 @@ rec = mycursor.fetchall()
 
 print("Restore database " + sys.argv[1])
 
-subprocess.Popen(str(rec[0][1]) + "mysql -u root -proot egateway < " + str(rec[0][0]) + "gui/public/dist/upload/backups/" + sys.argv[1], shell=True)
+subprocess.Popen(str(rec[0][1]) + "mysql -u root -proot egateway < " + str(rec[0][0]) + "gui/public/dist/upload/" + sys.argv[1], shell=True)
 
 time.sleep(5)

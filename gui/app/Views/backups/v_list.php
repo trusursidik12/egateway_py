@@ -5,7 +5,10 @@
             <div class="col-lg-12">
                 <div class="row" style="margin-bottom:10px;">
                     <div class="col-2">
-                        <a href="/backup/backup_exec" class="btn btn-primary"><i class="fas fa-plus"></i> New Backup</a>
+                        <a href="#" onclick="newbackup();" class="btn btn-primary"><i class="fas fa-plus"></i> New Backup</a>
+                    </div>
+                    <div id="backup_spinner" style="display:none;" class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
                 <div class="card">
@@ -37,10 +40,13 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Backup File to Restore</label>
-                                    <input name="filename" type="file" class="form-control" placeholder="Filename ...">
+                                    <input name="filename" type="file" class="form-control" placeholder="Filename ..." required>
                                 </div>
                             </div>
                             <div class="col-12">
+                                <div id="restore_spinner" style="display:none;" class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                                 <button type="submit" name="Restore" value="Restore" class="btn btn-primary float-right">Restore</button>
                             </div>
                         </div>
@@ -50,3 +56,9 @@
         </div>
     </div>
 </div>
+<script>
+    function newbackup() {
+        document.getElementById("backup_spinner").style.display = "block";
+        window.location = "/backup/backup_exec";
+    }
+</script>
