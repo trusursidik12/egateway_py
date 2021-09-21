@@ -29,7 +29,7 @@ class Backup extends BaseController
 				$data["backups"][] = $file;
 		}
 		$d->close();
-
+		arsort($data["backups"]);
 		echo view('v_header', $data);
 		echo view('v_menu');
 		echo view('backups/v_list');

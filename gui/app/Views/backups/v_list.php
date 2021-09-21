@@ -24,6 +24,7 @@
                                         <td><?= $no++ ?></td>
                                         <td><a target="_BLANK" href="dist/upload/backups/<?= $backup; ?>"><?= $backup; ?></a></td>
                                     </tr>
+                                    <?php if ($no > 100) break; ?>
                                 <?php endforeach ?>
                             </tbody>
                         </table>
