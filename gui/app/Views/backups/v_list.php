@@ -34,20 +34,20 @@
                     </div>
                 </div>
 
-                <form role="form" method="POST" enctype="multipart/form-data" action="backup/restore_exec">
+                <form role="form" method="POST" enctype="multipart/form-data" action="restore_exec">
                     <div class="card">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Backup File to Restore</label>
-                                    <input name="filename" type="file" class="form-control" placeholder="Filename ..." required>
+                                    <input id="filename" name="filename" type="file" class="form-control" placeholder="Filename ..." required>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div id="restore_spinner" style="display:none;" class="spinner-border" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
-                                <button type="submit" name="Restore" value="Restore" class="btn btn-primary float-right">Restore</button>
+                                <button type="submit" name="Restore" onclick="restoring()" value="Restore" class="btn btn-primary float-right">Restore</button>
                             </div>
                         </div>
                     </div>
@@ -60,5 +60,14 @@
     function newbackup() {
         document.getElementById("backup_spinner").style.display = "block";
         window.location = "/backup/backup_exec";
+    }
+
+    function restoring() {
+        if (filename.value != "") {
+            document.getElementById("restore_spinner").style.display = "block";
+            return true;
+        } else {
+            return false;
+        }
     }
 </script>
