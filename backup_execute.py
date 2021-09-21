@@ -17,10 +17,10 @@ mycursor.execute("SELECT main_path,mysql_path FROM configurations WHERE id='1'")
 rec = mycursor.fetchall()
 
 now = datetime.now()
-dt_string = now.strftime("%Y%m%d%H%M%S")
+dt_string = now.strftime("%d%m%Y_%H%M%S")
 
 print("Backup database backup_"+dt_string+".sql")
 
-subprocess.Popen(str(rec[0][1]) + "mysqldump -u root -proot egateway > " + str(rec[0][0]) + "gui/public/dist/upload/backups/backup_" + dt_string + ".sql", shell=True)
+subprocess.Popen(str(rec[0][1]) + "mysqldump -u root -proot egateway > " + str(rec[0][0]) + "gui/public/dist/upload/backups/egateway_backup_" + dt_string + ".sql", shell=True)
 
 time.sleep(5)
