@@ -3,6 +3,9 @@ gui/Thumbs.db
 gui/ehthumbs.db
 gui/Desktop.ini
 
+#database
+database/
+
 # Recycle Bin used on file shares
 gui/$RECYCLE.BIN/
 
