@@ -68,6 +68,7 @@ class Getvalueapi extends BaseCommand
 		$parameters = $paramModel->select("id,name")->findAll();
 		$i=0;
 		$baseUrl = "http://localhost:8080";
+		// $baseUrl = "https://sorpimappp01/piwebapi";
 		// Interval Request
 		$interval = $configModel->select("interval_request")->find(1)->interval_request;
 		$interval = 1;
