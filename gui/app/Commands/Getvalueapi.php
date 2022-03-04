@@ -65,18 +65,18 @@ class Getvalueapi extends BaseCommand
 		$paramModel = new m_parameter();
 		$configModel = new m_configuration();
 		$measurementLogModel = new m_measurement_log();
-		$parameters = $paramModel->select("id,name")->findAll();
+		$parameters = $paramModel->select("id,name, web_id")->findAll();
 		$i=0;
-		$baseUrl = "http://localhost:8080";
-		// $baseUrl = "https://sorpimappp01/piwebapi";
+		// $baseUrl = "http://localhost:8080";
+		$baseUrl = "https://sorpimappp01/piwebapi";
 		// Interval Request
 		$interval = $configModel->select("interval_request")->find(1)->interval_request;
 		$interval = 1;
-		// while(true){
+		while(true){
 			$dateI = date('i') * 1;
-			// if($dateI % ($interval != 0 ? $interval : 1) == 0){ // Check Error ModuloByZero
+			if($dateI % ($interval != 0 ? $interval : 1) == 0){ // Check Error ModuloByZero
 				foreach ($parameters as $param) {
-					$webId = strtolower(str_replace(" ","_",$param->name));
+					$webId = $param->web_id;
 					$req = $curl->request('get', "{$baseUrl}/streams/{$webId}/value",[
 						'headers' => [
 							'Accept' => 'application/json'
@@ -98,7 +98,7 @@ class Getvalueapi extends BaseCommand
 					}
 					sleep(1);
 				}
-			// }
-		// }	
+			}
+		}	
 	}
 }
