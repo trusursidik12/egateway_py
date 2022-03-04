@@ -25,6 +25,8 @@ for row in rec:
     subprocess.Popen("python labjack_reader_avg.py " + str(row[0]), shell=True)
     time.sleep(1)
 
+subprocess.Popen("php gui\spark command:get_value_api", shell=True)
+print("php gui\spark command:get_value_api")
 subprocess.Popen("php gui\spark command:formula_measurement_logs", shell=True)
 print("php gui\spark command:formula_measurement_logs")
 time.sleep(1)
