@@ -81,12 +81,12 @@ class FormulaMeasurementLogs extends BaseCommand
 
 	public function get_measurement_logs_range($minute)
 	{
-		$id_end = @$this->measurement_logs->orderBy("id DESC")->findAll()[0]->id;
+		$id_end = @$this->measurement_logs->orderBy("id DESC")->first()->id;
 		$lasttime = date("Y-m-d H:i:%", mktime(date("H"), date("i") - $minute));
 		$mm = date("i") * 1;
 		$current_time = date("Y-m-d H:i");
 		if ($mm % $minute == 0 && $this->lastPutData != $current_time) {
-			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->findAll()[0]->id;
+			$id_start = @$this->measurement_logs->where("xtimestamp >= '" . $lasttime . ":00'")->where("is_averaged", 0)->orderBy("id")->first()->id;
 			if ($id_start > 0) {
 				$measurement_logs = $this->measurement_logs->where("id BETWEEN '" . $id_start . "' AND '" . $id_end . "'")->where("is_averaged", 0)->findAll();
 				$return["id_start"] = $id_start;
@@ -138,6 +138,9 @@ class FormulaMeasurementLogs extends BaseCommand
 
 	public function run(array $params)
 	{
+
+		$db = db_connect();
+		
 		$system_name = "formula_measurement_logs";
 		$system_checks_id = @$this->system_checks->where(["system" => $system_name])->findAll()[0]->id * 1;
 		if ($system_checks_id <= 0) {
@@ -148,7 +151,15 @@ class FormulaMeasurementLogs extends BaseCommand
 
 		$is_looping = 1;
 
+		$data = [];
 		while ($is_looping) {
+			$nowD = (int) date('d');
+			if($nowD == 1){ // Cek tanggal satu
+				$time = (string) date('Y-m-d');
+				if($db->query('ALTER table measurement_logs RENAME TO measurement_logs_'.$time)){
+					$db->query('CREATE table measurement_logs LIKE measurement_logs_'.$time);
+				}
+			}
 			$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
 
 			foreach ($this->labjack_values->findAll() as $labjack_value) {

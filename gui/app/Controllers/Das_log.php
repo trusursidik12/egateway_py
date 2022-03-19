@@ -10,6 +10,7 @@ use App\Models\m_parameter;
 use App\Models\m_status;
 use App\Models\m_unit;
 use App\Models\m_validation;
+use App\Models\m_das_data;
 
 class Das_log extends BaseController
 {
@@ -55,8 +56,9 @@ class Das_log extends BaseController
 		echo view('das_logs/v_js');
 	}
 
-	public function getList()
+	public function getList($type="dis")
 	{
+		$Model = $type == "dis" ? new m_das_log() : new m_das_data();
 		$instrument_id 			= @$this->request->getPost('instrument_id');
 		$instrument_status_id 	= @$this->request->getPost('instrument_status_id');
 		$data_status_id 		= @$this->request->getPost('data_status_id');
@@ -71,21 +73,21 @@ class Das_log extends BaseController
 		if ($date_start != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') >= '{$date_start}'";
 		if ($date_end != '') $where .= "AND DATE_FORMAT(measured_at, '%Y-%m-%d') <= '{$date_end}'";
 		$das_logs		= [];
-		$numrow				= $this->das_logs->where($where)->countAllResults();
+		$numrow				= $Model->where($where)->countAllResults();
 		if ($length == -1) {
-			$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL();
+			$das_loglist	= $Model->where($where)->orderBy("id", "DESC")->findALL();
 		} else {
-			$das_loglist	= $this->das_logs->where($where)->orderBy("id", "DESC")->findALL($length, $start);
+			$das_loglist	= $Model->where($where)->orderBy("id", "DESC")->findALL($length, $start);
 		}
 		$no = @$this->request->getPost('start');
 		foreach ($das_loglist as $key => $mlist) {
-			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->findAll()[0];
-			// $instrument_status 	= @$this->statuses->where("id", $mlist->instrument_status_id)->findAll()[0];
-			$data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->findAll()[0];
-			$parameter	 		= @$this->parameters->where("id", $mlist->parameter_id)->findAll()[0];
-			$unit	 			= @$this->units->where("id", $mlist->unit_id)->findAll()[0];
-			// $validation	 		= @$this->validations->where("id", $mlist->validation_id)->findAll()[0];
-			// $conditionn	 		= @$this->conditions->where("id", $mlist->condition_id)->findAll()[0];
+			$instrument 		= @$this->instruments->where('id', $mlist->instrument_id)->first();
+			// $instrument_status 	= @$this->statuses->where("id", $mlist->instrument_status_id)->first();
+			$data_status	 	= @$this->statuses->where("id", $mlist->data_status_id)->first();
+			$parameter	 		= @$this->parameters->where("id", $mlist->parameter_id)->first();
+			$unit	 			= @$this->units->where("id", $mlist->unit_id)->first();
+			// $validation	 		= @$this->validations->where("id", $mlist->validation_id)->first();
+			// $conditionn	 		= @$this->conditions->where("id", $mlist->condition_id)->first();
 			$no++;
 			$das_logs[$key] = [
 				$no,
@@ -110,6 +112,17 @@ class Das_log extends BaseController
 			'recordsFiltered'	=> $numrow,
 			'data'				=> $das_logs
 		];
-		echo json_encode($results);
+		return $this->response->setJSON($results);
+	}
+
+	public function get_last_das_logs(){
+		$last = $this->das_logs->select('date_format(time_group,"%Y-%m-%d") as last_time')->orderBy('time_group','desc')->first();
+		$strtimeLastWeek = strtotime('-1 week');
+		$lastWeek = date('Y-m-d',$strtimeLastWeek);
+		return $this->response->setJSON([
+			'success'=>true,
+			'last_time' => $last->last_time,
+			'last_week' => $lastWeek,
+		]);
 	}
 }

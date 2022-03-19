@@ -156,6 +156,17 @@ class Instrument extends BaseController
 			}
 		} catch (Exception $e) {
 		}
-		return json_encode($data, JSON_PRETTY_PRINT);
+		return $this->response->setJSON($data);
 	}
+
+	public function get_instruments(){
+		$instruments = $this->instruments->where('is_deleted',0)->findAll();
+		return $this->response->setJSON(['success' => true, 'data' => $instruments]);
+	}
+	
+	public function get_data_status(){
+		$statuses = $this->statuses->where('is_deleted',0)->findAll();
+		return $this->response->setJSON(['success' => true, 'data' => $statuses]);
+	}
+
 }

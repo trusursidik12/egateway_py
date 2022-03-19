@@ -72,7 +72,8 @@ $routes->add('/process/labjack/delete', 'Labjack::delete');
 $routes->get('/dis_data', 'Measurement::index');
 $routes->add('/measurement/list', 'Measurement::getList');
 $routes->get('/das_logs', 'Das_log::index');
-$routes->add('/das_log/list', 'Das_log::getList');
+$routes->post('/das_log/list', 'Das_log::getList/dis'); //default
+$routes->add('/das_log/list/(:any)', 'Das_log::getList/$1');
 
 /**
  * --------------------------------------------------------------------
