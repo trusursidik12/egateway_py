@@ -5,7 +5,7 @@ import mysql.connector
 import time
 
 try:
-    mydb = mysql.connector.connect(host="localhost", user="root", passwd="root", database="egateway")
+    mydb = mysql.connector.connect(host="localhost", user="root", passwd="root", database="egateway_dummy")
     mycursor = mydb.cursor()
     print("[V] DB CONNECTED")
 except Exception as e:
@@ -16,7 +16,6 @@ mycursor.execute("SELECT main_path,mysql_path FROM configurations WHERE id='1'")
 rec = mycursor.fetchall()
 
 print("Restore database " + sys.argv[1])
-
-subprocess.Popen(str(rec[0][1]) + "mysql -u root -proot egateway < " + str(rec[0][0]) + "gui/public/dist/upload/" + sys.argv[1], shell=True)
+subprocess.Popen(str(rec[0][1]) + "mysql -u root -proot egateway_dummy < " + str(rec[0][0]) + "gui/public/dist/upload/" + sys.argv[1], shell=True)
 
 time.sleep(5)

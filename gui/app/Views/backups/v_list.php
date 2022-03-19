@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <form role="form" method="POST" enctype="multipart/form-data" action="restore_exec">
+                <form role="form" method="POST" enctype="multipart/form-data" action="<?=base_url('backup/restore_exec')?>">
                     <div class="card">
                         <div class="row">
                             <div class="col-12">

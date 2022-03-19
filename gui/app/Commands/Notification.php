@@ -19,7 +19,7 @@ class Notification extends BaseCommand
 
 	public function __construct()
 	{
-		date_default_timezone_set('Asia/Jakarta');
+		// date_default_timezone_set('Asia/Jakarta');
 		$this->dasLog =  new m_das_log();
 		$this->param =  new m_parameter();
 		$this->instrument =  new m_instrument();
@@ -64,7 +64,6 @@ class Notification extends BaseCommand
 	{
 		$params = $this->param->findAll();
 		$dasLogs = $this->getDasLogs();
-		print_r($dasLogs);
 		foreach ($dasLogs as $data) {
 			foreach ($params as $check) {
 				if ($data->data_status_id == 1 && $data->notification == 0) {
@@ -167,11 +166,13 @@ class Notification extends BaseCommand
 	public function sentToEmail()
 	{
 		$dasLogs = $this->getDasLogs();
+		$range = $this->getDateRange();
 		$bakumutu = [];
 		$nol = [];
 		$tidakterkirim = [];
 		$bakumututidakterkirim = [];
 		$nolidakterkirim = [];
+		
 		foreach ($dasLogs as $log) {
 			$param = @$this->param->select('parameters.name as name,max_value, units.name as unit_name')
 				->join('units','parameters.unit_id = units.id')
@@ -264,7 +265,7 @@ class Notification extends BaseCommand
 			$config["SMTPUser"]  = "it.trusur@gmail.com";
 
 			//password email SMTP
-			$config["SMTPPass"]  = "R2h2s12123";
+			$config["SMTPPass"]  = "";
 
 			$config["SMTPPort"]  = 465;
 			$config["SMTPCrypto"] = "ssl";
@@ -280,12 +281,12 @@ class Notification extends BaseCommand
 			$konfig_email->setMessage($body);
 
 			if ($konfig_email->send()) {
-				$this->dasLog->set(['notification' => 6])->where('notification >= 1 AND notification <= 5')->update();
-				$this->dasLog->set(['notification' => 7])->where('notification', 0)->update();
+				$this->dasLog->set(['notification' => 6])->where("notification >= 1 AND notification <= 5 AND time_group >= '{$range['start']}' AND time_group <= '{$range['end']}'")->update();
+				$this->dasLog->set(['notification' => 7])->where("notification = 0 AND time_group >= '{$range['start']}' AND time_group <= '{$range['end']}'")->update();
 				echo 'berhasil kirim data notifikasi';
 			}
 		} else {
-			$this->dasLog->set(['notification' => 7])->where('notification', 0)->update();
+			$this->dasLog->set(['notification' => 7])->where("notification = 0 AND time_group >= '{$range['start']}' AND time_group <= '{$range['end']}'")->update();
 			echo 'tidak ada data notifikasi';
 		}
 	}
@@ -317,8 +318,7 @@ class Notification extends BaseCommand
 	{
 		while(true){
 			$nowI = (int) date('i');
-			print_r($this->getDateRange());
-			if($nowI == 25){ // Check menit ke 30
+			if($nowI == 30){ // Check menit ke 30
 				// check value correction
 				$this->bakumutu();
 				$this->zero();
@@ -328,7 +328,6 @@ class Notification extends BaseCommand
 				// sending notification
 				$this->sentToEmail();
 			}
-			exit();
 			sleep(60); // Delay per 1 menit
 		}
 	}
