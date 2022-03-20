@@ -188,13 +188,13 @@ class Notification extends BaseCommand
 				$nol[] = $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name;
 			}
 			if ($log->notification == 3) {
-				$tidakterkirim[] = $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name . " <p style='color: #cc3300'>Tidak terkirim</p>";
+				$tidakterkirim[] = $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name . " <span style='color: #cc3300'> Tidak terkirim</span>";
 			}
 			if ($log->notification == 4) {
-				$bakumututidakterkirim[] =  $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name. " | Baku Mutu : ". $param->max_value . " ".@$param->unit_name . " <p style='color: #cc3300'>Tidak terkirim</p>";
+				$bakumututidakterkirim[] =  $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name. " | Baku Mutu : ". $param->max_value . " ".@$param->unit_name . " <span style='color: #cc3300'> Tidak terkirim</span>";
 			}
 			if ($log->notification == 5) {
-				$nolidakterkirim[] = $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name . " <p style='color: #cc3300'>Tidak terkirim</p>";
+				$nolidakterkirim[] = $log->time_group." | ".@$instrument->name." - ".@$param->name ." : ". $log->value_correction ." ".@$param->unit_name . " <span style='color: #cc3300'> Tidak terkirim</span>";
 			}
 		}
 
@@ -265,7 +265,7 @@ class Notification extends BaseCommand
 			$config["SMTPUser"]  = "it.trusur@gmail.com";
 
 			//password email SMTP
-			$config["SMTPPass"]  = "";
+			$config["SMTPPass"]  = "R2h2s12123";
 
 			$config["SMTPPort"]  = 465;
 			$config["SMTPCrypto"] = "ssl";
@@ -303,7 +303,7 @@ class Notification extends BaseCommand
 		// ini_set("memory_limit","-1");
 		$range = $this->getDateRange();
 		$dasLogs = $this->dasLog
-			->select('id, parameter_id, value_correction, notification,data_status_id,is_sent_sispek,time_group')
+			->select('id, parameter_id,instrument_id, value_correction, notification,data_status_id,is_sent_sispek,time_group')
 			->where("time_group >= '{$range['start']}' AND time_group <= '{$range['end']}'")
 			->orderBy('time_group ASC')
 			->findAll();

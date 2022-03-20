@@ -107,6 +107,8 @@ class FormulaMeasurementLogs extends BaseCommand
 		$configuration = $this->configurations->where("id", 1)->findAll()[0];
 		$measurement_logs = $this->get_measurement_logs_range($configuration->interval_average);
 		if ($measurement_logs != 0) {
+			$total = [];
+			$numdata = [];
 			foreach ($measurement_logs["data"] as $measurement_log) {
 				@$instrument_id[$measurement_log->parameter_id] = $measurement_log->instrument_id;
 				@$total[$measurement_log->parameter_id] += $measurement_log->value;
@@ -154,11 +156,16 @@ class FormulaMeasurementLogs extends BaseCommand
 		$data = [];
 		while ($is_looping) {
 			$nowD = (int) date('d');
+			$sundayThisWeek = (int) date('d', strtotime('sunday this week'));
 			if($nowD == 1){ // Cek tanggal satu
 				$time = (string) date('Y-m-d');
 				if($db->query('ALTER table measurement_logs RENAME TO measurement_logs_'.$time)){
 					$db->query('CREATE table measurement_logs LIKE measurement_logs_'.$time);
 				}
+			}
+			if($nowD == $sundayThisWeek){ // Check if sunday
+				// Execute backup mysql replace older file
+				exec("python " . $this->configurations->find(1)->main_path . "backup_replace.py");
 			}
 			$this->measurement_logs->where("(is_averaged = 1 AND xtimestamp < ('" . date("Y-m-d H:i:s") . "' - INTERVAL 6 HOUR))")->delete();
 
