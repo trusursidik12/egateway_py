@@ -155,15 +155,15 @@ class FormulaMeasurementLogs extends BaseCommand
 
 		$data = [];
 		while ($is_looping) {
-			$nowD = (int) date('d');
-			$sundayThisWeek = (int) date('d', strtotime('sunday this week'));
-			if($nowD == 1){ // Cek tanggal satu
-				$time = (string) date('Y-m-d');
+			$date = (string) date('d H:i');
+			$sundayThisWeek = (string) date('d H:i', strtotime('sunday this week'));
+			if($date == "01 00:01"){ // Cek tanggal satu
+				$time = (string) date('Y_m_d');
 				if($db->query('ALTER table measurement_logs RENAME TO measurement_logs_'.$time)){
 					$db->query('CREATE table measurement_logs LIKE measurement_logs_'.$time);
 				}
 			}
-			if($nowD == $sundayThisWeek){ // Check if sunday
+			if($date == $sundayThisWeek ){ // Check if sunday
 				// Execute backup mysql replace older file
 				exec("python " . $this->configurations->find(1)->main_path . "backup_replace.py");
 			}
