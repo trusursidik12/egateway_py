@@ -18,7 +18,7 @@ class ConcentrationApi extends ResourceController
     }
     public function updateValue($webId)
     {
-        return $this->response->setJSON([
+        return $this->response->setStatusCode(202)->setJSON([
             'success' => true,
             'message' => 'Accepted!',
             'webId' => $webId
