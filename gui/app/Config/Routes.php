@@ -74,6 +74,8 @@ $routes->add('/measurement/list', 'Measurement::getList');
 $routes->get('/das_logs', 'Das_log::index');
 $routes->add('/das_log/list', 'Das_log::getList');
 
+$routes->get('/dis-history-data','Dishistory::index');
+$routes->get('/dis-history-data/list','Dishistory::getList');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

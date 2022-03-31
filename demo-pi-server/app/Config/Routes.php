@@ -34,6 +34,8 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 
 $routes->get('/streams/(:any)/interpolated','ConcentrationApi::getValue/$1');
+$routes->get('/streams/(:any)/recorded','ConcentrationApi::getValue/$1');
+$routes->get('/streams/(:any)/value','ConcentrationApi::getValue/$1');
 $routes->post('/streams/(:any)/value','ConcentrationApi::updateValue/$1');
 
 /*
