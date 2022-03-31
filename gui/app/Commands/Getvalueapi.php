@@ -59,6 +59,33 @@ class Getvalueapi extends BaseCommand
 	 *
 	 * @param array $params
 	 */
+	protected $response;
+	protected $statusCode;
+
+	public function getBody(){
+		return $this->response;
+	}
+	public function getStatusCode(){
+		return $this->statusCode;
+	}
+	public function requestData($url){
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'GET',
+		));
+
+		$this->response = curl_exec($curl);
+		$this->statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		curl_close($curl);
+		return $this;
+	}
 	public function run(array $params)
 	{
 		$curl = service('curlrequest'); // Curl CI4 Service
@@ -76,11 +103,13 @@ class Getvalueapi extends BaseCommand
 			foreach ($parameters as $param) {
 				$webId = $param->web_id;
 				$url = "{$baseUrl}/streams/{$webId}/interpolated?startTime={$dateNow}Z&endTime={$date10secAgo}Z&interval=10s&selectedFields=Items.Timestamp;Items.Value";
-				$req = $curl->request('get', $url,[
-					'headers' => [
-						'Accept' => 'application/json'
-					]
-				]);
+				// $req = $curl->request('get', $url,[
+				// 	'headers' => [
+				// 		'Accept' => 'application/json'
+				// 	],
+				// 	'verify' => false
+				// ]);
+				$req = $this->requestData($url);
 				if($req->getStatusCode()==200){
 					$data = json_decode($req->getBody(),1);
 					$items = $data['Items'];
@@ -99,7 +128,6 @@ class Getvalueapi extends BaseCommand
 						}
 					}
 				}
-				exit();
 				sleep($interval);
 			}
 		}	
