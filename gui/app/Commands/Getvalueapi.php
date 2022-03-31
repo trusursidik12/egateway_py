@@ -65,30 +65,32 @@ class Getvalueapi extends BaseCommand
 		$paramModel = new m_parameter();
 		$configModel = new m_configuration();
 		$measurementLogModel = new m_measurement_log();
-		$parameters = $paramModel->select("id,name, web_id")->findAll();
-		$i=0;
-		// $baseUrl = "http://localhost:8080";
-		$baseUrl = "https://sorpimappp01/piwebapi";
+		$parameters = $paramModel->select("id,name,instrument_id, unit_id, web_id")->findAll();
+		$baseUrl = "http://localhost:8080";
+		// $baseUrl = "https://sorpimappp01/piwebapi";
 		// Interval Request
-		$interval = $configModel->select("interval_request")->find(1)->interval_request;
-		$interval = 1;
+		$interval = 10; //Second
 		while(true){
-			$dateI = date('i') * 1;
-			if($dateI % ($interval != 0 ? $interval : 1) == 0){ // Check Error ModuloByZero
-				foreach ($parameters as $param) {
-					$webId = $param->web_id;
-					$req = $curl->request('get', "{$baseUrl}/streams/{$webId}/value",[
-						'headers' => [
-							'Accept' => 'application/json'
-						]
-					]);
-					if($req->getStatusCode()==200){
-						$data = json_decode($req->getBody(),1);
+			$dateNow = date('Y-m-d\TH:i:s');
+			$date10secAgo = date('Y-m-d\TH:i:s',strtotime('-10 second'));
+			foreach ($parameters as $param) {
+				$webId = $param->web_id;
+				$url = "{$baseUrl}/streams/{$webId}/interpolated?startTime={$dateNow}Z&endTime={$date10secAgo}Z&interval=10s&selectedFields=Items.Timestamp;Items.Value";
+				$req = $curl->request('get', $url,[
+					'headers' => [
+						'Accept' => 'application/json'
+					]
+				]);
+				if($req->getStatusCode()==200){
+					$data = json_decode($req->getBody(),1);
+					$items = $data['Items'];
+					foreach ($items as $item) { //Looping data 10 second
 						$measurement = [
-							'instrument_id' => 1,
+							'instrument_id' => $param->instrument_id,
 							'parameter_id' => $param->id,
-							'value' => $data['Value'],
-							'unit_id' => 1,
+							'value' => $item['Value'],
+							'unit_id' => $param->unit_id,
+							'xtimestamp' => $item['Timestamp'],
 						];
 						try{
 							$measurementLogModel->save($measurement);
@@ -96,8 +98,9 @@ class Getvalueapi extends BaseCommand
 							echo $e->getMessage();
 						}
 					}
-					sleep(1);
 				}
+				exit();
+				sleep($interval);
 			}
 		}	
 	}
