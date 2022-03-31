@@ -37,11 +37,7 @@
                 },
                 data : 'Timestamp'
             },{
-                render : function(data,type,row){
-                    console.log($('#parameter_id').children(':selected'));
-                    let parameter = $('#parameter_id').children(':selected').text();
-                    return parameter;
-                }
+                data : 'Parameter'
             },{
                 data : 'Value'
             }]

@@ -58,7 +58,10 @@ class Postvalueapi extends BaseCommand
 	 */
 	public function run(array $params)
 	{
-		$curl = service('curlrequest'); // Curl CI4 Service
+		// $curl = service('curlrequest'); // Curl CI4 Service
+		$curl = \Config\Services::curlrequest([
+			'verify' => false
+		]);
 		// $baseUrl = "http://localhost:8080";
 		$baseUrl = "https://sorpimappp01/piwebapi";
 		$Daslog = new m_das_log();
@@ -78,7 +81,7 @@ class Postvalueapi extends BaseCommand
 
 				// Request
 				$request = $curl->request('post', "{$baseUrl}/streams/{$value->web_id}/value",[
-					'form_params' => $data
+					'json' => $data
 				]);
 				if($request->getStatusCode == 202){ // is Accepted	
 					$Daslog->find($value->id)->delete(); // Delete if success sent PI server

@@ -26,6 +26,7 @@ class Dishistory extends BaseController
 	}
 	public function getList(){
 		$baseUrl = "http://localhost:8080";
+		$curl = service('curlrequest'); // Curl CI4 Service
 		// $baseUrl = "https://sorpimappp01/piwebapi";
 
 		$parameter_id = $this->request->getGet('parameter_id');
@@ -38,17 +39,36 @@ class Dishistory extends BaseController
 			$date_end = $date_end."T00:23:59Z";
 		}
 		$data = [];
-		if(!empty($parameter_id) && !empty($date_start) && !empty($date_end)){
-			$parameter = $this->Parameter->select('web_id')->find($parameter_id);
+		if(!empty($parameter_id)){
+			$parameter = $this->Parameter->select('name, web_id')->find($parameter_id);
 			$url = "{$baseUrl}/streams/{$parameter->web_id}/recorded?startTime={$date_start}&endTime={$date_end}&selectedFields=Items.Timestamp;Items.Value";
-			$curl = service('curlrequest'); // Curl CI4 Service
 			$req = $curl->request('get', $url,[
 				'headers' => [
 					'Accept' => 'application/json'
-				]
+				],
+				'verify' => false
 			]);
 			$response = json_decode($req->getBody(),1);
-			$data = @$response['Items'];
+			$items = @$response['Items'];
+			foreach ($items as $item) {
+				$data[] = $item + ['Parameter' => $parameter->name];
+			}
+		}else{
+			$parameters = $this->Parameter->select('name, web_id')->where('is_view',1)->findAll();
+			foreach ($parameters as $parameter) {
+				$url = "{$baseUrl}/streams/{$parameter->web_id}/recorded?startTime={$date_start}&endTime={$date_end}&selectedFields=Items.Timestamp;Items.Value";
+				$req = $curl->request('get', $url,[
+					'headers' => [
+						'Accept' => 'application/json'
+					],
+					'verify' => false
+				]);
+				$response = json_decode($req->getBody(),1);
+				$items = @$response['Items'];
+				foreach ($items as $item) {
+					$data[] = $item + ['Parameter' => $parameter->name];
+				}
+			}
 		}	
 
 		$results = [

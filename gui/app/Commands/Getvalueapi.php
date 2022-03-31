@@ -103,33 +103,32 @@ class Getvalueapi extends BaseCommand
 			foreach ($parameters as $param) {
 				$webId = $param->web_id;
 				$url = "{$baseUrl}/streams/{$webId}/interpolated?startTime={$date10secAgo}Z&endTime={$dateNow}Z&interval=10s&selectedFields=Items.Timestamp;Items.Value";
-				// $req = $curl->request('get', $url,[
-				// 	'headers' => [
-				// 		'Accept' => 'application/json'
-				// 	],
-				// 	'verify' => false
-				// ]);
-				$req = $this->requestData($url);
+				$req = $curl->request('get', $url,[
+					'headers' => [
+						'Accept' => 'application/json'
+					],
+					'verify' => false
+				]);
+				// $req = $this->requestData($url);
 				if($req->getStatusCode()==200){
 					$data = json_decode($req->getBody(),1);
-					$items = $data['Items'];
-					foreach ($items as $item) { //Looping data 10 second
+					if(!is_array($data['Value'])){
 						$measurement = [
 							'instrument_id' => $param->instrument_id,
 							'parameter_id' => $param->id,
-							'value' => $item['Value'],
+							'value' => $data['Value'],
 							'unit_id' => $param->unit_id,
-							'xtimestamp' => $item['Timestamp'],
+							'xtimestamp' => $data['Timestamp'],
 						];
 						try{
 							$measurementLogModel->save($measurement);
 						}catch(Exception $e){
 							echo $e->getMessage();
 						}
-					}
+					}					
 				}
-				sleep($interval);
 			}
 		}	
+		sleep($interval);
 	}
 }
