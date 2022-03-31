@@ -39,7 +39,7 @@ class Dishistory extends BaseController
 			$date_end = $date_end."T00:23:59Z";
 		}
 		$data = [];
-		if(!empty($parameter_id)){
+		if(!empty($parameter_id) && !empty($date_start) && !empty($date_end)){
 			$parameter = $this->Parameter->select('name, web_id')->find($parameter_id);
 			$url = "{$baseUrl}/streams/{$parameter->web_id}/recorded?startTime={$date_start}&endTime={$date_end}&selectedFields=Items.Timestamp;Items.Value";
 			$req = $curl->request('get', $url,[
@@ -53,7 +53,7 @@ class Dishistory extends BaseController
 			foreach ($items as $item) {
 				$data[] = $item + ['Parameter' => $parameter->name];
 			}
-		}else{
+		}else if(!empty($date_start) && !empty($date_end)){
 			$parameters = $this->Parameter->select('name, web_id')->where('is_view',1)->findAll();
 			foreach ($parameters as $parameter) {
 				$url = "{$baseUrl}/streams/{$parameter->web_id}/recorded?startTime={$date_start}&endTime={$date_end}&selectedFields=Items.Timestamp;Items.Value";

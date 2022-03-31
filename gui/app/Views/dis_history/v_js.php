@@ -8,7 +8,8 @@
             "processing": true,
             "serverSide": true,
             "searching": false,
-            "pageLength": 2,
+            "pageLength": 10,
+            "paging" : false,
             // "serverMethod": "post",
             "ajax": {
                 "url": "<?= base_url('/dis-history-data/list') ?>",
@@ -19,8 +20,8 @@
                 }
             },
             lengthMenu: [
-                [2, 50, 100, -1],
-                [2, 50, 100, "All"]
+                [10, 50, 100, -1],
+                [10, 50, 100, "All"]
             ],
             dom: '<"dt-buttons"Bf><"clear">lirtp',
             buttons: [{
@@ -44,6 +45,11 @@
         })
         $('.dt-buttons > button').removeClass('dt-button buttons-excel buttons-html5');
         $('#btn-filter').click(function(){
+            let dateStart = $('#date_start').val();
+            let dateEnd = $('#date_end').val();
+            if(dateStart == '' || dateEnd == ''){
+                alert('Date Start & Date End is required');
+            }
             table.draw();
         })
     });
