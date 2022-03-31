@@ -102,7 +102,7 @@ class Getvalueapi extends BaseCommand
 			$date10secAgo = date('Y-m-d\TH:i:s',strtotime('-10 second'));
 			foreach ($parameters as $param) {
 				$webId = $param->web_id;
-				$url = "{$baseUrl}/streams/{$webId}/interpolated?startTime={$dateNow}Z&endTime={$date10secAgo}Z&interval=10s&selectedFields=Items.Timestamp;Items.Value";
+				$url = "{$baseUrl}/streams/{$webId}/interpolated?startTime={$date10secAgo}Z&endTime={$dateNow}Z&interval=10s&selectedFields=Items.Timestamp;Items.Value";
 				// $req = $curl->request('get', $url,[
 				// 	'headers' => [
 				// 		'Accept' => 'application/json'
