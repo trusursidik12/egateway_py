@@ -73,11 +73,24 @@ class Postvalueapi extends BaseCommand
 				->where(['das_logs.is_sent_cloud' => 1])
 				->limit('100')->findAll();
 			foreach ($values as  $value) {
+				switch ($value->data_status_id) {
+					case 2: // Abnormal
+					case 3: // CAL_TEST
+						$correction = 1;
+						break;
+					case 4: // BROKEN
+						$correction = 0;
+						break;
+					
+					default: // Normal
+						$correction = $value->value_correction < 0 ? 0 : $value->value_correction;
+						break;
+				}
 				$data['Timestamp'] = $this->getDateTime($value->xtimestamp, true);
 				$data['UnitsAbbreviation'] = $value->unit_name;
 				$data['Good'] = $this->isGood($value->max_value,$value->value_correction);
 				$data['Questionable'] = !$data['Good'];
-				$data['Value'] = $value->value_correction; 
+				$data['Value'] = $correction; 
 
 				// Request
 				$request = $curl->request('post', "{$baseUrl}/streams/{$value->web_id}/value",[
