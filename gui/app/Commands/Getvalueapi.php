@@ -112,23 +112,33 @@ class Getvalueapi extends BaseCommand
 				// $req = $this->requestData($url);
 				if($req->getStatusCode()==200){
 					$data = json_decode($req->getBody(),1);
-					if(!is_array($data['Value'])){
-						$measurement = [
-							'instrument_id' => $param->instrument_id,
-							'parameter_id' => $param->id,
-							'value' => $data['Value'],
-							'unit_id' => $param->unit_id,
-							'xtimestamp' => $data['Timestamp'],
-						];
-						try{
-							$measurementLogModel->save($measurement);
-						}catch(Exception $e){
-							echo $e->getMessage();
-						}
-					}					
+					$value = is_array($data['Value']) ? 0 : $data['Value'];
+					$dateWITA = $this->getDateTime(@$data['Timestamp'], false);
+					$measurement = [
+						'instrument_id' => $param->instrument_id,
+						'parameter_id' => $param->id,
+						'value' => $value,
+						'voltage' => 0,
+						'unit_id' => $param->unit_id,
+						'is_averaged' => 0,
+						'is_das_log' => 0,
+						'xtimestamp' => $dateWITA,
+					];
+					try{
+						$measurementLogModel->save($measurement);
+					}catch(Exception $e){
+						echo $e->getMessage();
+					}
 				}
 			}
+			/**
+			 *  Truncate setiap tanggal 01 jam 00 menit 01
+			 */
+			$checkDate = date('d H:i');
+			if($checkDate == "01 00:01") { //Check tanggal 1 jam 00 lebih 1 menit
+				$measurementLogModel->truncate(); // Truncate
+			}
+			sleep($interval);
 		}	
-		sleep($interval);
 	}
 }

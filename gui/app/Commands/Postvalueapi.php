@@ -73,7 +73,7 @@ class Postvalueapi extends BaseCommand
 				->where(['das_logs.is_sent_cloud' => 1])
 				->limit('100')->findAll();
 			foreach ($values as  $value) {
-				$data['Timestamp'] = $value->xtimestamp;
+				$data['Timestamp'] = $this->getDateTime($value->xtimestamp, true);
 				$data['UnitsAbbreviation'] = $value->unit_name;
 				$data['Good'] = $this->isGood($value->max_value,$value->value_correction);
 				$data['Questionable'] = !$data['Good'];
