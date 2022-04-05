@@ -75,6 +75,8 @@ $routes->get('/das_logs', 'Das_log::index');
 $routes->post('/das_log/list', 'Das_log::getList/dis'); //default
 $routes->add('/das_log/list/(:any)', 'Das_log::getList/$1');
 
+$routes->add('/api/notification', 'Api/Notification::index');
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
